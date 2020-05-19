@@ -30,16 +30,17 @@ make_dygraph <- function(dt,
   # create ths custom dygraph structure needed for plotting: fisrt column should be the time,
   # all columns after that should be numerical variables.
 
-  if(!is.numeric(dt[[num_var]])){
-    stop(paste0('dt$', num_var, 'must be a numeric column.'))
-  }
+  # if(!is.numeric(dt[[num_var]])){
+  #   stop(paste0('dt$', num_var, 'must be a numeric column.'))
+  # }
 
   if(any(grepl(x = class(dt[[num_var]]), pattern = 'POSIXct|Date|timeDate|yearmon|yearqtr'))){
     stop(paste0('dt$', date_var, 'must be a class supported by xts::xts. As of version 0.10-2, supported classes include: "Date", "POSIXct", "timeDat", as well as "yearmon" and "yearqtr"'))
   }
 
-  dy_data <- dt[, c(date_var, num_var, group_var)] %>%
-    data.table::as.data.table() %>%
+  dy_cols <- c(date_var, num_var, group_var)
+  dy_data <- data.table::as.data.table(dt)[, ..dy_cols] %>%
+  # aggregate values by date_var
     data.table::dcast(
       formula = as.formula(paste(c(date_var,'~',ifelse(is.null(group_var),
                                                        yes = '.',
@@ -54,8 +55,7 @@ make_dygraph <- function(dt,
                          no = y_axis_label)
 
   dy_plot <- dygraphs::dygraph(dy_data) %>%
-    dygraphs::dyOptions(stackedGraph = TRUE,
-                        includeZero = FALSE,
+    dygraphs::dyOptions(includeZero = FALSE,
                         colors = plot_palette,
                         fillGraph = TRUE,
                         fillAlpha = 0.4,
