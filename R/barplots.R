@@ -23,6 +23,8 @@ make_barplot <- function(dt,
                          plot_palette = c("#58508d", "#ffa600", "#ff6361", "#003f5c", "#bc5090", "#A6CEE3",
                                           "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F",
                                           "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99")){
+  dt[[group_var]] %<>% as.character()
+
   if(is.null(break_bars_by)){
     barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = group_var, fill = group_var)) +
       ggplot2::geom_bar() +
@@ -34,6 +36,7 @@ make_barplot <- function(dt,
       ggplot2::scale_color_manual(values = plot_palette) +
       ggplot2::theme(legend.position = 'none')
   }else{
+    dt[[break_bars_by]] %<>% as.character()
     barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = group_var, fill = break_bars_by)) +
       ggplot2::geom_bar() +
       ggtheme() +
