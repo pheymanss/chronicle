@@ -1,4 +1,3 @@
-
 #' Create the initial Rmarkdown header for a report
 #'
 #' @param title Title of the report.
@@ -40,23 +39,44 @@ new_report <- function(title = 'New chronicle Report',
   return(header)
 }
 
-
 #' Render the report using current environment
 #'
 #' @param report The caracter string created by chronicle functions
 #' @param filename The name of the .html created
 #' @param directory The directory in which to render the .html report
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
+#' @param render_html Whether or not to render the report as an interactive hmtl file.
+#' @param render_pdf Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.
 #'
 #' @examples new_report() %>% render_report(filename = 'test_report')
-render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE){
+render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE, render_html = TRUE, render_pdf = FALSE){
   #wrtie the report as an Rmarkdown file
   rmd_file <- paste0(filename, '.Rmd')
   readr::write_lines(report, rmd_file)
 
   # render the Rmarkdown file
-  rmarkdown::render(input = rmd_file, output_file = paste0(filename, '.html'), output_dir = directory, clean = TRUE, quiet = TRUE)
+  if(render_html){
+    rmarkdown::render(input = rmd_file, output_file = paste0(filename, '.html'), output_dir = directory, clean = TRUE, quiet = TRUE)
+  }
+
+  if(render_pdf){
+    if(webshot::is_phantomjs_installed()){
+      warning('To render PDF files, chronicle uses the webshot package, which in turn requires PhantomJS to be installed. webshot could not find your phantomJS installation, so the PDF will not be rendered.\n\nTo make this work, you can either run webshot::install_phantomjs() before rendering the report, or set render_report(keep_rmd = TRUE) to keep the Rmd file, and then run webshot::rmdshot("file.Rmd", "file.pdf") on a computer that does have PhantomJS.')
+    }else{
+      webshot::rmdshot(rmd_file, paste0(filename, '.pdf'))
+    }
+
+
+  }
   if(!keep_rmd){file.remove(rmd_file)}
 }
+
+#' Wrapper to update chronicle from github
+#'
+#' Quality of life improvement until I submit the package to CRAN. Runs devtools::install_github('pheymanss/chronicle')
+update_chronicle <- function(){
+  devtools::install_github('pheymanss/chronicle')
+}
+
 
 
