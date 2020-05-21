@@ -13,8 +13,10 @@ Depends: R (>= 3.5.0),
 License: MIT
 Encoding: UTF-8
 Imports: data.table,
+    DT, 
     dygraphs, 
     ggplot2,
+    knitr,
     magrittr,
     plotly,
     RColorBrewer,
