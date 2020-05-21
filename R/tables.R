@@ -1,3 +1,16 @@
+#' Add a table to a chronicle report
+#'
+#' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
+#' @param table data.frame to print on the report.
+#' @param table_title title of the table. Default is no title.
+#' @param title_level Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)
+#' @param html_table_type Either print a knitr::kable table or a DT htmilwidget. kable tables look good with prettydoc (which is TRUE by default on new_report()), DT (https://rstudio.github.io/DT/) are interactive table widgets.
+#' @param table_params Single character string with any additional parameters to be passed to either knitr::kable() or DT::datatable(), depending on html_table_type
+#'
+#' @return
+#' @export
+#'
+#' @examples
 add_table <- function(report = new_report(),
                       table,
                       table_title = NULL,
@@ -17,7 +30,7 @@ add_table <- function(report = new_report(),
                                       yes = 'DT::datatable(',
                                       no = 'knitr::kable('),
                                       deparse(substitute(table)),
-                                      table_params,
+                                      table_params[1],
                                       ')'),
                                     collapse = '')
                           , collapse = '\n'),
@@ -27,10 +40,3 @@ add_table <- function(report = new_report(),
   return(report)
 }
 
-
-
-testdotdotdot <- function(...){
-  print(deparse(substitute(...)))
-}
-
-testdotdotdot(a = 'a')
