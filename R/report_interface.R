@@ -62,7 +62,7 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
   }
 
   if(render_pdf){
-    if(webshot::is_phantomjs_installed()){
+    if(!webshot::is_phantomjs_installed()){
       warning('To render PDF files, chronicle uses the webshot package, which in turn requires PhantomJS to be installed. webshot could not find your phantomJS installation, so the PDF will not be rendered.\n\nTo make this work, you can either run webshot::install_phantomjs() before rendering the report, or set render_report(keep_rmd = TRUE) to keep the Rmd file, and then run webshot::rmdshot("file.Rmd", "file.pdf") on a computer that does have PhantomJS.')
     }else{
       webshot::rmdshot(rmd_file, paste0(filename, '.pdf'))
