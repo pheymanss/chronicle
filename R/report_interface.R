@@ -5,28 +5,33 @@
 #' @param prettydoc Logical indicating whether or not to use prettydoc formatting on the html report.
 #' @param prettydoc_theme Name of the theme used on prettydoc. Default is cayman.
 #' @param highlight Rmarkdown highlight theming
-#' @param number_sections
+#' @param number_sections Whether or not to numnber the sections and subsections fo the report.
+#' @param table_of_content Whether or not to build a table fo content at the begining of the report.
+#' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
 #'
 #' @return a String conainitng an Rmarkdown header
-#'
+#' @export
 #' @examples
-#' new_report('Report Header Only', author = 'Mysterious Developer', prettydoc = FALSE)
-#' new_report('Prettier Report Header', author = 'Same person', prettydoc = TRUE)
+#' new_report('Simple Report Header', author = 'Anonymous Developer', prettydoc = FALSE)
+#' new_report('Prettier Report Header', author = 'The same person as before', prettydoc = TRUE)
 new_report <- function(title = 'New chronicle Report',
                        author = 'chronicle user',
                        prettydoc = TRUE,
                        prettydoc_theme = 'leonids',
                        highlight = 'github',
-                       number_sections = FALSE){
+                       number_sections = FALSE,
+                       table_of_content = FALSE,
+                       table_of_content_depth = 1){
   header <- c('---',
               paste('title: ', title),
               'date: "`r Sys.Date()`"',
               paste('author: ', author),
               ifelse(test = prettydoc,
                      yes = paste('output: \n  prettydoc::html_pretty: \n',
-                                 '  theme:', prettydoc_theme),
-                     no = 'output: html_document'),
-              if(number_sections){'number_sections: true'},
+                                 '   theme:', prettydoc_theme),
+                     no = 'output:\n  html_document:'),
+              if(number_sections){'    number_sections: true'},
+              if(table_of_content){c('    toc: true', paste('    toc_depth:',2))},
               '---',
               '\n',
               '```{r, echo = FALSE, message = FALSE, warning = FALSE}',
@@ -38,7 +43,6 @@ new_report <- function(title = 'New chronicle Report',
   ) %>% paste(collapse = '\n')
   return(header)
 }
-
 
 #' Render the report using current environment
 #'
@@ -61,7 +65,7 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
   }
 
   if(render_pdf){
-    if(!webshot::is_phantomjs_installed()){
+    if(webshot::is_phantomjs_installed()){
       warning('To render PDF files, chronicle uses the webshot package, which in turn requires PhantomJS to be installed. webshot could not find your phantomJS installation, so the PDF will not be rendered.\n\nTo make this work, you can either run webshot::install_phantomjs() before rendering the report, or set render_report(keep_rmd = TRUE) to keep the Rmd file, and then run webshot::rmdshot("file.Rmd", "file.pdf") on a computer that does have PhantomJS.')
     }else{
       webshot::rmdshot(rmd_file, paste0(filename, '.pdf'))
@@ -71,3 +75,13 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
   }
   if(!keep_rmd){file.remove(rmd_file)}
 }
+
+#' Wrapper to update chronicle from github
+#'
+#' Quality of life improvement until I submit the package to CRAN. Runs devtools::install_github('pheymanss/chronicle')
+update_chronicle <- function(){
+  devtools::install_github('pheymanss/chronicle')
+}
+
+
+
