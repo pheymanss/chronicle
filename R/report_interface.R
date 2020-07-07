@@ -31,11 +31,7 @@ new_report <- function(title = 'New chronicle Report',
                                  '   theme:', prettydoc_theme),
                      no = 'output:\n  html_document:'),
               if(number_sections){'    number_sections: true'},
-<<<<<<< HEAD
               if(table_of_content){c('    toc: true', paste('    toc_depth:', table_of_content_depth))},
-=======
-              if(table_of_content){c('    toc: true', paste('    toc_depth:',2))},
->>>>>>> 8d5e1bbc25f1617966e4876727cafeb30e97482a
               '---',
               '\n',
               '```{r, echo = FALSE, message = FALSE, warning = FALSE}',
