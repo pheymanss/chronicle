@@ -13,11 +13,11 @@
 #' new_report('Report Header Only', author = 'Mysterious Developer', prettydoc = FALSE)
 #' new_report('Prettier Report Header', author = 'Same person', prettydoc = TRUE)
 new_report <- function(title = 'New chronicle Report',
-           author = 'chronicle user',
-           prettydoc = TRUE,
-           prettydoc_theme = 'leonids',
-           highlight = 'github',
-           number_sections = FALSE){
+                       author = 'chronicle user',
+                       prettydoc = TRUE,
+                       prettydoc_theme = 'leonids',
+                       highlight = 'github',
+                       number_sections = FALSE){
   header <- c('---',
               paste('title: ', title),
               'date: "`r Sys.Date()`"',
@@ -35,9 +35,10 @@ new_report <- function(title = 'New chronicle Report',
               '# the chronicle report.',
               '',
               '```'
-              ) %>% paste(collapse = '\n')
+  ) %>% paste(collapse = '\n')
   return(header)
 }
+
 
 #' Render the report using current environment
 #'
@@ -60,7 +61,7 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
   }
 
   if(render_pdf){
-    if(webshot::is_phantomjs_installed()){
+    if(!webshot::is_phantomjs_installed()){
       warning('To render PDF files, chronicle uses the webshot package, which in turn requires PhantomJS to be installed. webshot could not find your phantomJS installation, so the PDF will not be rendered.\n\nTo make this work, you can either run webshot::install_phantomjs() before rendering the report, or set render_report(keep_rmd = TRUE) to keep the Rmd file, and then run webshot::rmdshot("file.Rmd", "file.pdf") on a computer that does have PhantomJS.')
     }else{
       webshot::rmdshot(rmd_file, paste0(filename, '.pdf'))
@@ -70,13 +71,3 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
   }
   if(!keep_rmd){file.remove(rmd_file)}
 }
-
-#' Wrapper to update chronicle from github
-#'
-#' Quality of life improvement until I submit the package to CRAN. Runs devtools::install_github('pheymanss/chronicle')
-update_chronicle <- function(){
-  devtools::install_github('pheymanss/chronicle')
-}
-
-
-
