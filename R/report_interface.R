@@ -55,6 +55,21 @@ new_report <- function(title = 'New chronicle Report',
 #'
 #' @examples new_report() %>% render_report(filename = 'test_report')
 render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE, render_html = TRUE, render_pdf = FALSE){
+
+  # check if additional github packages are installed, and if not ask the user to install them or not render a PDF file
+  if(render_pdf){
+    if(!('webshot2' %in% installed.packages())){
+      warning('Due to an incompatibility between plotly (the html interactive plot library used for plots in chronicle) and webshot (the library for rendering .html files as .pdfs), rendering PDF files with chronicle requires a currently in-development package called webshot2, which in turn requires another in-development package called chromote.')
+      install_chromote_webshot2 <- grepl('y', readline(prompt = 'Do you want to proceed installing both webshot2 and chromote from github?\nIf not, the excecution will continue but will not be able to render the PDF file. yes|no:'))
+      if(install_chromote_webshot2){
+        devtools::install_github("rstudio/chromote")
+        devtools::install_github("rstudio/webshot2")
+      }else{
+        render_pdf <- FALSE
+      }
+    }
+  }
+
   #wrtie the report as an Rmarkdown file
   rmd_file <- paste0(filename, '.Rmd')
   readr::write_lines(report, rmd_file)
@@ -64,14 +79,9 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
     rmarkdown::render(input = rmd_file, output_file = paste0(filename, '.html'), output_dir = directory, clean = TRUE, quiet = TRUE)
   }
 
-  if(render_pdf){
-    if(webshot::is_phantomjs_installed()){
-      warning('To render PDF files, chronicle uses the webshot package, which in turn requires PhantomJS to be installed. webshot could not find your phantomJS installation, so the PDF will not be rendered.\n\nTo make this work, you can either run webshot::install_phantomjs() before rendering the report, or set render_report(keep_rmd = TRUE) to keep the Rmd file, and then run webshot::rmdshot("file.Rmd", "file.pdf") on a computer that does have PhantomJS.')
-    }else{
-      webshot::rmdshot(rmd_file, paste0(filename, '.pdf'))
-    }
 
-
+  if(render_pdf & 'webshot2' %in% installed.packages()){
+    webshot2::rmdshot(rmd_file, paste0(filename, '.pdf'), delay = 30)
   }
   if(!keep_rmd){file.remove(rmd_file)}
 }
