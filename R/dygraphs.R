@@ -39,7 +39,7 @@ make_dygraph <- function(dt,
   }
 
   dy_cols <- c(date_var, num_var, group_var)
-  dy_data <- data.table::as.data.table(dt)[, ..dy_cols] %>%
+  dy_data <- data.table::as.data.table(dt) %>% keep(colnames(.), dy_cols)
   # aggregate values by date_var
     data.table::dcast(
       formula = as.formula(paste(c(date_var,'~',ifelse(is.null(group_var),
