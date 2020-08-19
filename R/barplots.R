@@ -3,7 +3,8 @@
 #' create a bar plot from a data frame through ggplotly
 #'
 #' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.
-#' @param group_var Name of the columns containing the different groups.
+#' @param bars Name of the columns containing the different groups.
+#' @param value Name of the columns to use as values on the y axis of the plot. If NULL, counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
@@ -11,11 +12,12 @@
 #' @param plot_palette #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 
 #'
-#' @return a plotly-ized version of a ggplot bar plot
+#' @return a plotly-ized version of a grouped ggplot bar plot
 #'
 #' @examples
 make_barplot <- function(dt,
-                         group_var,
+                         bars,
+                         value,
                          break_bars_by = NULL,
                          ggtheme = ggplot2::theme_minimal,
                          x_axis_label = NULL,
@@ -23,29 +25,54 @@ make_barplot <- function(dt,
                          plot_palette = c("#58508d", "#ffa600", "#ff6361", "#003f5c", "#bc5090", "#A6CEE3",
                                           "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F",
                                           "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99")){
-  dt[[group_var]] %<>% as.character()
-
-  if(is.null(break_bars_by)){
-    barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = group_var, fill = group_var)) +
-      ggplot2::geom_bar() +
-      ggtheme() +
-      ggplot2::scale_y_continuous( labels = scales::number_format(accuracy = 0.01,
-                                                                  decimal.mark = '.',
-                                                                  big.mark = ','))  +
-      ggplot2::scale_fill_manual(values = plot_palette) +
-      ggplot2::scale_color_manual(values = plot_palette) +
-      ggplot2::theme(legend.position = 'none')
+  dt[[bars]] %<>% as.character()
+  if(is.null(value)){
+    if(is.null(break_bars_by)){
+      barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = bars, fill = bars)) +
+        ggplot2::geom_bar() +
+        ggtheme() +
+        ggplot2::scale_y_continuous( labels = scales::number_format(accuracy = 0.01,
+                                                                    decimal.mark = '.',
+                                                                    big.mark = ','))  +
+        ggplot2::scale_fill_manual(values = plot_palette) +
+        ggplot2::scale_color_manual(values = plot_palette) +
+        ggplot2::theme(legend.position = 'none')
+    }else{
+      dt[[break_bars_by]] %<>% as.character()
+      barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = bars, fill = break_bars_by)) +
+        ggplot2::geom_bar() +
+        ggtheme() +
+        ggplot2::scale_y_continuous( labels = scales::number_format(accuracy = 0.01,
+                                                                    decimal.mark = '.',
+                                                                    big.mark = ','))  +
+        ggplot2::scale_fill_manual(values = plot_palette) +
+        ggplot2::scale_color_manual(values = plot_palette)
+    }
   }else{
-    dt[[break_bars_by]] %<>% as.character()
-    barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = group_var, fill = break_bars_by)) +
-      ggplot2::geom_bar() +
-      ggtheme() +
-      ggplot2::scale_y_continuous( labels = scales::number_format(accuracy = 0.01,
-                                                                  decimal.mark = '.',
-                                                                  big.mark = ','))  +
-      ggplot2::scale_fill_manual(values = plot_palette) +
-      ggplot2::scale_color_manual(values = plot_palette)
+    dt[[value]] %<>% as.numeric()
+    if(is.null(break_bars_by)){
+      barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = bars, y = value, fill = bars)) +
+        ggplot2::geom_bar(stat = 'identity') +
+        ggtheme() +
+        ggplot2::scale_y_continuous( labels = scales::number_format(accuracy = 0.01,
+                                                                    decimal.mark = '.',
+                                                                    big.mark = ','))  +
+        ggplot2::scale_fill_manual(values = plot_palette) +
+        ggplot2::scale_color_manual(values = plot_palette) +
+        ggplot2::theme(legend.position = 'none')
+    }else{
+      dt[[break_bars_by]] %<>% as.character()
+      barplot <- ggplot2::ggplot(dt, ggplot2::aes_string(x = bars, y = value, fill = break_bars_by)) +
+        ggplot2::geom_bar(stat = 'identity') +
+        ggtheme() +
+        ggplot2::scale_y_continuous( labels = scales::number_format(accuracy = 0.01,
+                                                                    decimal.mark = '.',
+                                                                    big.mark = ','))  +
+        ggplot2::scale_fill_manual(values = plot_palette) +
+        ggplot2::scale_color_manual(values = plot_palette)
+    }
   }
+
 
   # axes
   if(!is.null(x_axis_label)){
@@ -66,7 +93,8 @@ make_barplot <- function(dt,
 #'
 #' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
 #' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.
-#' @param group_var Name of the columns containing the different groups.
+#' @param bars Name of the columns containing the different groups.
+#' @param value Name of the columns to use as values on the y axis of the plot. If NULL, counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param barplot_title Title of the dygraph.
@@ -81,7 +109,8 @@ make_barplot <- function(dt,
 #' @examples
 add_barplot <- function(report = new_report(),
                         dt,
-                        group_var,
+                        bars,
+                        value = NULL,
                         break_bars_by = NULL,
                         ggtheme = NULL,
                         barplot_title = NULL,
@@ -92,7 +121,7 @@ add_barplot <- function(report = new_report(),
                                          "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F",
                                          "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99")){
   barplot_title <- ifelse(test = is.null(barplot_title),
-                          yes = paste0('Count of ', group_var, if(!is.null(break_bars_by)){paste(', by', break_bars_by)}),
+                          yes = paste0('Count of ', bars, if(!is.null(break_bars_by)){paste(', by', break_bars_by)}),
                           no = barplot_title)
 
   report <- paste(report, # report object (Rmarkdown file text)
@@ -100,7 +129,8 @@ add_barplot <- function(report = new_report(),
                   paste('```{r, echo = FALSE, message = FALSE, warning = FALSE}', # r chunk header
                         # make_barplot
                         paste(c(paste0('chronicle::make_barplot(dt = ', deparse(substitute(dt)), ','),
-                                paste0('                        group_var = "', group_var, '",'),
+                                paste0('                        bars = "', bars, '",'),
+                                if (!is.null(value)) {paste0('                        value = "', value, '",')},
                                 if (!is.null(break_bars_by)) {paste0('                        break_bars_by = "', break_bars_by, '",')},
                                 if (!is.null(ggtheme)) {paste0('                        ggtheme = ', deparse(substitute(ggtheme)), ',')},
                                 if (!is.null(x_axis_label)) {paste0('                        x_axis_label = "', y_axis_label, '",')},
