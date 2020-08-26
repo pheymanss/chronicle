@@ -1,23 +1,23 @@
 
 
-#' create a bar plot from a data frame through ggplotly
+#' Create a bar plot from a data frame through ggplotly
 #'
 #' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.
 #' @param bars Name of the columns containing the different groups.
-#' @param value Name of the columns to use as values on the y axis of the plot. If NULL, counts will be used.
+#' @param value Name of the columns to use as values on the y axis of the plot. If NULL (default), counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
-
 #'
-#' @return a plotly-ized version of a grouped ggplot bar plot
+#' @export
+#' @return A plotly-ized version of a grouped ggplot bar plot.
 #'
 #' @examples
 make_barplot <- function(dt,
                          bars,
-                         value,
+                         value = NULL,
                          break_bars_by = NULL,
                          ggtheme = ggplot2::theme_minimal,
                          x_axis_label = NULL,
@@ -90,7 +90,6 @@ make_barplot <- function(dt,
 
 #' Add a ggplotly bar plot to a chronicle report
 #'
-#'
 #' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
 #' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.
 #' @param bars Name of the columns containing the different groups.
@@ -103,7 +102,7 @@ make_barplot <- function(dt,
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.
 #'
-#' @return
+#' @return The text of the Rmarkdown report plus an additional section with the bar plot.
 #' @export
 #'
 #' @examples
