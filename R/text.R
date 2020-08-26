@@ -34,11 +34,7 @@ add_title <- function(report, title, title_level = 1){
 
 #' #' Add formated code chunks to a chronicle Rmarkdown report
 #'
-#' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
-#' @param title The title to be added as a section.
-#' @param title_level Level of the section title (ie, number of # on Rmarkdown syntax.)
-#'
-
+#' Beware that code indentation of the chronicle call will affect the indentation of the chunk, so make sure not to leave unintended indentation in the 'code' parameter on this function call.
 #'
 #' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
 #' @param code Character string to be formated as an R code chunk. This code will not be excecuted when the report is rendered.
