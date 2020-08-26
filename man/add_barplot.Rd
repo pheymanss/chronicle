@@ -44,7 +44,7 @@ add_barplot(
 \item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.}
 }
 \value{
-
+The text of the Rmarkdown report plus an additional section with the bar plot.
 }
 \description{
 Add a ggplotly bar plot to a chronicle report

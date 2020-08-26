@@ -14,12 +14,10 @@ add_code(report, code, code_title = NULL, title_level = 2)
 \item{code_title}{The title of the code section. Default is NULL.}
 
 \item{title_level}{Level of the section title (ie, number of # on Rmarkdown syntax.)}
-
-\item{title}{The title to be added as a section.}
 }
 \value{
 The text of the Rmarkdown report plus an additional section with the code chunk.
 }
 \description{
-#' Add formated code chunks to a chronicle Rmarkdown report
+Beware that code indentation of the chronicle call will affect the indentation of the chunk, so make sure not to leave unintended indentation in the 'code' parameter on this function call.
 }

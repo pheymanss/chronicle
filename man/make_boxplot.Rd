@@ -35,7 +35,7 @@ make_boxplot(
 \item{plot_palette}{#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.}
 }
 \value{
-a plotly-ized version of a ggplot bar plot
+A plotly-ized version of a ggplot box plot.
 }
 \description{
 create a bar plot from a data frame through ggplotly

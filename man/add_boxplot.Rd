@@ -42,7 +42,7 @@ add_boxplot(
 \item{y_axis_limits}{Numeric vector of length 2 specifying the lower and upper bounds of the y axis (useful when outliers eclipse the interquartile range).}
 }
 \value{
-
+The text of the Rmarkdown report plus an additional section with the box plot.
 }
 \description{
 Add a ggplotly boxplot to a chronicle report

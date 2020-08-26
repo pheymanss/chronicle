@@ -2,12 +2,12 @@
 % Please edit documentation in R/barplots.R
 \name{make_barplot}
 \alias{make_barplot}
-\title{create a bar plot from a data frame through ggplotly}
+\title{Create a bar plot from a data frame through ggplotly}
 \usage{
 make_barplot(
   dt,
   bars,
-  value,
+  value = NULL,
   break_bars_by = NULL,
   ggtheme = ggplot2::theme_minimal,
   x_axis_label = NULL,
@@ -22,7 +22,7 @@ make_barplot(
 
 \item{bars}{Name of the columns containing the different groups.}
 
-\item{value}{Name of the columns to use as values on the y axis of the plot. If NULL, counts will be used.}
+\item{value}{Name of the columns to use as values on the y axis of the plot. If NULL (default), counts will be used.}
 
 \item{break_bars_by}{Name of the categorical variable used to break each bar}
 
@@ -35,8 +35,8 @@ make_barplot(
 \item{plot_palette}{#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.}
 }
 \value{
-a plotly-ized version of a grouped ggplot bar plot
+A plotly-ized version of a grouped ggplot bar plot.
 }
 \description{
-create a bar plot from a data frame through ggplotly
+Create a bar plot from a data frame through ggplotly
 }

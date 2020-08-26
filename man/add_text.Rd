@@ -16,7 +16,7 @@ add_text(report, text, text_title = NULL, title_level = 2)
 \item{title_level}{Level of the section title of this text (ie, number of # on Rmarkdown syntax.)}
 }
 \value{
-The text of the Rmarkdown report plus an additional section with the text
+The text of the Rmarkdown report plus an additional section with the text.
 }
 \description{
 Add text to a chronicle Rmarkdown report
