@@ -8,10 +8,14 @@
 #' @param number_sections Whether or not to numnber the sections and subsections fo the report.
 #' @param table_of_content Whether or not to build a table fo content at the begining of the report.
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
+#' @param fig_width Set the global figure width or the rmarkdown file.
+#' @param fig_height Set the global figure height or the rmarkdown file.
 #'
 #' @return a String conainitng an Rmarkdown header
 #' @export
 #' @examples
+#' library(magrittr)
+#' library(chronicle)
 #' new_report('Simple Report Header', author = 'Anonymous Developer', prettydoc = FALSE)
 #' new_report('Prettier Report Header', author = 'The same person as before', prettydoc = TRUE)
 new_report <- function(title = 'New chronicle Report',
@@ -57,22 +61,27 @@ new_report <- function(title = 'New chronicle Report',
 #' @param render_html Whether or not to render the report as an interactive hmtl file.
 #' @param render_pdf Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.
 #'
-#' @examples new_report() %>% render_report(filename = 'test_report')
+#' @export
+#'
+#' @examples
+#' library(chronicle)
+#' library(magrittr)
+#' new_report() %>% render_report(filename = 'test_report')
 render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE, render_html = TRUE, render_pdf = FALSE){
 
   # check if additional github packages are installed, and if not ask the user to install them or not render a PDF file
-  if(render_pdf){
-    if(!('webshot2' %in% installed.packages())){
-      warning('Due to an incompatibility between plotly (the html interactive plot library used for plots in chronicle) and webshot (the library for rendering .html files as .pdfs), rendering PDF files with chronicle requires a currently in-development package called webshot2, which in turn requires another in-development package called chromote.')
-      install_chromote_webshot2 <- grepl('y', readline(prompt = 'Do you want to proceed installing both webshot2 and chromote from github?\nIf not, the excecution will continue but will not be able to render the PDF file. yes|no:'))
-      if(install_chromote_webshot2){
-        devtools::install_github("rstudio/chromote")
-        devtools::install_github("rstudio/webshot2")
-      }else{
-        render_pdf <- FALSE
-      }
-    }
-  }
+  # if(render_pdf){
+  #   if(!('webshot2' %in% installed.packages())){
+  #     warning('Due to an incompatibility between plotly (the html interactive plot library used for plots in chronicle) and webshot (the library for rendering .html files as .pdfs), rendering PDF files with chronicle requires a currently in-development package called webshot2, which in turn requires another in-development package called chromote.')
+  #     install_chromote_webshot2 <- grepl('y', readline(prompt = 'Do you want to proceed installing both webshot2 and chromote from github?\nIf not, the excecution will continue but will not be able to render the PDF file. yes|no:'))
+  #     if(install_chromote_webshot2){
+  #       devtools::install_github("rstudio/chromote")
+  #       devtools::install_github("rstudio/webshot2")
+  #     }else{
+  #       render_pdf <- FALSE
+  #     }
+  #   }
+  # }
 
   #wrtie the report as an Rmarkdown file
   rmd_file <- paste0(filename, '.Rmd')
@@ -83,10 +92,10 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
     rmarkdown::render(input = rmd_file, output_file = paste0(filename, '.html'), output_dir = directory, clean = TRUE, quiet = TRUE)
   }
 
-
-  if(render_pdf & 'webshot2' %in% installed.packages()){
-    webshot2::rmdshot(rmd_file, paste0(filename, '.pdf'), delay = 30)
-  }
+#
+#   if(render_pdf & 'webshot2' %in% utils::installed.packages()){
+#     webshot2::rmdshot(rmd_file, paste0(filename, '.pdf'), delay = 30)
+#   }
   if(!keep_rmd){file.remove(rmd_file)}
 }
 
