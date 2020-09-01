@@ -7,7 +7,6 @@
 #' @param html_table_type Either print a knitr::kable table or a DT htmilwidget. kable tables look good with prettydoc (which is TRUE by default on new_report()), DT (https://rstudio.github.io/DT/) are interactive table widgets.
 #' @param table_params Single character string with any additional parameters to be passed to either knitr::kable() or DT::datatable(), depending on html_table_type
 #'
-#' @return
 #' @export
 #'
 #' @examples
