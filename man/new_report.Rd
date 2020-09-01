@@ -12,7 +12,9 @@ new_report(
   highlight = "github",
   number_sections = FALSE,
   table_of_content = FALSE,
-  table_of_content_depth = 1
+  table_of_content_depth = 1,
+  fig_width = NULL,
+  fig_height = NULL
 )
 }
 \arguments{
@@ -31,6 +33,10 @@ new_report(
 \item{table_of_content}{Whether or not to build a table fo content at the begining of the report.}
 
 \item{table_of_content_depth}{The depth of sections and subsections to be displayed on the table of content.}
+
+\item{fig_width}{Set the global figure width or the rmarkdown file.}
+
+\item{fig_height}{Set the global figure height or the rmarkdown file.}
 }
 \value{
 a String conainitng an Rmarkdown header
@@ -39,6 +45,8 @@ a String conainitng an Rmarkdown header
 Create the initial Rmarkdown header for a report
 }
 \examples{
+library(magrittr)
+library(chronicle)
 new_report('Simple Report Header', author = 'Anonymous Developer', prettydoc = FALSE)
 new_report('Prettier Report Header', author = 'The same person as before', prettydoc = TRUE)
 }

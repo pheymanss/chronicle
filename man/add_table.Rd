@@ -26,9 +26,6 @@ add_table(
 
 \item{table_params}{Single character string with any additional parameters to be passed to either knitr::kable() or DT::datatable(), depending on html_table_type}
 }
-\value{
-
-}
 \description{
 Add a table to a chronicle report
 }

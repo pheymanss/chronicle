@@ -36,9 +36,11 @@ Plot a time series from a data frame through dygraph's interactive html plot int
 }
 \examples{
 
+library(chronicle)
+library(magrittr)
 # mock data
 dat <- data.frame(x = rnorm(1000, mean = 100, sd = 15),
-                  date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100))
+                  date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100)))
 make_dygraph(dt = dat, num_var = 'x', date_var = 'date')
 
 }

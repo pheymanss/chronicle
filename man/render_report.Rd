@@ -30,5 +30,7 @@ render_report(
 Render the report using current environment
 }
 \examples{
+library(chronicle)
+library(magrittr)
 new_report() \%>\% render_report(filename = 'test_report')
 }

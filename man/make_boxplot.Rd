@@ -32,7 +32,7 @@ make_boxplot(
 
 \item{y_axis_limits}{Numeric vector of length 2 specifying the lower and upper bounds of the y axis (useful when outliers eclipse the interquartile range).}
 
-\item{plot_palette}{#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.}
+\item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot.}
 }
 \value{
 A plotly-ized version of a ggplot box plot.
