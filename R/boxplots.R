@@ -9,7 +9,7 @@
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
 #' @param y_axis_limits Numeric vector of length 2 specifying the lower and upper bounds of the y axis (useful when outliers eclipse the interquartile range).
-#' @param plot_palette #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
+#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #'
 #' @export
 #' @return A plotly-ized version of a ggplot box plot.
@@ -81,6 +81,7 @@ make_boxplot <- function(dt,
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
 #' @param y_axis_limits Numeric vector of length 2 specifying the lower and upper bounds of the y axis (useful when outliers eclipse the interquartile range).
+#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #'
 #' @return The text of the Rmarkdown report plus an additional section with the box plot.
 #' @export
