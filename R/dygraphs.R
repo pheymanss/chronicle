@@ -14,9 +14,11 @@
 #'
 #' @examples
 #'
+#' library(chronicle)
+#' library(magrittr)
 #' # mock data
 #' dat <- data.frame(x = rnorm(1000, mean = 100, sd = 15),
-#'                   date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100))
+#'                   date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100)))
 #' make_dygraph(dt = dat, num_var = 'x', date_var = 'date')
 #'
 make_dygraph <- function(dt,
@@ -43,7 +45,7 @@ make_dygraph <- function(dt,
     purrr::keep(colnames(.) %in% dy_cols) %>%
   # aggregate values by date_var
     data.table::dcast(
-      formula = as.formula(paste(c(date_var,'~',ifelse(is.null(group_var),
+      formula = stats::as.formula(paste(c(date_var,'~',ifelse(is.null(group_var),
                                                        yes = '.',
                                                        no = group_var)), collapse = ' ')),
                       value.var = num_var,
