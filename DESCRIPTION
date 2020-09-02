@@ -9,7 +9,7 @@ Description: Inspired on keras' interface to add layers to a neural network,
     chronicle provides an interface to create an Rmarkdown report by adding 
     modules like plots and tables to a base. 
 Depends: R (>= 3.5.0)
-License: MIT
+License: GPL-3
 Encoding: UTF-8
 Imports: data.table,
     DT, 
