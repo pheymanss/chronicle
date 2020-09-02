@@ -67,6 +67,7 @@ new_report <- function(title = 'New chronicle Report',
 #' library(chronicle)
 #' library(magrittr)
 #' new_report() %>% render_report(filename = 'test_report')
+#' file.remove('test_report.html')
 render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE, render_html = TRUE, render_pdf = FALSE){
 
   # check if additional github packages are installed, and if not ask the user to install them or not render a PDF file
