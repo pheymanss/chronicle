@@ -1,7 +1,7 @@
 Package: chronicle
 Type: Package
 Title: Grammar for creating Rmarkdown reports 
-Version: 0.0.0.9000
+Version: 0.0.1.0
 Authors@R: person("Philippe", "Heymans Smith", email = "pheymanss@gmail.com",
   role = c("aut", "cre"))
 Maintainer: <pheymanss@gmail.com>
