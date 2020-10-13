@@ -8,15 +8,16 @@ Maintainer: <pheymanss@gmail.com>
 Description: Inspired on keras' interface to add layers to a neural network,
     chronicle provides an interface to create an Rmarkdown report by adding 
     modules like plots and tables to a base. 
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.5.0),
+    data.table,
+    magrittr
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
-Imports: data.table,
-    DT, 
+Imports: DT, 
     dygraphs, 
     ggplot2,
+    glue,
     knitr,
-    magrittr,
     plotly,
     prettydoc,
     purrr,
@@ -24,6 +25,7 @@ Imports: data.table,
     readr,
     rmarkdown,
     scales,
+    viridis,
     zoo
 Suggests: devtools
 LazyData: true
