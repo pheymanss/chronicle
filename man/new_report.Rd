@@ -13,8 +13,8 @@ new_report(
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
-  fig_width = NULL,
-  fig_height = NULL
+  fig_width = 12,
+  fig_height = 5
 )
 }
 \arguments{

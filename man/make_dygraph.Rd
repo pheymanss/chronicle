@@ -16,7 +16,7 @@ make_dygraph(
 )
 }
 \arguments{
-\item{dt}{data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.}
+\item{dt}{data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time series inside the same plot.}
 
 \item{num_var}{Name of the column of the data frame containing the numerical variables of the time series.}
 
