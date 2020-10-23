@@ -13,24 +13,24 @@ new_report(
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
-  fig_width = 12,
+  fig_width = 11,
   fig_height = 5
 )
 }
 \arguments{
 \item{title}{Title of the report.}
 
-\item{author}{Author of the repor.}
+\item{author}{Author of the report.}
 
-\item{prettydoc}{Logical indicating whether or not to use prettydoc formatting on the html report.}
+\item{prettydoc}{Whether or not to use prettydoc formatting on the html report. Default is TRUE.}
 
 \item{prettydoc_theme}{Name of the theme used on prettydoc. Default is cayman.}
 
-\item{highlight}{Rmarkdown highlight theming}
+\item{highlight}{Rmarkdown highlight theming. Default is github highlighting.}
 
-\item{number_sections}{Whether or not to numnber the sections and subsections fo the report.}
+\item{number_sections}{Whether or not to number the sections and subsections fo the report.}
 
-\item{table_of_content}{Whether or not to build a table fo content at the begining of the report.}
+\item{table_of_content}{Whether or not to include a table fo content at the beginning of the report.}
 
 \item{table_of_content_depth}{The depth of sections and subsections to be displayed on the table of content.}
 

@@ -33,4 +33,5 @@ Render the report using current environment
 library(chronicle)
 library(magrittr)
 new_report() \%>\% render_report(filename = 'test_report')
+file.remove('test_report.html')
 }
