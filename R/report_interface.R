@@ -1,12 +1,12 @@
 #' Create the initial Rmarkdown header for a report
 #'
 #' @param title Title of the report.
-#' @param author Author of the repor.
-#' @param prettydoc Logical indicating whether or not to use prettydoc formatting on the html report.
+#' @param author Author of the report.
+#' @param prettydoc Whether or not to use prettydoc formatting on the html report. Default is TRUE.
 #' @param prettydoc_theme Name of the theme used on prettydoc. Default is cayman.
-#' @param highlight Rmarkdown highlight theming
-#' @param number_sections Whether or not to numnber the sections and subsections fo the report.
-#' @param table_of_content Whether or not to build a table fo content at the begining of the report.
+#' @param highlight Rmarkdown highlight theming. Default is github highlighting.
+#' @param number_sections Whether or not to number the sections and subsections fo the report.
+#' @param table_of_content Whether or not to include a table fo content at the beginning of the report.
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
