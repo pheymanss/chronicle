@@ -77,9 +77,9 @@ make_boxplot <- function(dt,
                                                    fill = groups)) +
       ggplot2::geom_boxplot() +
       ggplot2::theme(legend.position = 'none',
-                     axis.title.x=element_blank(),
-                     axis.text.x=element_blank(),
-                     axis.ticks.x=element_blank())
+                     axis.title.x = ggplot2::element_blank(),
+                     axis.text.x = ggplot2::element_blank(),
+                     axis.ticks.x = ggplot2::element_blank())
 
   }else{
     boxplot <- ggplot2::ggplot(dt,
@@ -106,9 +106,9 @@ make_boxplot <- function(dt,
     # remove generic group names
     if(groups == 'groups'){
       boxplot <- boxplot + ggplot2::theme(legend.position = 'none',
-                                          axis.title.x=element_blank(),
-                                          axis.text.x=element_blank(),
-                                          axis.ticks.x=element_blank())
+                                          axis.title.x = ggplot2::element_blank(),
+                                          axis.text.x = ggplot2::element_blank(),
+                                          axis.ticks.x = ggplot2::element_blank())
     }
   }
 
@@ -158,7 +158,7 @@ add_boxplot <- function(report = new_report(),
                         x_axis_label = NULL,
                         y_axis_label = NULL,
                         plot_palette = NULL,
-                        plot_palette_generator = 'plasma',
+                        plot_palette_generator = NULL,
                         boxplot_title = NULL,
                         title_level = 2,
                         echo = FALSE,
@@ -178,7 +178,9 @@ add_boxplot <- function(report = new_report(),
     purrr::discard(is.null)
 
   report <- chronicle::add_chunk(report = report,
-                                 dt_expr = deparse(substitute(dt)),
+                                 dt_expr = ifelse(test = is.character(dt),
+                                                  yes = dt,
+                                                  no = deparse(substitute(dt))),
                                  fun = make_boxplot,
                                  params = params,
                                  chunk_title = boxplot_title,
