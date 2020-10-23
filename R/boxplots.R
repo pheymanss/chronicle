@@ -3,6 +3,7 @@
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
+#' @param jitter Whether to add the actual values of each observation over the box plots. Only done when dt has 1000 rows or less
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -16,6 +17,7 @@
 make_boxplot <- function(dt,
                          value,
                          groups = NULL,
+                         jitter = FALSE,
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
                          y_axis_label = NULL,
@@ -41,6 +43,7 @@ make_boxplot <- function(dt,
                     'void' = ggplot2::theme_void,
                     ggplot2::theme_minimal)
 
+
   # map the generator to its corresponding viridis palette
   plot_palette_generator <- switch(plot_palette_generator,
                                    'cividis' = viridis::cividis,
@@ -48,7 +51,7 @@ make_boxplot <- function(dt,
                                    'magma' = viridis::magma,
                                    'plasma' = viridis::plasma,
                                    'viridis' = viridis::viridis,
-                                   viridis::magma)
+                                   viridis::plasma)
 
   #if not provided, use palette from viridis::plasma
   if(is.null(plot_palette)){
@@ -62,28 +65,52 @@ make_boxplot <- function(dt,
                       plot_palette_generator(plot_palette_length - length(plot_palette), begin = 0, end = .8))
   }
 
-  # create box plot
+  # create the plot structure depending of the group
   if(is.null(groups)){
+    # make a dummy group variable
+    groups <- 'groups'
+    dt$groups <- 'A'
 
-  }
-
-  if(is.null(groups)){
     boxplot <- ggplot2::ggplot(dt,
-                    ggplot2::aes_string(y = value),
-                    fill = plot_palette) + ggplot2::geom_boxplot(fill = plot_palette)
+                               ggplot2::aes_string(x = groups,
+                                                   y = value,
+                                                   fill = groups)) +
+      ggplot2::geom_boxplot() +
+      ggplot2::theme(legend.position = 'none',
+                     axis.title.x=element_blank(),
+                     axis.text.x=element_blank(),
+                     axis.ticks.x=element_blank())
+
   }else{
     boxplot <- ggplot2::ggplot(dt,
                                ggplot2::aes_string(x = groups,
                                                    y = value,
                                                    fill = groups)) +
-      ggplot2::scale_fill_manual(values = plot_palette) + ggplot2::geom_boxplot()
+      ggplot2::scale_fill_manual(values = plot_palette) +
+      ggplot2::scale_color_manual(values = plot_palette) +
+      ggplot2::geom_boxplot()
   }
 
+  # add theme and y axis number format
   boxplot <- boxplot +
     ggtheme() +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
                                                                big.mark = ','))
+
+  # only add jitter if under 1000 observations
+  jitter <- as.logical(jitter) & (nrow(dt) <= 1000)
+  if(jitter){
+    boxplot <- boxplot +
+      ggplot2::geom_jitter(width = .2) + ggplot2::theme(legend.position = 'none')
+    # remove generic group names
+    if(groups == 'groups'){
+      boxplot <- boxplot + ggplot2::theme(legend.position = 'none',
+                                          axis.title.x=element_blank(),
+                                          axis.text.x=element_blank(),
+                                          axis.ticks.x=element_blank())
+    }
+  }
 
   # axes
   if(!is.null(x_axis_label)){
@@ -93,7 +120,7 @@ make_boxplot <- function(dt,
     boxplot <- boxplot + ggplot2::ylab(y_axis_label)
   }
 
-  boxplot <- plotly::ggplotly(boxplot)
+  boxplot <- plotly::ggplotly(boxplot,  tooltip = c('y', if(groups != 'groups'){'x'}))
   return(boxplot)
 }
 
@@ -126,7 +153,8 @@ add_boxplot <- function(report = new_report(),
                         dt,
                         value,
                         groups = NULL,
-                        ggtheme = 'minimal',
+                        jitter = TRUE,
+                        ggtheme = NULL,
                         x_axis_label = NULL,
                         y_axis_label = NULL,
                         plot_palette = NULL,
@@ -142,6 +170,7 @@ add_boxplot <- function(report = new_report(),
   params <- list(value = value,
                  groups = groups,
                  ggtheme = ggtheme,
+                 jitter = jitter,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,
                  plot_palette = plot_palette,
