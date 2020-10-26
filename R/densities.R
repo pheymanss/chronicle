@@ -102,7 +102,7 @@ make_density <- function(dt,
   }
 
   # facet by groups
-  if(faceted){
+  if(as.logical(faceted)){
     density <- density + facet_wrap(as.formula(paste(groups, '~ .')))
   }
 

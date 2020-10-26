@@ -106,7 +106,7 @@ make_histogram <- function(dt,
   }
 
   # facet by groups
-  if(faceted){
+  if(as.logical(faceted)){
     histogram <- histogram + facet_wrap(as.formula(paste(groups, '~ .')))
   }
 
