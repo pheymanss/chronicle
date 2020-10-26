@@ -109,6 +109,9 @@ make_title <- function(fun, params){
     # histogram
   }else if(identical(fun, chronicle::make_histogram)){
     plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
+    # line plot
+  }else if(identical(fun, chronicle::make_lineplot)){
+    plot_title <- paste0(params$x, ' vs ', params$y, if(!is.null(params$groups)){paste(' by', params$groups)})
   }else{
     plot_title <-  ''
   }
