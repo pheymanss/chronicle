@@ -9,7 +9,7 @@ add_violin(
   dt,
   value,
   groups = NULL,
-  jitter = TRUE,
+  jitter = NULL,
   ggtheme = NULL,
   x_axis_label = NULL,
   y_axis_label = NULL,

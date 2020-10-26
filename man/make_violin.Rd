@@ -8,7 +8,7 @@ make_violin(
   dt,
   value,
   groups = NULL,
-  jitter = FALSE,
+  jitter = TRUE,
   ggtheme = "minimal",
   x_axis_label = NULL,
   y_axis_label = NULL,
