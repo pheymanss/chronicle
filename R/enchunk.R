@@ -88,7 +88,8 @@ add_chunk <- function(report = NULL,
 #'                                    break_bars_by = 'Region'))
 make_title <- function(fun, params){
   plot_title <- NULL
-  # switch function does not support functions as case, so it has to be done with if elses
+  # switch function does not support closures, so it has to be done with indentical + if elses
+  # barplot
   if(identical(fun, chronicle::make_barplot)){
     plot_title <- paste0(ifelse(test = is.null(params$value),
                                 yes = 'Count',
@@ -96,10 +97,18 @@ make_title <- function(fun, params){
                          ' by ',
                          params$bars,
                          if(!is.null(params$break_bars_by)){paste(' and', params$break_bars_by)})
+    # boxplot
   }else if(identical(fun, chronicle::make_boxplot)){
     plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
+    # dygraph
   }else if(identical(fun, chronicle::make_dygraph)){
     plot_title <- paste0('Evolution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
+    # density
+  }else if(identical(fun, chronicle::make_density)){
+    plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
+    # histogram
+  }else if(identical(fun, chronicle::make_histogram)){
+    plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
   }else{
     plot_title <-  ''
   }
