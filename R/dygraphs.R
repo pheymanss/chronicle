@@ -6,6 +6,7 @@
 #' @param groups Name of the columns containing the different groups.
 #' @param y_axis_label Label for the y axis. x axis is the date (or time) so it is not needed
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.
+#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
 #'
 #' @return a dygraph of the numerical variable specified, optionally split by the values of a groups.
 #' @export
@@ -45,10 +46,8 @@ make_dygraph <- function(dt,
   if(is.null(plot_palette)){
     plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .9)
   }else if(plot_palette_length > length(plot_palette)){
-    warning('Insufficient palette length provided for a bar plot of ',
-            value, ' by ', ifelse(test = is.null(break_bars_by),
-                                  yes = bars,
-                                  no = break_bars_by),
+    warning('Insufficient palette length provided for a dygraph plot of ',
+            value, ' by ', if(!is.null(groups)){paste(' by', groups)},
             '. Adding the missing ', (plot_palette_length - length(plot_palette)),
             ' colors from plot_palette_generator')
     plot_palette <- c(plot_palette,
@@ -98,8 +97,9 @@ make_dygraph <- function(dt,
   return(dy_plot)
 }
 
-#' Add a bar plot to a chronicle report
+#' Add a dygraph to a chronicle report
 #'
+#' @param dt Data to plot
 #' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
 #' @param value Name of the column of the data frame containing the numerical variables of the time series.
 #' @param date Name of the column containing the date variable. It must be already a date or time object.
@@ -107,7 +107,7 @@ make_dygraph <- function(dt,
 #' @param y_axis_label Label for the y axis. x axis is the date (or time) so it is not needed
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
-#' @param barplot_title Title of the bar plot  section on the report. If NULL, chronicle will try to parse a generic title using make_title()
+#' @param dygraph_title Title for the Rmarkdown section containing the dygraph
 #' @param title_level Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)
 #' @param echo Whether to display the source code in the output document. Default is FALSE.
 #' @param message Whether to preserve messages on rendering. Default is FALSE.
@@ -115,7 +115,7 @@ make_dygraph <- function(dt,
 #' @param fig_width Width of the plot (in inches).
 #' @param fig_height Height of the plot (in inches).
 #'
-#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the bar plot.
+#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the dygraph.
 #' @export
 #'
 #' @examples

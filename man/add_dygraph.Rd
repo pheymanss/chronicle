@@ -2,7 +2,7 @@
 % Please edit documentation in R/dygraphs.R
 \name{add_dygraph}
 \alias{add_dygraph}
-\title{Add a bar plot to a chronicle report}
+\title{Add a dygraph to a chronicle report}
 \usage{
 add_dygraph(
   report = new_report(),
@@ -25,6 +25,8 @@ add_dygraph(
 \arguments{
 \item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.}
 
+\item{dt}{Data to plot}
+
 \item{value}{Name of the column of the data frame containing the numerical variables of the time series.}
 
 \item{date}{Name of the column containing the date variable. It must be already a date or time object.}
@@ -37,6 +39,8 @@ add_dygraph(
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 
+\item{dygraph_title}{Title for the Rmarkdown section containing the dygraph}
+
 \item{title_level}{Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)}
 
 \item{echo}{Whether to display the source code in the output document. Default is FALSE.}
@@ -48,12 +52,10 @@ add_dygraph(
 \item{fig_width}{Width of the plot (in inches).}
 
 \item{fig_height}{Height of the plot (in inches).}
-
-\item{barplot_title}{Title of the bar plot  section on the report. If NULL, chronicle will try to parse a generic title using make_title()}
 }
 \value{
-An rmarkdown chunk as a character string, now containing a chunk for adding the bar plot.
+An rmarkdown chunk as a character string, now containing a chunk for adding the dygraph.
 }
 \description{
-Add a bar plot to a chronicle report
+Add a dygraph to a chronicle report
 }

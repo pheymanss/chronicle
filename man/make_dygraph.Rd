@@ -26,6 +26,8 @@ make_dygraph(
 \item{y_axis_label}{Label for the y axis. x axis is the date (or time) so it is not needed}
 
 \item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.}
+
+\item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 }
 \value{
 a dygraph of the numerical variable specified, optionally split by the values of a groups.

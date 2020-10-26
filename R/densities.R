@@ -103,7 +103,7 @@ make_density <- function(dt,
 
   # facet by groups
   if(as.logical(faceted)){
-    density <- density + facet_wrap(as.formula(paste(groups, '~ .')))
+    density <- density + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')))
   }
 
   density <- plotly::ggplotly(density,  tooltip = c('x', if(groups != 'groups'){'fill'}))

@@ -64,7 +64,7 @@ make_lineplot <- function(dt,
     plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .80)
   }else if(plot_palette_length > length(plot_palette)){
     warning('Insufficient palette length provided for a line plot of ',
-            value, if(!is.null(groups)){paste(' by', groups)},
+            x, ',', y, if(!is.null(groups)){paste(' by', groups)},
             '. Adding the missing ', (plot_palette_length - length(plot_palette)),
             ' colors from plot_palette_generator')
     plot_palette <- c(plot_palette,
@@ -121,7 +121,7 @@ make_lineplot <- function(dt,
 
   # facet by groups
   if(as.logical(faceted)){
-    lineplot <- lineplot + ggplot2::facet_wrap(as.formula(paste(groups, '~ .')),
+    lineplot <- lineplot + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')),
                                       scales = scales) +
       ggplot2::theme(legend.position = 'none')
   }

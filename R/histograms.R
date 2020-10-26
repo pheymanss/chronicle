@@ -107,7 +107,7 @@ make_histogram <- function(dt,
 
   # facet by groups
   if(as.logical(faceted)){
-    histogram <- histogram + facet_wrap(as.formula(paste(groups, '~ .')))
+    histogram <- histogram + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')))
   }
 
   histogram <- plotly::ggplotly(histogram,  tooltip = c('x', if(groups != 'groups'){'fill'}))

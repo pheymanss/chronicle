@@ -25,6 +25,7 @@ Imports: DT,
     readr,
     rmarkdown,
     scales,
+    stats,
     viridis,
     zoo
 Suggests: devtools
