@@ -100,6 +100,9 @@ make_title <- function(fun, params){
     # boxplot
   }else if(identical(fun, chronicle::make_boxplot)){
     plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
+    # violin
+  }else if(identical(fun, chronicle::make_violin)){
+    plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
     # dygraph
   }else if(identical(fun, chronicle::make_dygraph)){
     plot_title <- paste0('Evolution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})

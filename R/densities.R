@@ -3,7 +3,7 @@
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
-#' @param faceted If TRUE (defualt), each group will be plotted separatedly.
+#' @param faceted If TRUE (default), each group will be plotted separately.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
@@ -118,7 +118,7 @@ make_density <- function(dt,
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
-#' @param faceted If TRUE (defualt), each group will be plotted separatedly.
+#' @param faceted If TRUE (default), each group will be plotted separately.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.

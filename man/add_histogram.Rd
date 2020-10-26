@@ -10,7 +10,7 @@ add_histogram(
   value,
   groups = NULL,
   faceted = TRUE,
-  bindwidth = NULL,
+  binwidth = NULL,
   bins = NULL,
   ggtheme = NULL,
   x_axis_label = NULL,
@@ -36,6 +36,8 @@ add_histogram(
 
 \item{faceted}{If TRUE (defualt), each group will be plotted separatedly.}
 
+\item{binwidth}{Width of the histogram bins.}
+
 \item{bins}{Number of bins. Overridden by binwidth. Defaults to 30.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
@@ -59,8 +61,6 @@ add_histogram(
 \item{fig_width}{Width of the plot (in inches).}
 
 \item{fig_height}{Height of the plot (in inches).}
-
-\item{binwidth}{Width of the histogram bins.}
 }
 \value{
 An rmarkdown chunk as a character string, now containing a chunk for adding the histogram plot.

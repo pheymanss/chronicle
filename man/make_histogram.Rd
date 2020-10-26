@@ -9,7 +9,7 @@ make_histogram(
   value,
   groups = NULL,
   faceted = TRUE,
-  bindwidth = NULL,
+  binwidth = NULL,
   bins = NULL,
   ggtheme = "minimal",
   x_axis_label = NULL,
@@ -26,6 +26,8 @@ make_histogram(
 
 \item{faceted}{If TRUE (defualt), each group will be plotted separatedly.}
 
+\item{binwidth}{Width of the histogram bins.}
+
 \item{bins}{Number of bins. Overridden by binwidth. Defaults to 30.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
@@ -35,8 +37,6 @@ make_histogram(
 \item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot.}
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
-
-\item{binwidth}{Width of the histogram bins.}
 }
 \value{
 A plotly-ized version of a grouped ggplot histogram plot.

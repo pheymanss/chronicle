@@ -22,7 +22,7 @@ make_density(
 
 \item{groups}{Name of the column containing the different groups.}
 
-\item{faceted}{If TRUE (defualt), each group will be plotted separatedly.}
+\item{faceted}{If TRUE (default), each group will be plotted separately.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
