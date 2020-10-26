@@ -1,15 +1,20 @@
+# toy dataset for dygraphs
+dydat <- data.table::data.table(date = as.Date('2012-08-15') + rpois(n = 10000, lambda = 1000),
+                       metric = rexp(n = 10000, rate = 7),
+                       color = sample(x = c('purple', 'orange', 'green', 'burgundy'), size = 10000, replace = TRUE))
+
 
 
 #' Plot a time series from a data frame through dygraph's interactive html plot interface
 #'
-#' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.
-#' @param num_var Name of the column of the data frame containing the numerical variables of the time series.
-#' @param date_var Name of the column containing the date variable. It must be already a date or time object.
-#' @param group_var Name of the columns containing the different groups.
+#' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time series inside the same plot.
+#' @param value Name of the column of the data frame containing the numerical variables of the time series.
+#' @param date Name of the column containing the date variable. It must be already a date or time object.
+#' @param groups Name of the columns containing the different groups.
 #' @param y_axis_label Label for the y axis. x axis is the date (or time) so it is not needed
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.
 #'
-#' @return a dygraph of the numerical variable specified, optionally split by the values of a group_var.
+#' @return a dygraph of the numerical variable specified, optionally split by the values of a groups.
 #' @export
 #'
 #' @examples
@@ -19,42 +24,68 @@
 #' # mock data
 #' dat <- data.frame(x = rnorm(1000, mean = 100, sd = 15),
 #'                   date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100)))
-#' make_dygraph(dt = dat, num_var = 'x', date_var = 'date')
+#' make_dygraph(dt = dat, value = 'x', date = 'date')
 #'
 make_dygraph <- function(dt,
-                         num_var,
-                         date_var,
-                         group_var = NULL,
+                         value ,
+                         date,
+                         groups = NULL,
                          y_axis_label = NULL,
-                         plot_palette = c("#58508d", "#ffa600", "#ff6361", "#003f5c", "#bc5090", "#A6CEE3",
-                                          "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F",
-                                          "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99")){
-  # create ths custom dygraph structure needed for plotting: fisrt column should be the time,
-  # all columns after that should be numerical variables.
+                         plot_palette = NULL,
+                         plot_palette_generator = 'plasma'){
 
-  # if(!is.numeric(dt[[num_var]])){
-  #   stop(paste0('dt$', num_var, 'must be a numeric column.'))
-  # }
+  # check how many colors are needed for plotting
+  plot_palette_length <- ifelse(test = is.null(groups),
+                                yes = 1,
+                                no = data.table::uniqueN(dt[[groups]]))
 
-  if(any(grepl(x = class(dt[[num_var]]), pattern = 'POSIXct|Date|timeDate|yearmon|yearqtr'))){
-    stop(paste0('dt$', date_var, 'must be a class supported by xts::xts. As of version 0.10-2, supported classes include: "Date", "POSIXct", "timeDat", as well as "yearmon" and "yearqtr"'))
+  # map the generator to its corresponding viridis palette
+  plot_palette_generator <- switch(plot_palette_generator,
+                                   'cividis' = viridis::cividis,
+                                   'inferno' = viridis::inferno,
+                                   'magma' = viridis::magma,
+                                   'plasma' = viridis::plasma,
+                                   'viridis' = viridis::viridis,
+                                   viridis::magma)
+
+  #if not provided, use palette from viridis::plasma
+  if(is.null(plot_palette)){
+    plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .9)
+  }else if(plot_palette_length > length(plot_palette)){
+    warning('Insufficient palette length provided for a bar plot of ',
+            value, ' by ', ifelse(test = is.null(break_bars_by),
+                                  yes = bars,
+                                  no = break_bars_by),
+            '. Adding the missing ', (plot_palette_length - length(plot_palette)),
+            ' colors from plot_palette_generator')
+    plot_palette <- c(plot_palette,
+                      plot_palette_generator(plot_palette_length - length(plot_palette), begin = 0, end = .8))
   }
 
-  dy_cols <- c(date_var, num_var, group_var)
-  dy_data <- data.table::as.data.table(dt) %>%
-    purrr::keep(colnames(.) %in% dy_cols) %>%
-  # aggregate values by date_var
+
+  # create the custom dygraph structure needed for plotting: first column should be the time,
+  # all columns after that should be numerical variables.
+
+  # check data_var is actually of class Date
+  if(any(grepl(x = class(dt[[value]]), pattern = 'POSIXct|Date|timeDate|yearmon|yearqtr'))){
+    stop(paste0('dt$', date, 'must be a class supported by xts::xts. As of version 0.10-2, supported classes include: "Date", "POSIXct", "timeDat", as well as "yearmon" and "yearqtr"'))
+  }
+
+  dy_cols <- c(date, value, groups)
+  dy_data <- data.table::as.data.table(dt)
+  dy_data <- purrr::keep(dy_data, colnames(dy_data) %in% dy_cols) %>%
+  # aggregate values by date
     data.table::dcast(
-      formula = stats::as.formula(paste(c(date_var,'~',ifelse(is.null(group_var),
+      formula = stats::as.formula(paste(c(date,'~',ifelse(is.null(groups),
                                                        yes = '.',
-                                                       no = group_var)), collapse = ' ')),
-                      value.var = num_var,
+                                                       no = groups)), collapse = ' ')),
+                      value.var = value,
                       fun.aggregate	= sum) %>%
     zoo::na.locf()
 
   # labeling
   y_axis_label <- ifelse(test = is.null(y_axis_label),
-                         yes = num_var,
+                         yes = value,
                          no = y_axis_label)
 
   dy_plot <- dygraphs::dygraph(dy_data) %>%
@@ -74,54 +105,64 @@ make_dygraph <- function(dt,
   return(dy_plot)
 }
 
-
-#' Add a dygraph to a chronicle report
+#' Add a bar plot to a chronicle report
 #'
-#' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
-#' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.
-#' @param num_var Name of the column of the data frame containing the numerical variables of the time series. If there are several values for the same value of date_var, the function automatically sums all the values to report a single point by time value of the series.
-#' @param date_var Name of the column containing the date variable. It must be already a date or time object.
-#' @param group_var Name of the columns containing the different groups.
-#' @param dygraph_title Title of the dygraph.
+#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param value Name of the column of the data frame containing the numerical variables of the time series.
+#' @param date Name of the column containing the date variable. It must be already a date or time object.
+#' @param groups Name of the columns containing the different groups.
+#' @param y_axis_label Label for the y axis. x axis is the date (or time) so it is not needed
+#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
+#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
+#' @param barplot_title Title of the bar plot  section on the report. If NULL, chronicle will try to parse a generic title using make_title()
 #' @param title_level Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)
-#' @param y_axis_label Label for the y axis. x axis is the date (or time) so it is not needed.
-#' @param plot_palette Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.
+#' @param echo Whether to display the source code in the output document. Default is FALSE.
+#' @param message Whether to preserve messages on rendering. Default is FALSE.
+#' @param warning Whether to preserve warnings on rendering. Default is FALSE.
+#' @param fig_width Width of the plot (in inches).
+#' @param fig_height Height of the plot (in inches).
 #'
-#' @return The text of the Rmarkdown report plus an additional section with the dygraph.
+#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the bar plot.
 #' @export
 #'
 #' @examples
 add_dygraph <- function(report = new_report(),
                         dt,
-                        num_var,
-                        date_var,
-                        group_var = NULL,
+                        value ,
+                        date,
+                        groups = NULL,
+                        y_axis_label = NULL,
+                        plot_palette = NULL,
+                        plot_palette_generator = NULL,
                         dygraph_title = NULL,
                         title_level = 2,
-                        y_axis_label = NULL,
-                        plot_palette = c("#58508d", "#ffa600", "#ff6361", "#003f5c", "#bc5090", "#A6CEE3",
-                                         "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F",
-                                         "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99")){
-  dygraph_title <- ifelse(test = is.null(dygraph_title),
-                          yes = paste0(num_var, if(!is.null(group_var)){paste(', by', group_var)}),
-                          no = dygraph_title)
+                        echo = FALSE,
+                        message = FALSE,
+                        warning = FALSE,
+                        fig_width = NULL,
+                        fig_height = NULL){
 
-  report <- paste(report, # report object (Rmarkdown file text)
-                  paste(paste(rep('#', title_level), collapse = ''), dygraph_title),
-                  paste('```{r, echo = FALSE, message = FALSE, warning = FALSE}', # r chunk header
-                    # make_dygraph
-                    paste(c(paste0('chronicle::make_dygraph(dt = ', deparse(substitute(dt)), ','),
-                            paste0('                        num_var = "', num_var, '",'),
-                            paste0('                        date_var = "', date_var, '",'),
-                            if (!is.null(group_var)) {paste0('                        group_var = "', group_var, '",')},
-                            if (!is.null(y_axis_label)) {paste0('                        y_axis_label = "', y_axis_label, '",')},
-                            paste0('                        plot_palette = c(', paste(paste0('"', plot_palette, '"'), collapse = ', '), '))')),
-                          collapse = '\n'),
-                    #finish
-                    '```', sep = '\n'),
-                  sep = '\n\n')
+  params <- list(value = value,
+                 date = date,
+                 groups = groups,
+                 y_axis_label = y_axis_label,
+                 plot_palette = plot_palette,
+                 plot_palette_generator = plot_palette_generator) %>%
+    purrr::discard(is.null)
+
+  report <- chronicle::add_chunk(report = report,
+                                 dt_expr = ifelse(test = is.character(dt),
+                                                  yes = dt,
+                                                  no = deparse(substitute(dt))),
+                                 fun = make_dygraph,
+                                 params = params,
+                                 chunk_title = dygraph_title,
+                                 title_level = title_level,
+                                 echo = echo,
+                                 message = message,
+                                 warning = warning,
+                                 fig_width = fig_width,
+                                 fig_height = fig_height)
   return(report)
 }
-
-
 

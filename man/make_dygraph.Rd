@@ -6,30 +6,29 @@
 \usage{
 make_dygraph(
   dt,
-  num_var,
-  date_var,
-  group_var = NULL,
+  value,
+  date,
+  groups = NULL,
   y_axis_label = NULL,
-  plot_palette = c("#58508d", "#ffa600", "#ff6361", "#003f5c", "#bc5090", "#A6CEE3",
-    "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00",
-    "#CAB2D6", "#6A3D9A", "#FFFF99")
+  plot_palette = NULL,
+  plot_palette_generator = "plasma"
 )
 }
 \arguments{
 \item{dt}{data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time series inside the same plot.}
 
-\item{num_var}{Name of the column of the data frame containing the numerical variables of the time series.}
+\item{value}{Name of the column of the data frame containing the numerical variables of the time series.}
 
-\item{date_var}{Name of the column containing the date variable. It must be already a date or time object.}
+\item{date}{Name of the column containing the date variable. It must be already a date or time object.}
 
-\item{group_var}{Name of the columns containing the different groups.}
+\item{groups}{Name of the columns containing the different groups.}
 
 \item{y_axis_label}{Label for the y axis. x axis is the date (or time) so it is not needed}
 
 \item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.}
 }
 \value{
-a dygraph of the numerical variable specified, optionally split by the values of a group_var.
+a dygraph of the numerical variable specified, optionally split by the values of a groups.
 }
 \description{
 Plot a time series from a data frame through dygraph's interactive html plot interface
@@ -41,6 +40,6 @@ library(magrittr)
 # mock data
 dat <- data.frame(x = rnorm(1000, mean = 100, sd = 15),
                   date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100)))
-make_dygraph(dt = dat, num_var = 'x', date_var = 'date')
+make_dygraph(dt = dat, value = 'x', date = 'date')
 
 }

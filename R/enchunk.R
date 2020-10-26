@@ -15,11 +15,11 @@
 #' @return An rmarkdown chunk as a character string.
 #' @export
 #' @examples
-#' cat(
-#'   add_chunk(fun = make_barplot,
-#'             dt = iris,
-#'             value = 'Sepal.Width',
-#'             bars = 'Species'))
+# cat(
+#   add_chunk(fun = make_barplot,
+#             dt = iris,
+#             params = list(value = 'Sepal.Width',
+#                           bars = 'Species')))
 add_chunk <- function(report = NULL,
                       dt_expr = NULL,
                       fun,
@@ -82,7 +82,10 @@ add_chunk <- function(report = NULL,
 #'
 #' @return A generic title for the plot
 #' @export
-#' @examples make_title(fun = make_barplot, params = list(value = 'Amount', bars = 'Country', break_bars_by = 'Region'))
+#' @examples make_title(fun = make_barplot,
+#'                      params = list(value = 'Amount',
+#'                                    bars = 'Country',
+#'                                    break_bars_by = 'Region'))
 make_title <- function(fun, params){
   plot_title <- NULL
   # switch function does not support functions as case, so it has to be done with if elses
@@ -96,7 +99,7 @@ make_title <- function(fun, params){
   }else if(identical(fun, chronicle::make_boxplot)){
     plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
   }else if(identical(fun, chronicle::make_dygraph)){
-    plot_title <- paste0('Evolution of ', params$value, if(!is.null(params$group_var)){paste(' by', params$group_var)})
+    plot_title <- paste0('Evolution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
   }else{
     plot_title <-  ''
   }
@@ -104,11 +107,11 @@ make_title <- function(fun, params){
 }
 
 
-process_groups <- function(dt, groups = NULL){
-  if(is.null(groups)){
-    dt[, chronicle_group_column := 'data']
-  }
-  tidyr::unite(data = dt, chronicle_group_column, groups, sep = ' ')
-}
+# process_groups <- function(dt, groups = NULL){
+#   if(is.null(groups)){
+#     dt[, chronicle_group_column := 'data']
+#   }
+#   tidyr::unite(data = dt, chronicle_group_column, groups, sep = ' ')
+# }
 
 
