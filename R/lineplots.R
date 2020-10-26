@@ -6,6 +6,7 @@
 #' @param groups Name of the column containing the different groups.
 #' @param faceted If TRUE (default), each group will be plotted separately.
 #' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
+#' @param smooth_trend If TRUE, adds a ggplot2::geom_smooth() line to the plot.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -22,6 +23,7 @@ make_lineplot <- function(dt,
                          groups = NULL,
                          faceted = TRUE,
                          scales = 'fixed',
+                         smooth_trend = FALSE,
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
                          y_axis_label = NULL,
@@ -118,10 +120,15 @@ make_lineplot <- function(dt,
   }
 
   # facet by groups
-  if(faceted){
+  if(as.logical(faceted)){
     lineplot <- lineplot + ggplot2::facet_wrap(as.formula(paste(groups, '~ .')),
                                       scales = scales) +
       ggplot2::theme(legend.position = 'none')
+  }
+
+  # smooth trend line
+  if(as.logical(smooth_trend)){
+    lineplot <- lineplot +ggplot2::geom_smooth()
   }
 
   lineplot <- plotly::ggplotly(lineplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
@@ -138,6 +145,7 @@ make_lineplot <- function(dt,
 #' @param groups Name of the column containing the different groups.
 #' @param faceted If TRUE (default), each group will be plotted separately.
 #' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
+#' @param smooth_trend If TRUE, adds a ggplot2::geom_smooth() line to the plot. Default is FALSE.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -162,6 +170,7 @@ add_lineplot <- function(report = new_report(),
                         groups = NULL,
                         faceted = NULL,
                         scales = NULL,
+                        smooth_trend = NULL,
                         ggtheme = NULL,
                         x_axis_label = NULL,
                         y_axis_label = NULL,
@@ -180,6 +189,7 @@ add_lineplot <- function(report = new_report(),
                  groups = groups,
                  faceted = faceted,
                  scales = scales,
+                 smooth_trend = smooth_trend,
                  ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,

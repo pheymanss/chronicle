@@ -11,6 +11,7 @@ make_lineplot(
   groups = NULL,
   faceted = TRUE,
   scales = "fixed",
+  smooth_trend = FALSE,
   ggtheme = "minimal",
   x_axis_label = NULL,
   y_axis_label = NULL,
@@ -30,6 +31,8 @@ make_lineplot(
 \item{faceted}{If TRUE (default), each group will be plotted separately.}
 
 \item{scales}{From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.}
+
+\item{smooth_trend}{If TRUE, adds a ggplot2::geom_smooth() line to the plot.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
