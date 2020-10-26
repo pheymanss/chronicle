@@ -63,5 +63,7 @@ An HTML file with a plot for each column on the given table: a boxplot for each 
 HTML interactive report detailing each column on a table
 }
 \examples{
-chronicle::report_columns(dt = iris, by_column = 'Species', keep_rmd = T)
+chronicle::report_columns(dt = iris,
+                                    by_column = 'Species',
+                                    keep_rmd = TRUE)
 }

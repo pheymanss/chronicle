@@ -47,10 +47,3 @@ An rmarkdown chunk as a character string.
 \description{
 Transforms a function call into an Rmarkdown chunk
 }
-\examples{
-cat(
-  add_chunk(fun = make_barplot,
-            dt = iris,
-            value = 'Sepal.Width',
-            bars = 'Species'))
-}

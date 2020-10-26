@@ -18,5 +18,5 @@ A list of plotly::ggplotly objects, one for each column of the table.
 Make boxplots for each numerical variable on a table, and barplots for each categorical variable.
 }
 \examples{
-chronicle::report_columns(dt = iris, by_column = 'Species')
+chronicle::plot_columns(dt = iris, by_column = 'Species')
 }

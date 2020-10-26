@@ -1,10 +1,3 @@
-# toy dataset for dygraphs
-dydat <- data.table::data.table(date = as.Date('2012-08-15') + rpois(n = 10000, lambda = 1000),
-                       metric = rexp(n = 10000, rate = 7),
-                       color = sample(x = c('purple', 'orange', 'green', 'burgundy'), size = 10000, replace = TRUE))
-
-
-
 #' Plot a time series from a data frame through dygraph's interactive html plot interface
 #'
 #' @param dt data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time series inside the same plot.

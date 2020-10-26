@@ -2,44 +2,58 @@
 % Please edit documentation in R/dygraphs.R
 \name{add_dygraph}
 \alias{add_dygraph}
-\title{Add a dygraph to a chronicle report}
+\title{Add a bar plot to a chronicle report}
 \usage{
 add_dygraph(
   report = new_report(),
   dt,
-  num_var,
-  date_var,
-  group_var = NULL,
+  value,
+  date,
+  groups = NULL,
+  y_axis_label = NULL,
+  plot_palette = NULL,
+  plot_palette_generator = NULL,
   dygraph_title = NULL,
   title_level = 2,
-  y_axis_label = NULL,
-  plot_palette = c("#58508d", "#ffa600", "#ff6361", "#003f5c", "#bc5090", "#A6CEE3",
-    "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00",
-    "#CAB2D6", "#6A3D9A", "#FFFF99")
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig_width = NULL,
+  fig_height = NULL
 )
 }
 \arguments{
-\item{report}{character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()}
+\item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.}
 
-\item{dt}{data.frame containing the data to plot. It must have a numerical variable, a date variable, and optionally a grouping variable to split the data and plot them as individual time sieries inside the same plot.}
+\item{value}{Name of the column of the data frame containing the numerical variables of the time series.}
 
-\item{num_var}{Name of the column of the data frame containing the numerical variables of the time series. If there are several values for the same value of date_var, the function automatically sums all the values to report a single point by time value of the series.}
+\item{date}{Name of the column containing the date variable. It must be already a date or time object.}
 
-\item{date_var}{Name of the column containing the date variable. It must be already a date or time object.}
+\item{groups}{Name of the columns containing the different groups.}
 
-\item{group_var}{Name of the columns containing the different groups.}
+\item{y_axis_label}{Label for the y axis. x axis is the date (or time) so it is not needed}
 
-\item{dygraph_title}{Title of the dygraph.}
+\item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot.}
+
+\item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 
 \item{title_level}{Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)}
 
-\item{y_axis_label}{Label for the y axis. x axis is the date (or time) so it is not needed.}
+\item{echo}{Whether to display the source code in the output document. Default is FALSE.}
 
-\item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.}
+\item{message}{Whether to preserve messages on rendering. Default is FALSE.}
+
+\item{warning}{Whether to preserve warnings on rendering. Default is FALSE.}
+
+\item{fig_width}{Width of the plot (in inches).}
+
+\item{fig_height}{Height of the plot (in inches).}
+
+\item{barplot_title}{Title of the bar plot  section on the report. If NULL, chronicle will try to parse a generic title using make_title()}
 }
 \value{
-The text of the Rmarkdown report plus an additional section with the dygraph.
+An rmarkdown chunk as a character string, now containing a chunk for adding the bar plot.
 }
 \description{
-Add a dygraph to a chronicle report
+Add a bar plot to a chronicle report
 }

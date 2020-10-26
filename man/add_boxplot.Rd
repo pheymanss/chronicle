@@ -33,6 +33,8 @@ add_boxplot(
 
 \item{groups}{Name of the column containing the different groups.}
 
+\item{jitter}{Whether to add the actual values of each observation over the box plots. Only done when dt has 1000 rows or less.}
+
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
 \item{x_axis_label}{Label for the x axis.}

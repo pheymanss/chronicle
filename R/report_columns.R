@@ -9,10 +9,11 @@
 #' @export
 #'
 #' @examples
-#' chronicle::report_columns(dt = iris, by_column = 'Species')
+#' chronicle::plot_columns(dt = iris, by_column = 'Species')
 plot_columns <- function(dt, by_column = NULL){
   # numeric values
-  nums <- dt %>% purrr::keep(is.numeric) %>% colnames() %>% purrr::set_names(.)
+  nums <- dt %>% purrr::keep(is.numeric) %>% colnames()
+  nums %<>% purrr::set_names(nums)
   if(length(nums) > 0){
     num_plots <- nums %>% purrr::map(~make_boxplot(dt = dt,
                                                    value = .x,
@@ -21,7 +22,8 @@ plot_columns <- function(dt, by_column = NULL){
   }
 
   # categorical values
-  cats <- dt %>% purrr::discard(is.numeric) %>% colnames() %>% purrr::set_names(.)
+  cats <- dt %>% purrr::discard(is.numeric) %>% colnames()
+  cats %<>% purrr::set_names(cats)
   if(length(cats) > 0){
     cat_plots <- cats %>% purrr::map(~make_barplot(dt = dt,
                                                    bars = .x,
@@ -53,7 +55,9 @@ plot_columns <- function(dt, by_column = NULL){
 #' @return An HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
 #' @export
 #'
-#' @examples chronicle::report_columns(dt = iris, by_column = 'Species', keep_rmd = T)
+#' @examples chronicle::report_columns(dt = iris,
+#'                                     by_column = 'Species',
+#'                                     keep_rmd = TRUE)
 report_columns <- function(dt,
                             by_column = NULL,
                             filename = NULL,
@@ -94,7 +98,8 @@ report_columns <- function(dt,
                                                table_of_content_depth = table_of_content_depth)
 
   # add sections for all numeric values
-  nums <- dt %>% purrr::keep(is.numeric) %>% colnames() %>% purrr::set_names(.)
+  nums <- dt %>% purrr::keep(is.numeric) %>% colnames()
+  nums %<>% purrr::set_names(nums)
   if(length(nums) > 0){
     num_plots <- nums %>% purrr::map(~add_boxplot(report = '',
                                                   dt = dt_name,
@@ -105,7 +110,8 @@ report_columns <- function(dt,
   }
 
   # add sections for all categorical values
-  cats <- dt %>% purrr::discard(is.numeric) %>% colnames() %>% purrr::set_names(.)
+  cats <- dt %>% purrr::discard(is.numeric) %>% colnames()
+  cats %<>% purrr::set_names(cats)
   if(length(cats) > 0){
     cat_plots <- cats %>% purrr::map(~add_barplot(report = '',
                                                   dt = dt_name,
