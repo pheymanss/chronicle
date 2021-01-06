@@ -41,3 +41,7 @@ A plotly-ized version of a grouped ggplot bar plot.
 \description{
 Create a bar plot from a data frame through ggplotly
 }
+\examples{
+make_barplot(dt = ggplot2::mpg, value = 'cty', bars = 'manufacturer', break_bars_by = 'model')
+
+}

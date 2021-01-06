@@ -9,9 +9,9 @@ add_histogram(
   dt,
   value,
   groups = NULL,
-  faceted = TRUE,
   binwidth = NULL,
   bins = NULL,
+  scales = "fixed",
   ggtheme = NULL,
   x_axis_label = NULL,
   plot_palette = NULL,
@@ -34,11 +34,11 @@ add_histogram(
 
 \item{groups}{Name of the column containing the different groups.}
 
-\item{faceted}{If TRUE (defualt), each group will be plotted separatedly.}
-
 \item{binwidth}{Width of the histogram bins.}
 
 \item{bins}{Number of bins. Overridden by binwidth. Defaults to 30.}
+
+\item{scales}{From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 

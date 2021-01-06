@@ -1,3 +1,4 @@
+importFrom(rlang, .data)
 import(magrittr)
 import(data.table)
 export(add_barplot)

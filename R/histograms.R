@@ -3,9 +3,9 @@
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
-#' @param faceted If TRUE (defualt), each group will be plotted separatedly.
 #' @param binwidth Width of the histogram bins.
 #' @param bins Number of bins. Overridden by binwidth. Defaults to 30.
+#' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
@@ -14,13 +14,15 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot histogram plot.
 #'
-#' @examples
+#' @examples make_histogram(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer')
+#'
+#' @importFrom rlang .data
 make_histogram <- function(dt,
                          value,
                          groups = NULL,
-                         faceted = TRUE,
                          binwidth = NULL,
                          bins = NULL,
+                         scales = 'fixed',
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
                          plot_palette = NULL,
@@ -72,49 +74,40 @@ make_histogram <- function(dt,
     # make a dummy group variable
     groups <- 'groups'
     dt$groups <- 'A'
+  }
+  histogram <- ggplot2::ggplot(dt,
+                             ggplot2::aes(x = .data[[value]],
+                                          fill = .data[[groups]],
+                                          color = .data[[groups]])) +
+    ggtheme() +
+    ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
+                                                               decimal.mark = '.',
+                                                               big.mark = ',')) +
+    ggplot2::geom_histogram(alpha = 0.7) +
+    ggplot2::scale_fill_manual(values = plot_palette) +
+    ggplot2::scale_color_manual(values = plot_palette)
 
-    histogram <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = value,
-                                                   fill = groups,
-                                                   color = groups)) +
-      ggplot2::geom_histogram(alpha = 0.7, bins = bins) +
+  if(is.null(groups)){
+    # remove all references to the dummy group variable from the plot
+    histogram <- histogram +
       ggplot2::theme(legend.position = 'none',
                      axis.title.x = ggplot2::element_blank(),
                      axis.text.x = ggplot2::element_blank(),
                      axis.ticks.x = ggplot2::element_blank())
-
-  }else{
-    histogram <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = value,
-                                                   fill = groups,
-                                                   color = groups)) +
-      ggplot2::scale_fill_manual(values = plot_palette) +
-      ggplot2::scale_color_manual(values = plot_palette) +
-      ggplot2::geom_histogram(alpha = 0.7, bins = bins)
   }
-
-  # add theme and y axis number format
-  histogram <- histogram +
-    ggtheme() +
-    ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
-                                                               decimal.mark = '.',
-                                                               big.mark = ','))
 
   # axes
   if(!is.null(x_axis_label)){
     histogram <- histogram + ggplot2::xlab(x_axis_label)
   }
 
-  # facet by groups
-  if(as.logical(faceted)){
-    histogram <- histogram + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')))
-  }
+  # facet by groups (to avoid stacking)
+  histogram <- histogram + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')),
+                                               scales = scales)
 
-  histogram <- plotly::ggplotly(histogram,  tooltip = c('x', if(groups != 'groups'){'fill'}))
+  histogram <- plotly::ggplotly(histogram,  tooltip = c('x', 'y', if(groups != 'groups'){'fill'}))
   return(histogram)
 }
-
-
 
 #' Add a histogram plot to a chronicle report
 #'
@@ -122,9 +115,9 @@ make_histogram <- function(dt,
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
-#' @param faceted If TRUE (defualt), each group will be plotted separatedly.
 #' @param binwidth Width of the histogram bins.
 #' @param bins Number of bins. Overridden by binwidth. Defaults to 30.
+#' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
@@ -145,9 +138,9 @@ add_histogram <- function(report = new_report(),
                         dt,
                         value,
                         groups = NULL,
-                        faceted = TRUE,
                         binwidth = NULL,
                         bins = NULL,
+                        scales = 'fixed',
                         ggtheme = NULL,
                         x_axis_label = NULL,
                         plot_palette = NULL,
@@ -162,9 +155,9 @@ add_histogram <- function(report = new_report(),
 
   params <- list(value = value,
                  groups = groups,
-                 faceted = faceted,
                  binwidth = binwidth,
                  bins = bins,
+                 scales = scales,
                  ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  plot_palette = plot_palette,
