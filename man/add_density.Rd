@@ -10,6 +10,7 @@ add_density(
   value,
   groups = NULL,
   faceted = TRUE,
+  scales = "fixed",
   ggtheme = NULL,
   x_axis_label = NULL,
   plot_palette = NULL,
@@ -33,6 +34,8 @@ add_density(
 \item{groups}{Name of the column containing the different groups.}
 
 \item{faceted}{If TRUE (default), each group will be plotted separately.}
+
+\item{scales}{From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 

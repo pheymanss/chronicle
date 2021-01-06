@@ -41,3 +41,7 @@ A plotly-ized version of a grouped ggplot violin plot.
 \description{
 Create a violin plot from a data frame through ggplotly
 }
+\examples{
+make_violin(dt = ggplot2::mpg, value = 'hwy', groups = 'drv')
+
+}

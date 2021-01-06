@@ -16,7 +16,20 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot line plot.
 #'
-#' @examples
+#' @examples make_lineplot(dt = ggplot2::mpg,
+#'  x = 'hwy',
+#'  y = 'cty',
+#'  groups = 'manufacturer',
+#'  faceted = FALSE)
+#'
+#' make_lineplot(dt = ggplot2::mpg,
+#'  x = 'hwy',
+#'  y = 'cty',
+#'  groups = 'manufacturer',
+#'  faceted = TRUE,
+#'  scales = 'free')
+#'
+#' @importFrom rlang .data
 make_lineplot <- function(dt,
                           x,
                           y,
@@ -76,33 +89,22 @@ make_lineplot <- function(dt,
     # make a dummy group variable
     groups <- 'groups'
     dt$groups <- 'A'
-
-    lineplot <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = x,
-                                                   y = y,
-                                                   color = groups)) +
-      ggplot2::geom_line() +
-      ggplot2::theme(legend.position = 'none',
-                     axis.title.x = ggplot2::element_blank(),
-                     axis.text.x = ggplot2::element_blank(),
-                     axis.ticks.x = ggplot2::element_blank())
-
-  }else{
-    lineplot <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = x,
-                                                   y = y,
-                                                   color = groups)) +
-      ggplot2::scale_color_manual(values = plot_palette) +
-      ggplot2::geom_line()
   }
-
-  # add theme and y axis number format
-  lineplot <- lineplot +
+  lineplot <- ggplot2::ggplot(dt,
+                              ggplot2::aes(x = .data[[x]],
+                                           y = .data[[y]],
+                                           color = .data[[groups]])) +
+    ggplot2::geom_line() +
     ggplot2::geom_point() +
     ggtheme() +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
-                                                               big.mark = ','))
+                                                               big.mark = ',')) +
+    ggplot2::scale_color_manual(values = plot_palette)
+
+  if(is.null(groups)){
+    lineplot <- lineplot + ggplot2::theme(legend.position = 'none')
+  }
 
   if(is.numeric(dt[[x]])){
     lineplot <- lineplot +
@@ -134,7 +136,6 @@ make_lineplot <- function(dt,
   lineplot <- plotly::ggplotly(lineplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
   return(lineplot)
 }
-
 
 #' Add a line plot to a chronicle report
 #'

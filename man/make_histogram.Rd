@@ -8,9 +8,9 @@ make_histogram(
   dt,
   value,
   groups = NULL,
-  faceted = TRUE,
   binwidth = NULL,
   bins = NULL,
+  scales = "fixed",
   ggtheme = "minimal",
   x_axis_label = NULL,
   plot_palette = NULL,
@@ -24,11 +24,11 @@ make_histogram(
 
 \item{groups}{Name of the column containing the different groups.}
 
-\item{faceted}{If TRUE (defualt), each group will be plotted separatedly.}
-
 \item{binwidth}{Width of the histogram bins.}
 
 \item{bins}{Number of bins. Overridden by binwidth. Defaults to 30.}
+
+\item{scales}{From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
@@ -43,4 +43,8 @@ A plotly-ized version of a grouped ggplot histogram plot.
 }
 \description{
 Create a histogram plot from a data frame through ggplotly
+}
+\examples{
+make_histogram(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer')
+
 }

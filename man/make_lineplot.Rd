@@ -50,3 +50,18 @@ A plotly-ized version of a grouped ggplot line plot.
 \description{
 Create a line plot from a data frame through ggplotly
 }
+\examples{
+make_lineplot(dt = ggplot2::mpg,
+ x = 'hwy',
+ y = 'cty',
+ groups = 'manufacturer',
+ faceted = FALSE)
+
+make_lineplot(dt = ggplot2::mpg,
+ x = 'hwy',
+ y = 'cty',
+ groups = 'manufacturer',
+ faceted = TRUE,
+ scales = 'free')
+
+}

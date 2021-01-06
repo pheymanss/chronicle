@@ -13,7 +13,9 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot bar plot.
 #'
-#' @examples
+#' @examples make_barplot(dt = ggplot2::mpg, value = 'cty', bars = 'manufacturer', break_bars_by = 'model')
+#'
+#' @importFrom rlang .data
 make_barplot <- function(dt,
                          bars,
                          value = NULL,
@@ -82,11 +84,11 @@ make_barplot <- function(dt,
 
   # create bar plot
   barplot <- ggplot2::ggplot(plot_dt,
-                             ggplot2::aes_string(x = bars,
-                                                 y = value,
-                                                 fill = ifelse(test = is.null(break_bars_by),
+                             ggplot2::aes(x = .data[[bars]],
+                                          y = .data[[value]],
+                                          fill = .data[[ifelse(test = is.null(break_bars_by),
                                                                yes = bars,
-                                                               no = break_bars_by))) +
+                                                               no = break_bars_by)]])) +
     ggplot2::geom_bar(stat = 'identity') +
     ggtheme() +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,

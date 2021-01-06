@@ -13,7 +13,9 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot violin plot.
 #'
-#' @examples
+#' @examples make_violin(dt = ggplot2::mpg, value = 'hwy', groups = 'drv')
+#'
+#' @importFrom rlang .data
 make_violin <- function(dt,
                          value,
                          groups = NULL,
@@ -66,37 +68,32 @@ make_violin <- function(dt,
   }
 
   # create the plot structure depending of the group
+  hide_groups <- FALSE
   if(is.null(groups)){
     # make a dummy group variable
+    hide_groups <- TRUE
     groups <- 'groups'
     dt$groups <- 'A'
-
-    violin <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = groups,
-                                                   y = value,
-                                                   fill = groups)) +
-      ggplot2::geom_violin() +
-      ggplot2::theme(legend.position = 'none',
-                     axis.title.x = ggplot2::element_blank(),
-                     axis.text.x = ggplot2::element_blank(),
-                     axis.ticks.x = ggplot2::element_blank())
-
-  }else{
-    violin <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = groups,
-                                                   y = value,
-                                                   fill = groups)) +
-      ggplot2::scale_fill_manual(values = plot_palette) +
-      ggplot2::scale_color_manual(values = plot_palette) +
-      ggplot2::geom_violin()
   }
-
-  # add theme and y axis number format
-  violin <- violin +
+  violin <- ggplot2::ggplot(dt,
+                             ggplot2::aes(x = .data[[groups]],
+                                          y = .data[[value]],
+                                          fill = .data[[groups]])) +
+    ggplot2::scale_fill_manual(values = plot_palette) +
+    ggplot2::scale_color_manual(values = plot_palette) +
+    ggplot2::geom_violin() +
     ggtheme() +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
-                                                               big.mark = ','))
+                                                               big.mark = ',')) +
+    ggplot2::theme(legend.position = 'none')
+
+  if(hide_groups){
+    violin <- violin +
+      ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+                     axis.text.x = ggplot2::element_blank(),
+                     axis.ticks.x = ggplot2::element_blank())
+  }
 
   # only add jitter if under 1000 observations
   jitter <- as.logical(jitter) & (nrow(dt) <= 1000)

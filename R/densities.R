@@ -4,6 +4,7 @@
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
 #' @param faceted If TRUE (default), each group will be plotted separately.
+#' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
@@ -12,11 +13,15 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot density plot.
 #'
-#' @examples
+#' @examples make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', faceted = FALSE)
+#' make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', scales = 'free')
+#'
+#' @importFrom rlang .data
 make_density <- function(dt,
                          value,
                          groups = NULL,
                          faceted = TRUE,
+                         scales = 'fixed',
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
                          plot_palette = NULL,
@@ -63,38 +68,33 @@ make_density <- function(dt,
                       plot_palette_generator(plot_palette_length - length(plot_palette), begin = 0, end = .8))
   }
 
-  # create the plot structure depending of the group
+  hide_groups <- FALSE
   if(is.null(groups)){
     # make a dummy group variable
+    hide_groups <- TRUE
     groups <- 'groups'
     dt$groups <- 'A'
+  }
+  density <- ggplot2::ggplot(dt,
+                             ggplot2::aes(x = .data[[value]],
+                                          fill = .data[[groups]],
+                                          color = .data[[groups]])) +
+    ggtheme() +
+    ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
+                                                               decimal.mark = '.',
+                                                               big.mark = ',')) +
+  ggplot2::geom_density(alpha = 0.7) +
+    ggplot2::scale_fill_manual(values = plot_palette) +
+    ggplot2::scale_color_manual(values = plot_palette)
 
-    density <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = value,
-                                                   fill = groups,
-                                                   color = groups)) +
-      ggplot2::geom_density(alpha = 0.7) +
+  if(hide_groups){
+    # remove all references to the dummy group variable from the plot
+    density <- density +
       ggplot2::theme(legend.position = 'none',
                      axis.title.x = ggplot2::element_blank(),
                      axis.text.x = ggplot2::element_blank(),
                      axis.ticks.x = ggplot2::element_blank())
-
-  }else{
-    density <- ggplot2::ggplot(dt,
-                               ggplot2::aes_string(x = value,
-                                                   fill = groups,
-                                                   color = groups)) +
-      ggplot2::scale_fill_manual(values = plot_palette) +
-      ggplot2::scale_color_manual(values = plot_palette) +
-      ggplot2::geom_density(alpha = 0.7)
   }
-
-  # add theme and y axis number format
-  density <- density +
-    ggtheme() +
-    ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
-                                                               decimal.mark = '.',
-                                                               big.mark = ','))
 
   # axes
   if(!is.null(x_axis_label)){
@@ -103,14 +103,13 @@ make_density <- function(dt,
 
   # facet by groups
   if(as.logical(faceted)){
-    density <- density + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')))
+    density <- density + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')),
+                                             scales = scales)
   }
 
-  density <- plotly::ggplotly(density,  tooltip = c('x', if(groups != 'groups'){'fill'}))
+  density <- plotly::ggplotly(density,  tooltip = c('x', 'y', if(groups != 'groups'){'fill'}))
   return(density)
 }
-
-
 
 #' Add a density plot to a chronicle report
 #'
@@ -119,6 +118,7 @@ make_density <- function(dt,
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
 #' @param faceted If TRUE (default), each group will be plotted separately.
+#' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
@@ -140,6 +140,7 @@ add_density <- function(report = new_report(),
                         value,
                         groups = NULL,
                         faceted = TRUE,
+                        scales = 'fixed',
                         ggtheme = NULL,
                         x_axis_label = NULL,
                         plot_palette = NULL,
@@ -155,6 +156,7 @@ add_density <- function(report = new_report(),
   params <- list(value = value,
                  groups = groups,
                  faceted = faceted,
+                 scales = scales,
                  ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  plot_palette = plot_palette,

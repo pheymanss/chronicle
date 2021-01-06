@@ -9,6 +9,7 @@ make_density(
   value,
   groups = NULL,
   faceted = TRUE,
+  scales = "fixed",
   ggtheme = "minimal",
   x_axis_label = NULL,
   plot_palette = NULL,
@@ -24,6 +25,8 @@ make_density(
 
 \item{faceted}{If TRUE (default), each group will be plotted separately.}
 
+\item{scales}{From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.}
+
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
 \item{x_axis_label}{Label for the x axis.}
@@ -37,4 +40,9 @@ A plotly-ized version of a grouped ggplot density plot.
 }
 \description{
 Create a density plot from a data frame through ggplotly
+}
+\examples{
+make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', faceted = FALSE)
+make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', scales = 'free')
+
 }
