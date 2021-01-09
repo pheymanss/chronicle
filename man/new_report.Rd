@@ -39,7 +39,7 @@ new_report(
 \item{fig_height}{Set the global figure height or the rmarkdown file.}
 }
 \value{
-a String conainitng an Rmarkdown header
+a String containing an Rmarkdown header
 }
 \description{
 Create the initial Rmarkdown header for a report

@@ -9,8 +9,7 @@ render_report(
   filename = "Chronicle report",
   directory = getwd(),
   keep_rmd = FALSE,
-  render_html = TRUE,
-  render_pdf = FALSE
+  render_html = TRUE
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ render_report(
 \item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
 
 \item{render_html}{Whether or not to render the report as an interactive hmtl file.}
-
-\item{render_pdf}{Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.}
 }
 \description{
 Render the report using current environment

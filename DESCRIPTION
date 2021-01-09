@@ -10,8 +10,7 @@ Description: Inspired on keras' interface to add layers to a neural network,
     modules like plots and tables to a base. 
 Depends: R (>= 3.5.0),
     data.table,
-    magrittr,
-    rlang
+    magrittr
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 Imports: DT, 
@@ -24,6 +23,7 @@ Imports: DT,
     purrr,
     RColorBrewer,
     readr,
+    rlang,
     rmarkdown,
     scales,
     stats,
@@ -32,3 +32,4 @@ Imports: DT,
 Suggests: devtools
 LazyData: true
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr

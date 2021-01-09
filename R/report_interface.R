@@ -11,7 +11,7 @@
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
 #'
-#' @return a String conainitng an Rmarkdown header
+#' @return a String containing an Rmarkdown header
 #' @export
 #' @examples
 #' library(magrittr)
@@ -60,7 +60,6 @@ new_report <- function(title = 'New chronicle Report',
 #' @param directory The directory in which to render the .html report
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
 #' @param render_html Whether or not to render the report as an interactive hmtl file.
-#' @param render_pdf Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.
 #'
 #' @export
 #'
@@ -69,7 +68,7 @@ new_report <- function(title = 'New chronicle Report',
 #' library(magrittr)
 #' new_report() %>% render_report(filename = 'test_report')
 #' file.remove('test_report.html')
-render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE, render_html = TRUE, render_pdf = FALSE){
+render_report <- function(report, filename = 'Chronicle report', directory = getwd(), keep_rmd = FALSE, render_html = TRUE){
 
   # check if additional github packages are installed, and if not ask the user to install them or not render a PDF file
   # if(render_pdf){
@@ -85,13 +84,13 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
   #   }
   # }
 
-  #wrtie the report as an Rmarkdown file
-  rmd_file <- paste0(filename, '.Rmd')
+  # write the report as an Rmarkdown file
+  rmd_file <- paste0(directory, '/', filename, '.Rmd')
   readr::write_lines(report, rmd_file)
 
   # render the Rmarkdown file
   if(render_html){
-    rmarkdown::render(input = rmd_file, output_file = paste0(filename, '.html'), output_dir = directory, clean = TRUE, quiet = TRUE)
+    rmarkdown::render(input = rmd_file, output_file = paste0(filename, '.html'), output_dir = paste0(directory, '/'), clean = TRUE, quiet = TRUE)
   }
 
 #
