@@ -4,6 +4,9 @@
 #' @param bars Name of the column containing the different groups.
 #' @param value Name of the columns to use as value on the y axis of the plot. If NULL (default), counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
+#' @param horizontal Plot the bars horizontally. Default is FALSE
+#' @param sort_by_value Sort the bars by value. Default is FALSE
+#' @param sort_decreasing Sort the values decreasingly. Default is TRUE, but sort_by_value must also be TRUE.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -20,6 +23,9 @@ make_barplot <- function(dt,
                          bars,
                          value = NULL,
                          break_bars_by = NULL,
+                         horizontal = FALSE,
+                         sort_by_value = FALSE,
+                         sort_decreasing = TRUE,
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
                          y_axis_label = NULL,
@@ -39,6 +45,34 @@ make_barplot <- function(dt,
   }else{
     plot_dt <- dt1[, list(value = sum(get(value))), by = c(bars, break_bars_by)]
     data.table::setnames(plot_dt, 'value', value)
+  }
+
+  if(as.logical(sort_by_value)){
+    # if horizontal, flip the value of sort_decreasing (will apply ggplot2::coord_flip)
+    if(horizontal){
+      sort_decreasing <- !as.logical(sort_decreasing)
+    }
+
+    # if given break bars by, summarize and sort by total
+    if(!is.null(break_bars_by)){
+      bar_order <- data.table::setorderv(x = plot_dt[, list(total_value = sum(get(value))),
+                                                     by = c(bars)],
+                              cols = 'total_value',
+                              order = ifelse(test = sort_decreasing,
+                                             -1,
+                                              1))[[bars]]
+      plot_dt[, (bars) := factor(get(bars), levels = bar_order)]
+    }else{
+      print(class(plot_dt[[value]]))
+      print(plot_dt)
+      data.table::setorderv(x = plot_dt,
+                            cols = value,
+                            order = ifelse(test = sort_decreasing, -1, 1)
+                            )
+      plot_dt[, (bars) := factor(get(bars), levels = get(bars))]
+      print(class(plot_dt[[value]]))
+      print(plot_dt)
+    }
   }
 
   # check how many colors are needed for plotting
@@ -104,11 +138,13 @@ make_barplot <- function(dt,
     barplot <- barplot + ggplot2::ylab(y_axis_label)
   }
 
+  if(as.logical(horizontal)){
+    barplot <- barplot + ggplot2::coord_flip()
+  }
+
   barplot <- plotly::ggplotly(barplot, tooltip = c('x', 'y', if(!is.null(break_bars_by)){'fill'}))
   return(barplot)
 }
-
-
 
 #' Add a bar plot to a chronicle report
 #'
@@ -117,6 +153,9 @@ make_barplot <- function(dt,
 #' @param bars Name of the columns containing the different groups.
 #' @param value Name of the columns to use as values on the y axis of the plot. If NULL (default), counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
+#' @param horizontal Plot the bars horizontally. Default is FALSE
+#' @param sort_by_value Sort the bars by value. Default is FALSE
+#' @param sort_decreasing Sort the values decreasingly. Default is TRUE, but sort_by_value must also be TRUE.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -139,6 +178,9 @@ add_barplot <- function(report = new_report(),
                         bars,
                         value = NULL,
                         break_bars_by = NULL,
+                        horizontal = FALSE,
+                        sort_by_value = FALSE,
+                        sort_decreasing = TRUE,
                         ggtheme = 'minimal',
                         x_axis_label = NULL,
                         y_axis_label = NULL,
@@ -155,6 +197,10 @@ add_barplot <- function(report = new_report(),
   params <- list(bars = bars,
                  value = value,
                  break_bars_by = break_bars_by,
+                 horizontal = horizontal,
+                 sort_by_value = sort_by_value,
+                 sort_decreasing = sort_decreasing,
+                 ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,
                  plot_palette = plot_palette,
