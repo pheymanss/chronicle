@@ -40,17 +40,18 @@ add_title <- function(report, title, title_level = 1){
 #' @param code Character string to be formated as an R code chunk. This code will not be excecuted when the report is rendered.
 #' @param code_title The title of the code section. Default is NULL.
 #' @param title_level Level of the section title (ie, number of # on Rmarkdown syntax.)
+#' @param eval Excecute the code sent to the chunk. Default is FALSE.
 #'
 #' @return The text of the Rmarkdown report plus an additional section with the code chunk.
 #' @export
 #'
 #' @examples
-add_code <- function(report, code, code_title = NULL, title_level = 2){
+add_code <- function(report, code, code_title = NULL, title_level = 2, eval = FALSE){
   if(!is.null(code_title)){
     report <- add_title(report, code_title, title_level = title_level)
   }
-  report <- report %>% paste('```{r,eval = FALSE}',
+  report <- report %>% paste(paste0('```{r,eval = ', eval, '}'),
                                    code,
                                    '```',
-                             sep = '\n')
+                             sep = '\n\n')
 }
