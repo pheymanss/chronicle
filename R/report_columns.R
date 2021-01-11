@@ -67,6 +67,8 @@ plot_columns <- function(dt, by_column = NULL){
 #'                                     by_column = 'Species',
 #'                                     horizontal_bars = TRUE,
 #'                                     keep_rmd = TRUE)
+#'           file_delete('iris_column_analysis.Rmd')
+#'           file_delete('iris_column_analysis.html')
 report_columns <- function(dt,
                            by_column = NULL,
                            filename = NULL,
