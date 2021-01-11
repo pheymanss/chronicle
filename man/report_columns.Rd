@@ -76,4 +76,6 @@ chronicle::report_columns(dt = iris,
                                     by_column = 'Species',
                                     horizontal_bars = TRUE,
                                     keep_rmd = TRUE)
+          file.remove('iris_column_analysis.Rmd')
+          file.remove('iris_column_analysis.html')
 }
