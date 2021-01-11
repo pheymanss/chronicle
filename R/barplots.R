@@ -55,7 +55,7 @@ make_barplot <- function(dt,
 
     # if given break bars by, summarize and sort by total
     if(!is.null(break_bars_by)){
-      bar_order <- plot_dt[, .(total_value = sum(get(value))), by = c(bars)] %>%
+      bar_order <- plot_dt[, list(total_value = sum(get(value))), by = c(bars)] %>%
         data.table::setorderv(cols = 'total_value',
                               order = ifelse(test = sort_decreasing,
                                              -1,
