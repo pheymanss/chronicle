@@ -9,6 +9,9 @@ report_columns(
   by_column = NULL,
   filename = NULL,
   author = "chronicle user",
+  horizontal_bars = FALSE,
+  sort_bars_value = FALSE,
+  sort_bars_decreasingly = TRUE,
   prettydoc = TRUE,
   prettydoc_theme = "leonids",
   highlight = "github",
@@ -19,8 +22,7 @@ report_columns(
   fig_height = 5,
   directory = getwd(),
   keep_rmd = FALSE,
-  render_html = TRUE,
-  render_pdf = FALSE
+  render_html = TRUE
 )
 }
 \arguments{
@@ -31,6 +33,12 @@ report_columns(
 \item{filename}{Name of the output file.}
 
 \item{author}{Author of the report.}
+
+\item{horizontal_bars}{Plot bars for categorical variables horizontally. Default is FALSE}
+
+\item{sort_bars_value}{Sort the bars by value. Default is FALSE.}
+
+\item{sort_bars_decreasingly}{Sort the bars decreasingly. Default is TRUE.}
 
 \item{prettydoc}{Whether or not to use prettydoc formatting on the html report. Default is TRUE.}
 
@@ -53,17 +61,19 @@ report_columns(
 \item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
 
 \item{render_html}{Whether or not to render the report as an interactive hmtl file.}
-
-\item{render_pdf}{Not working yet.}
 }
 \value{
 An HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
 }
 \description{
-HTML interactive report detailing each column on a table
+Creates an Rmarkdown report plotting each column of a dataset.
+Categorical columns are plotted in bar plots, and numerical
+columns are plotted in box plots. If 'by_column' is provided,
+these plots will be grouped by the values of that column
 }
 \examples{
 chronicle::report_columns(dt = iris,
                                     by_column = 'Species',
+                                    horizontal_bars = TRUE,
                                     keep_rmd = TRUE)
 }

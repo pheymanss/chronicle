@@ -10,6 +10,9 @@ add_barplot(
   bars,
   value = NULL,
   break_bars_by = NULL,
+  horizontal = FALSE,
+  sort_by_value = FALSE,
+  sort_decreasing = TRUE,
   ggtheme = "minimal",
   x_axis_label = NULL,
   y_axis_label = NULL,
@@ -34,6 +37,12 @@ add_barplot(
 \item{value}{Name of the columns to use as values on the y axis of the plot. If NULL (default), counts will be used.}
 
 \item{break_bars_by}{Name of the categorical variable used to break each bar}
+
+\item{horizontal}{Plot the bars horizontally. Default is FALSE}
+
+\item{sort_by_value}{Sort the bars by value. Default is FALSE}
+
+\item{sort_decreasing}{Sort the values decreasingly. Default is TRUE, but sort_by_value must also be TRUE.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
