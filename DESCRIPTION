@@ -27,6 +27,6 @@ Imports: DT,
     stats,
     viridis,
     zoo
-Suggests: devtools
+Suggests: 
 LazyData: true
 RoxygenNote: 7.1.1
