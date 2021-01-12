@@ -1,13 +1,11 @@
 Package: chronicle
 Type: Package
-Title: Grammar for creating Rmarkdown reports 
+Title: Grammar for Creating R Markdown Reports
 Version: 0.0.1.0
 Authors@R: person("Philippe", "Heymans Smith", email = "pheymanss@gmail.com",
-  role = c("aut", "cre"))
-Maintainer: <pheymanss@gmail.com>
-Description: Inspired on keras' interface to add layers to a neural network,
-    chronicle provides an interface to create an Rmarkdown report by adding 
-    modules like plots and tables to a base. 
+    role = c("aut", "cre"))
+Description: A system for creating beautiful and interactive R Markdown reports
+    by adding modules like plots and tables to an empty header.
 Depends: R (>= 3.5.0),
     data.table,
     magrittr,
@@ -29,6 +27,6 @@ Imports: DT,
     stats,
     viridis,
     zoo
-Suggests: devtools
+Suggests: 
 LazyData: true
 RoxygenNote: 7.1.1
