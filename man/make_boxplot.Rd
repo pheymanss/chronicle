@@ -36,7 +36,7 @@ make_boxplot(
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required}
 }
 \value{
-A plotly-ized version of a grouped ggplot box plot.
+A plotly-ized version of a ggplot box plot.
 }
 \description{
 Create a box plot from a data frame through ggplotly

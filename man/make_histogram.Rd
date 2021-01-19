@@ -45,6 +45,7 @@ A plotly-ized version of a grouped ggplot histogram plot.
 Create a histogram plot from a data frame through ggplotly
 }
 \examples{
-make_histogram(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer')
-
+make_histogram(dt = iris,
+               value = 'Sepal.Length',
+               groups = 'Species')
 }

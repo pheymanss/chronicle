@@ -30,18 +30,27 @@ make_dygraph(
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 }
 \value{
-a dygraph of the numerical variable specified, optionally split by the values of a groups.
+A dygraph of the numerical variable specified, optionally split by the values of 'groups.'
 }
 \description{
 Plot a time series from a data frame through dygraph's interactive html plot interface
 }
 \examples{
-
-library(chronicle)
-library(magrittr)
-# mock data
-dat <- data.frame(x = rnorm(1000, mean = 100, sd = 15),
-                  date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100)))
-make_dygraph(dt = dat, value = 'x', date = 'date')
-
+dat <- data.frame(x = c(rnorm(100, 2, 4),
+                        rnorm(100, 6, 1),
+                        rnorm(100, 8, 2)),
+                  group = c(rep('A', 100),
+                            rep('B', 100),
+                            rep('C', 100)),
+                  date = rep(seq(as.Date("2020-01-01"),
+                                 as.Date("2020-04-09"),
+                                 'days'),
+                             3))
+make_dygraph(dt = dat,
+             value = 'x',
+             date = 'date')
+make_dygraph(dt = dat,
+             value = 'x',
+             groups = 'group',
+             date = 'date')
 }

@@ -60,8 +60,15 @@ add_density(
 \item{fig_height}{Height of the plot (in inches).}
 }
 \value{
-An rmarkdown chunk as a character string, now containing a chunk for adding the density plot.
+An rmarkdown file as a character string, now containing a chunk for adding the specified density plot.
 }
 \description{
 Add a density plot to a chronicle report
+}
+\examples{
+html_report <- add_density(report = new_report(),
+                           dt = iris,
+                           value = 'Sepal.Length',
+                           groups = 'Species')
+cat(html_report)
 }

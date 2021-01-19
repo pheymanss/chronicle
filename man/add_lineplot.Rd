@@ -69,8 +69,17 @@ add_lineplot(
 \item{fig_height}{Height of the plot (in inches).}
 }
 \value{
-An rmarkdown chunk as a character string, now containing a chunk for adding the line plot.
+An R Markdown file as a character string, now containing a chunk for the specified line plot.
 }
 \description{
 Add a line plot to a chronicle report
+}
+\examples{
+html_report <- add_lineplot(report = new_report(),
+                            dt = ggplot2::mpg,
+                            x = 'hwy',
+                            y = 'cty',
+                            groups = 'manufacturer',
+                            faceted = FALSE)
+cat(html_report)
 }

@@ -36,7 +36,7 @@ make_violin(
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required}
 }
 \value{
-A plotly-ized version of a grouped ggplot violin plot.
+A plotly-ized version of a ggplot violin plot.
 }
 \description{
 Create a violin plot from a data frame through ggplotly

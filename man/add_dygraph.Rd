@@ -54,8 +54,25 @@ add_dygraph(
 \item{fig_height}{Height of the plot (in inches).}
 }
 \value{
-An rmarkdown chunk as a character string, now containing a chunk for adding the dygraph.
+An R Markdown file as a character string, now containing a chunk for the specified dygraph.
 }
 \description{
 Add a dygraph to a chronicle report
+}
+\examples{
+dat <- data.frame(x = c(rnorm(100, 2, 4),
+                       rnorm(100, 6, 1),
+                       rnorm(100, 8, 2)),
+                 group = c(rep('A', 100),
+                           rep('B', 100),
+                           rep('C', 100)),
+                 date = rep(seq(as.Date("2020-01-01"),
+                                as.Date("2020-04-09"),
+                                'days'),
+                            3))
+html_report <- add_dygraph(report = new_report(),
+                          dt = dat,
+                          value = 'x',
+                          date = 'date')
+cat(html_report)
 }

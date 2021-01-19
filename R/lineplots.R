@@ -16,32 +16,33 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot line plot.
 #'
-#' @examples make_lineplot(dt = ggplot2::mpg,
-#'  x = 'hwy',
-#'  y = 'cty',
-#'  groups = 'manufacturer',
-#'  faceted = FALSE)
+#' @examples
+#' make_lineplot(dt = ggplot2::mpg,
+#'               x = 'hwy',
+#'               y = 'cty',
+#'               groups = 'manufacturer',
+#'               faceted = FALSE)
 #'
 #' make_lineplot(dt = ggplot2::mpg,
-#'  x = 'hwy',
-#'  y = 'cty',
-#'  groups = 'manufacturer',
-#'  faceted = TRUE,
-#'  scales = 'free')
+#'               x = 'hwy',
+#'               y = 'cty',
+#'               groups = 'manufacturer',
+#'               faceted = TRUE,
+#'               scales = 'free')
 #'
 #' @importFrom rlang .data
 make_lineplot <- function(dt,
                           x,
                           y,
-                         groups = NULL,
-                         faceted = TRUE,
-                         scales = 'fixed',
-                         smooth_trend = FALSE,
-                         ggtheme = 'minimal',
-                         x_axis_label = NULL,
-                         y_axis_label = NULL,
-                         plot_palette = NULL,
-                         plot_palette_generator = 'plasma'){
+                          groups = NULL,
+                          faceted = TRUE,
+                          scales = 'fixed',
+                          smooth_trend = FALSE,
+                          ggtheme = 'minimal',
+                          x_axis_label = NULL,
+                          y_axis_label = NULL,
+                          plot_palette = NULL,
+                          plot_palette_generator = 'plasma'){
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
@@ -109,8 +110,8 @@ make_lineplot <- function(dt,
   if(is.numeric(dt[[x]])){
     lineplot <- lineplot +
       ggplot2::scale_x_continuous(labels = scales::number_format(accuracy = 0.01,
-                                                               decimal.mark = '.',
-                                                               big.mark = ','))
+                                                                 decimal.mark = '.',
+                                                                 big.mark = ','))
   }
 
   # axes
@@ -124,7 +125,7 @@ make_lineplot <- function(dt,
   # facet by groups
   if(as.logical(faceted)){
     lineplot <- lineplot + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')),
-                                      scales = scales) +
+                                               scales = scales) +
       ggplot2::theme(legend.position = 'none')
   }
 
@@ -160,30 +161,37 @@ make_lineplot <- function(dt,
 #' @param fig_width Width of the plot (in inches).
 #' @param fig_height Height of the plot (in inches).
 #'
-#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the line plot.
+#' @return An R Markdown file as a character string, now containing a chunk for the specified line plot.
 #' @export
 #'
 #' @examples
+#' html_report <- add_lineplot(report = new_report(),
+#'                             dt = ggplot2::mpg,
+#'                             x = 'hwy',
+#'                             y = 'cty',
+#'                             groups = 'manufacturer',
+#'                             faceted = FALSE)
+#' cat(html_report)
 add_lineplot <- function(report = new_report(),
-                        dt,
-                        x,
-                        y,
-                        groups = NULL,
-                        faceted = NULL,
-                        scales = NULL,
-                        smooth_trend = NULL,
-                        ggtheme = NULL,
-                        x_axis_label = NULL,
-                        y_axis_label = NULL,
-                        plot_palette = NULL,
-                        plot_palette_generator = NULL,
-                        lineplot_title = NULL,
-                        title_level = 2,
-                        echo = FALSE,
-                        message = FALSE,
-                        warning = FALSE,
-                        fig_width = NULL,
-                        fig_height = NULL){
+                         dt,
+                         x,
+                         y,
+                         groups = NULL,
+                         faceted = NULL,
+                         scales = NULL,
+                         smooth_trend = NULL,
+                         ggtheme = NULL,
+                         x_axis_label = NULL,
+                         y_axis_label = NULL,
+                         plot_palette = NULL,
+                         plot_palette_generator = NULL,
+                         lineplot_title = NULL,
+                         title_level = 2,
+                         echo = FALSE,
+                         message = FALSE,
+                         warning = FALSE,
+                         fig_width = NULL,
+                         fig_height = NULL){
 
   params <- list(x = x,
                  y = y,

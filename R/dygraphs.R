@@ -8,18 +8,27 @@
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
 #'
-#' @return a dygraph of the numerical variable specified, optionally split by the values of a groups.
+#' @return A dygraph of the numerical variable specified, optionally split by the values of 'groups.'
 #' @export
 #'
 #' @examples
-#'
-#' library(chronicle)
-#' library(magrittr)
-#' # mock data
-#' dat <- data.frame(x = rnorm(1000, mean = 100, sd = 15),
-#'                   date = as.Date('2020-01-01') + floor(runif(1000, min = -100, max = 100)))
-#' make_dygraph(dt = dat, value = 'x', date = 'date')
-#'
+#' dat <- data.frame(x = c(rnorm(100, 2, 4),
+#'                         rnorm(100, 6, 1),
+#'                         rnorm(100, 8, 2)),
+#'                   group = c(rep('A', 100),
+#'                             rep('B', 100),
+#'                             rep('C', 100)),
+#'                   date = rep(seq(as.Date("2020-01-01"),
+#'                                  as.Date("2020-04-09"),
+#'                                  'days'),
+#'                              3))
+#' make_dygraph(dt = dat,
+#'              value = 'x',
+#'              date = 'date')
+#' make_dygraph(dt = dat,
+#'              value = 'x',
+#'              groups = 'group',
+#'              date = 'date')
 make_dygraph <- function(dt,
                          value ,
                          date,
@@ -115,10 +124,25 @@ make_dygraph <- function(dt,
 #' @param fig_width Width of the plot (in inches).
 #' @param fig_height Height of the plot (in inches).
 #'
-#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the dygraph.
+#' @return An R Markdown file as a character string, now containing a chunk for the specified dygraph.
 #' @export
 #'
 #' @examples
+#' dat <- data.frame(x = c(rnorm(100, 2, 4),
+#'                        rnorm(100, 6, 1),
+#'                        rnorm(100, 8, 2)),
+#'                  group = c(rep('A', 100),
+#'                            rep('B', 100),
+#'                            rep('C', 100)),
+#'                  date = rep(seq(as.Date("2020-01-01"),
+#'                                 as.Date("2020-04-09"),
+#'                                 'days'),
+#'                             3))
+#'html_report <- add_dygraph(report = new_report(),
+#'                           dt = dat,
+#'                           value = 'x',
+#'                           date = 'date')
+#'cat(html_report)
 add_dygraph <- function(report = new_report(),
                         dt,
                         value ,

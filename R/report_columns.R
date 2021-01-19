@@ -60,7 +60,7 @@ plot_columns <- function(dt, by_column = NULL){
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
 #' @param render_html Whether or not to render the report as an interactive hmtl file.
 #'
-#' @return An HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
+#' @return Creates an HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
 #' @export
 #'
 #' @examples chronicle::report_columns(dt = iris,

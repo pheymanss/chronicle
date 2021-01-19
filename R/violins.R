@@ -11,7 +11,7 @@
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required
 #'
 #' @export
-#' @return A plotly-ized version of a grouped ggplot violin plot.
+#' @return A plotly-ized version of a ggplot violin plot.
 #'
 #' @examples make_violin(dt = ggplot2::mpg, value = 'hwy', groups = 'drv')
 #'
@@ -147,6 +147,11 @@ make_violin <- function(dt,
 #' @export
 #'
 #' @examples
+#' html_report <- add_violin(report = new_report(),
+#'                              dt = iris,
+#'                              value = 'Sepal.Length',
+#'                              groups = 'Species', jitter = TRUE)
+#' cat(html_report)
 add_violin <- function(report = new_report(),
                         dt,
                         value,

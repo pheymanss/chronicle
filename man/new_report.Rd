@@ -39,7 +39,7 @@ new_report(
 \item{fig_height}{Set the global figure height or the rmarkdown file.}
 }
 \value{
-a String conainitng an Rmarkdown header
+A string containing an R Markdown header
 }
 \description{
 Create the initial Rmarkdown header for a report
@@ -47,6 +47,10 @@ Create the initial Rmarkdown header for a report
 \examples{
 library(magrittr)
 library(chronicle)
-new_report('Simple Report Header', author = 'Anonymous Developer', prettydoc = FALSE)
-new_report('Prettier Report Header', author = 'The same person as before', prettydoc = TRUE)
+new_report(title = 'Simple Report Header',
+           author = 'Anonymous Developer',
+           prettydoc = FALSE)
+new_report(title = 'Prettier Report Header',
+           author = 'The same person as before',
+           prettydoc = TRUE)
 }

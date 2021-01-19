@@ -14,8 +14,10 @@
 #' @export
 #' @return A plotly-ized version of a grouped ggplot histogram plot.
 #'
-#' @examples make_histogram(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer')
-#'
+#' @examples
+#' make_histogram(dt = iris,
+#'                value = 'Sepal.Length',
+#'                groups = 'Species')
 #' @importFrom rlang .data
 make_histogram <- function(dt,
                          value,
@@ -134,6 +136,11 @@ make_histogram <- function(dt,
 #' @export
 #'
 #' @examples
+#' html_report <- add_histogram(report = new_report(),
+#'                              dt = iris,
+#'                              value = 'Sepal.Length',
+#'                              groups = 'Species')
+#' cat(html_report)
 add_histogram <- function(report = new_report(),
                         dt,
                         value,

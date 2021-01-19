@@ -11,13 +11,17 @@
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
 #'
-#' @return a String conainitng an Rmarkdown header
+#' @return A string containing an R Markdown header
 #' @export
 #' @examples
 #' library(magrittr)
 #' library(chronicle)
-#' new_report('Simple Report Header', author = 'Anonymous Developer', prettydoc = FALSE)
-#' new_report('Prettier Report Header', author = 'The same person as before', prettydoc = TRUE)
+#' new_report(title = 'Simple Report Header',
+#'            author = 'Anonymous Developer',
+#'            prettydoc = FALSE)
+#' new_report(title = 'Prettier Report Header',
+#'            author = 'The same person as before',
+#'            prettydoc = TRUE)
 new_report <- function(title = 'New chronicle Report',
                        author = 'chronicle user',
                        prettydoc = TRUE,
@@ -62,6 +66,8 @@ new_report <- function(title = 'New chronicle Report',
 #' @param render_html Whether or not to render the report as an interactive hmtl file.
 #' @param render_pdf Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.
 #'
+#' @return Renders the report as an HTML file.
+#'
 #' @export
 #'
 #' @examples
@@ -104,9 +110,9 @@ render_report <- function(report, filename = 'Chronicle report', directory = get
 #' Wrapper to update chronicle from github
 #'
 #' Quality of life improvement until I submit the package to CRAN. Runs devtools::install_github('pheymanss/chronicle')
-update_chronicle <- function(){
-  devtools::install_github('pheymanss/chronicle')
-}
+# update_chronicle <- function(){
+#   devtools::install_github('pheymanss/chronicle')
+# }
 
 
 

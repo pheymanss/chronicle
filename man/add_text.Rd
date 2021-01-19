@@ -21,3 +21,9 @@ The text of the Rmarkdown report plus an additional section with the text.
 \description{
 Add text to a chronicle Rmarkdown report
 }
+\examples{
+html_report <- add_text(report = new_report(),
+                        text = 'This is the text that will be seen outside of any chunk',
+                        text_title = 'Text title')
+cat(html_report)
+}

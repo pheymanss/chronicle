@@ -52,16 +52,16 @@ Create a line plot from a data frame through ggplotly
 }
 \examples{
 make_lineplot(dt = ggplot2::mpg,
- x = 'hwy',
- y = 'cty',
- groups = 'manufacturer',
- faceted = FALSE)
+              x = 'hwy',
+              y = 'cty',
+              groups = 'manufacturer',
+              faceted = FALSE)
 
 make_lineplot(dt = ggplot2::mpg,
- x = 'hwy',
- y = 'cty',
- groups = 'manufacturer',
- faceted = TRUE,
- scales = 'free')
+              x = 'hwy',
+              y = 'cty',
+              groups = 'manufacturer',
+              faceted = TRUE,
+              scales = 'free')
 
 }

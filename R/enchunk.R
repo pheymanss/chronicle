@@ -122,11 +122,3 @@ make_title <- function(fun, params){
 }
 
 
-# process_groups <- function(dt, groups = NULL){
-#   if(is.null(groups)){
-#     dt[, chronicle_group_column := 'data']
-#   }
-#   tidyr::unite(data = dt, chronicle_group_column, groups, sep = ' ')
-# }
-
-

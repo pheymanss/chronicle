@@ -2,7 +2,7 @@
 % Please edit documentation in R/text.R
 \name{add_code}
 \alias{add_code}
-\title{#' Add formated code chunks to a chronicle Rmarkdown report}
+\title{#' Add formatted code chunks to a chronicle Rmarkdown report}
 \usage{
 add_code(report, code, code_title = NULL, title_level = 2, eval = FALSE)
 }
@@ -22,4 +22,10 @@ The text of the Rmarkdown report plus an additional section with the code chunk.
 }
 \description{
 Beware that code indentation of the chronicle call will affect the indentation of the chunk, so make sure not to leave unintended indentation in the 'code' parameter on this function call.
+}
+\examples{
+html_report <- add_code(report = new_report(),
+                        code_title = 'Code comes after this title',
+                        code = 'f <- function(x, y){paste(x,y)}
+f("a", "b")')
 }

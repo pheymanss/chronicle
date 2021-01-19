@@ -63,7 +63,7 @@ report_columns(
 \item{render_html}{Whether or not to render the report as an interactive hmtl file.}
 }
 \value{
-An HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
+Creates an HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
 }
 \description{
 Creates an Rmarkdown report plotting each column of a dataset.

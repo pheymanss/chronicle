@@ -11,11 +11,16 @@
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
 #'
 #' @export
-#' @return A plotly-ized version of a grouped ggplot density plot.
+#' @return A plotly-ized version of a ggplot density plot.
 #'
-#' @examples make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', faceted = FALSE)
-#' make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', scales = 'free')
-#'
+#' @examples
+#' make_density(dt = iris,
+#'              value = 'Sepal.Length',
+#'              groups = 'Species')
+#' make_density(dt = iris,
+#'              value = 'Sepal.Length',
+#'              groups = 'Species',
+#'              faceted = FALSE)
 #' @importFrom rlang .data
 make_density <- function(dt,
                          value,
@@ -131,10 +136,15 @@ make_density <- function(dt,
 #' @param fig_width Width of the plot (in inches).
 #' @param fig_height Height of the plot (in inches).
 #'
-#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the density plot.
+#' @return An rmarkdown file as a character string, now containing a chunk for adding the specified density plot.
 #' @export
 #'
 #' @examples
+#' html_report <- add_density(report = new_report(),
+#'                            dt = iris,
+#'                            value = 'Sepal.Length',
+#'                            groups = 'Species')
+#' cat(html_report)
 add_density <- function(report = new_report(),
                         dt,
                         value,

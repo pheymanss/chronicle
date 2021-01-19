@@ -14,8 +14,13 @@ add_title(report, title, title_level = 1)
 \item{title_level}{Level of the section title (ie, number of # on Rmarkdown syntax.)}
 }
 \value{
-The text of the Rmarkdown report plus an additional section with the text
+The text of the Rmarkdown report plus an additional section by the given title.
 }
 \description{
 Add a titled section to a chronicle Rmarkdown report
+}
+\examples{
+html_report <- add_title(report = new_report(),
+                         title = 'Just the title here')
+cat(html_report)
 }

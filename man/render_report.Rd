@@ -26,6 +26,9 @@ render_report(
 
 \item{render_pdf}{Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.}
 }
+\value{
+Renders the report as an HTML file.
+}
 \description{
 Render the report using current environment
 }

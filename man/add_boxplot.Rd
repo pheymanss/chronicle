@@ -60,8 +60,15 @@ add_boxplot(
 \item{fig_height}{Height of the plot (in inches).}
 }
 \value{
-An rmarkdown chunk as a character string, now containing a chunk for adding the box plot.
+An rmarkdown file as a character string, now containing a chunk for adding the specified box plot.
 }
 \description{
 Add a box plot to a chronicle report
+}
+\examples{
+html_report <- add_boxplot(report = new_report(),
+                           dt = iris,
+                           value = 'Sepal.Length',
+                           groups = 'Species', jitter = TRUE)
+cat(html_report)
 }

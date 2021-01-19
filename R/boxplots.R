@@ -11,7 +11,7 @@
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required
 #'
 #' @export
-#' @return A plotly-ized version of a grouped ggplot box plot.
+#' @return A plotly-ized version of a ggplot box plot.
 #'
 #' @examples make_boxplot(dt = ggplot2::mpg, value = 'hwy', groups = 'drv', jitter = TRUE)
 #'
@@ -141,10 +141,15 @@ make_boxplot <- function(dt,
 #' @param fig_width Width of the plot (in inches).
 #' @param fig_height Height of the plot (in inches).
 #'
-#' @return An rmarkdown chunk as a character string, now containing a chunk for adding the box plot.
+#' @return An rmarkdown file as a character string, now containing a chunk for adding the specified box plot.
 #' @export
 #'
 #' @examples
+#' html_report <- add_boxplot(report = new_report(),
+#'                            dt = iris,
+#'                            value = 'Sepal.Length',
+#'                            groups = 'Species', jitter = TRUE)
+#' cat(html_report)
 add_boxplot <- function(report = new_report(),
                         dt,
                         value,

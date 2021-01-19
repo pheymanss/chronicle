@@ -36,13 +36,17 @@ make_density(
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 }
 \value{
-A plotly-ized version of a grouped ggplot density plot.
+A plotly-ized version of a ggplot density plot.
 }
 \description{
 Create a density plot from a data frame through ggplotly
 }
 \examples{
-make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', faceted = FALSE)
-make_density(dt = ggplot2::mpg, value = 'cty', groups = 'manufacturer', scales = 'free')
-
+make_density(dt = iris,
+             value = 'Sepal.Length',
+             groups = 'Species')
+make_density(dt = iris,
+             value = 'Sepal.Length',
+             groups = 'Species',
+             faceted = FALSE)
 }

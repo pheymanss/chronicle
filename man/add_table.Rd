@@ -22,10 +22,20 @@ add_table(
 
 \item{title_level}{Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)}
 
-\item{html_table_type}{Either print a knitr::kable table or a DT htmilwidget. kable tables look good with prettydoc (which is TRUE by default on new_report()), DT (https://rstudio.github.io/DT/) are interactive table widgets.}
+\item{html_table_type}{Either print a knitr::kable table or a DT htmlwidget. kable tables look good with prettydoc (which is TRUE by default on new_report()), DT (https://rstudio.github.io/DT/) are interactive table widgets.}
 
 \item{table_params}{Single character string with any additional parameters to be passed to either knitr::kable() or DT::datatable(), depending on html_table_type}
 }
+\value{
+An R Markdown file as a character string, now containing a chunk for the specified table.
+}
 \description{
 Add a table to a chronicle report
+}
+\examples{
+html_report <- add_table(report = new_report(),
+                         table = iris,
+                         table_title = 'Iris measures',
+                         html_table_type = 'kable')
+cat(html_report)
 }

@@ -69,8 +69,15 @@ add_barplot(
 \item{fig_height}{Height of the plot (in inches).}
 }
 \value{
-An rmarkdown chunk as a character string, now containing a chunk for adding the bar plot.
+An rmarkdown file as a character string, now containing a chunk for adding the specified bar plot.
 }
 \description{
 Add a bar plot to a chronicle report
+}
+\examples{
+html_report <- add_barplot(report = new_report(),
+                           dt = iris,
+                           bars = 'Species',
+                           value = 'Sepal.Length')
+cat(html_report)
 }

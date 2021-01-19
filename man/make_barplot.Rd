@@ -45,12 +45,17 @@ make_barplot(
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required}
 }
 \value{
-A plotly-ized version of a grouped ggplot bar plot.
+A plotly-ized version of a ggplot bar plot.
 }
 \description{
 Create a bar plot from a data frame through ggplotly
 }
 \examples{
-make_barplot(dt = ggplot2::mpg, value = 'cty', bars = 'manufacturer', break_bars_by = 'model')
-
+make_barplot(dt = iris, bars = 'Species', value = 'Sepal.Length')
+make_barplot(dt = ggplot2::mpg,
+             bars = 'manufacturer',
+             break_bars_by = 'model',
+             value = 'cty',
+             horizontal = TRUE,
+             sort_by_value = TRUE)
 }
