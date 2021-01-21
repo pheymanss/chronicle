@@ -22,7 +22,7 @@ new_report(title = '\{chronicle\} demo') %>%
     render_report(filename = 'index', keep_rmd = TRUE)
 ```
 
-And you can see the ouput [here](https://pheymanss.github.io/)
+And you can see the ouput [here](https://pheymanss.github.io/).
 
 #### How to use chronicle?
 
