@@ -13,13 +13,16 @@ A quick demo:
 install_packages('chronicle')
 library(chronicle)
 
-new_report(title = '\{chronicle\} Demo Report') %>%
-    add_table(table = head(iris), table_title = 'This is the iris dataset', html_table_type = 'DT') %>%
+new_report(title = '\{chronicle\} demo') %>%
+    add_title('This is how a chronicle report looks', title_level = 1) %>%
     add_density(dt = iris, groups = 'Species', value = 'Sepal.Length', faceted = F) %>%
+    add_table(table = iris, table_title = 'This is the iris dataset. Smells good!', html_table_type = 'DT') %>%
     add_boxplot(dt = iris, groups = 'Species', value = 'Sepal.Length') %>%
     add_barplot(dt = iris, bars = 'Species', value = 'Sepal.Length') %>%
-    render_report(filename = 'chronicle_demo', keep_rmd = TRUE)
+    render_report(filename = 'index', keep_rmd = TRUE)
 ```
+
+And you can see the ouput [here](https://pheymanss.github.io/)
 
 #### How to use chronicle?
 
@@ -34,7 +37,7 @@ function.
 Additional to the empty header, new\_report() creates a first chunk in
 which it loads the package, and suggests adding all the preprocessing in
 that chunk to have reproducibility by rendering through direct knitting
-instead of relying on chronicle's rendering.
+instead of relying on chronicleâs rendering.
 
 ``` r
 empty_header <- new_report()
@@ -97,3 +100,12 @@ reproducibility.
 finished_report <- new_report()
 render_report(report = finished_report, filename = "my_report", keep_rmd = TRUE)
 ```
+
+#### What's next for chronicle
+
+-   Add other output types besides prettydoc: bookdown, pagedown,
+    fexdashboard (!), blogdown.
+-   Add new add\_\* functions and additional parameters to the existing
+    ones.
+-   Tryout other plotting engines besides plotly: ggiraph, e\_charts,
+    highcharter\*, D3 (!).
