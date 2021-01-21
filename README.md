@@ -37,7 +37,7 @@ function.
 Additional to the empty header, new\_report() creates a first chunk in
 which it loads the package, and suggests adding all the preprocessing in
 that chunk to have reproducibility by rendering through direct knitting
-instead of relying on chronicleâs rendering.
+instead of relying on chronicle's rendering.
 
 ``` r
 empty_header <- new_report()
