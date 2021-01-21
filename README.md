@@ -104,7 +104,7 @@ render_report(report = finished_report, filename = "my_report", keep_rmd = TRUE)
 #### What's next for chronicle?
 
 -   Add other output types besides prettydoc: bookdown, pagedown,
-    flexdashboard (!), blogdown.
+    flexdashboard (!), blogdown and github .rd (would have been useful, right)
 -   Add new add\_\* functions and additional parameters to the existing
     ones.
 -   Tryout other plotting engines besides plotly: ggiraph, e\_charts,
