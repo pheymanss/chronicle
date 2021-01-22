@@ -10,7 +10,7 @@ paradigm that will be familiar to any {ggplot2} or {tensorflow} R user.
 A quick demo:
 
 ``` r
-install_packages('chronicle')
+install.packages('chronicle')
 library(chronicle)
 
 new_report(title = '\{chronicle\} demo') %>%
