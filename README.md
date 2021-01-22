@@ -13,7 +13,7 @@ A quick demo:
 install.packages('chronicle')
 library(chronicle)
 
-new_report(title = '\{chronicle\} demo') %>%
+new_report(title = 'chronicle demo') %>%
     add_title('This is how a chronicle report looks', title_level = 1) %>%
     add_density(dt = iris, groups = 'Species', value = 'Sepal.Length', faceted = F) %>%
     add_table(table = iris, table_title = 'This is the iris dataset. Smells good!', html_table_type = 'DT') %>%
