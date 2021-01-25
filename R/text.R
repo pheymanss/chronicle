@@ -9,11 +9,10 @@
 #' @export
 #'
 #' @examples
-#' html_report <- add_text(report = new_report(),
-#'                         text = 'This is the text that will be seen outside of any chunk',
+#' html_report <- add_text(text = 'This is the text that will be seen outside of any chunk',
 #'                         text_title = 'Text title')
 #' cat(html_report)
-add_text <- function(report, text, text_title = NULL, title_level = 2){
+add_text <- function(report = '', text, text_title = NULL, title_level = 2){
   if(!is.null(text_title)){
     report <- add_title(report, text_title, title_level = title_level)
   }
@@ -30,10 +29,10 @@ add_text <- function(report, text, text_title = NULL, title_level = 2){
 #' @export
 #'
 #' @examples
-#' html_report <- add_title(report = new_report(),
+#' html_report <- add_title(report = '',
 #'                          title = 'Just the title here')
 #' cat(html_report)
-add_title <- function(report, title, title_level = 1){
+add_title <- function(report = '', title, title_level = 1){
   report <- report %>% paste(paste(paste(rep('#', title_level), collapse = ''), title), sep = '\n\n')
   return(report)
 }
@@ -53,12 +52,12 @@ add_title <- function(report, title, title_level = 1){
 #' @export
 #'
 #' @examples
-#' html_report <- add_code(report = new_report(),
+#' html_report <- add_code(report = '',
 #'                         code_title = 'Code comes after this title',
 #'                         code = 'f <- function(x, y){paste(x,y)}
 #' f("a", "b")')
 # 'cat(html_report)
-add_code <- function(report, code, code_title = NULL, title_level = 2, eval = FALSE){
+add_code <- function(report = '', code, code_title = NULL, title_level = 2, eval = FALSE){
   if(!is.null(code_title)){
     report <- add_title(report, code_title, title_level = title_level)
   }

@@ -5,7 +5,7 @@
 \title{Add a bar plot to a chronicle report}
 \usage{
 add_barplot(
-  report = new_report(),
+  report = "",
   dt,
   bars,
   value = NULL,
@@ -75,7 +75,7 @@ An rmarkdown file as a character string, now containing a chunk for adding the s
 Add a bar plot to a chronicle report
 }
 \examples{
-html_report <- add_barplot(report = new_report(),
+html_report <- add_barplot(report = '',
                            dt = iris,
                            bars = 'Species',
                            value = 'Sepal.Length')

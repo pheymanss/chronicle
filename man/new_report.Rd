@@ -24,7 +24,7 @@ new_report(
 
 \item{prettydoc}{Whether or not to use prettydoc formatting on the html report. Default is TRUE.}
 
-\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is cayman.}
+\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is leonids.}
 
 \item{highlight}{Rmarkdown highlight theming. Default is github highlighting.}
 

@@ -8,11 +8,11 @@ report_columns(
   dt,
   by_column = NULL,
   filename = NULL,
+  output_format = "prettydoc",
   author = "chronicle user",
   horizontal_bars = FALSE,
   sort_bars_value = FALSE,
   sort_bars_decreasingly = TRUE,
-  prettydoc = TRUE,
   prettydoc_theme = "leonids",
   highlight = "github",
   number_sections = TRUE,
@@ -28,9 +28,11 @@ report_columns(
 \arguments{
 \item{dt}{Table to be plotted.}
 
-\item{by_column}{Name of the colum to use as groups for all the other plots}
+\item{by_column}{Name of the column to use as groups for all the other plots}
 
 \item{filename}{Name of the output file.}
+
+\item{output_format}{The format of the R Markdown file. Default is prettydoc. Currently supported: 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.}
 
 \item{author}{Author of the report.}
 
@@ -40,9 +42,7 @@ report_columns(
 
 \item{sort_bars_decreasingly}{Sort the bars decreasingly. Default is TRUE.}
 
-\item{prettydoc}{Whether or not to use prettydoc formatting on the html report. Default is TRUE.}
-
-\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is cayman.}
+\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is leonids.}
 
 \item{highlight}{Rmarkdown highlight theming. Default is github highlighting.}
 
@@ -63,7 +63,7 @@ report_columns(
 \item{render_html}{Whether or not to render the report as an interactive hmtl file.}
 }
 \value{
-Creates an HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
+Creates an HTML file with a plot for each column on the given table: a box plot for each numerical variable, and a bar plot for each categorical variable.
 }
 \description{
 Creates an Rmarkdown report plotting each column of a dataset.
@@ -72,10 +72,10 @@ columns are plotted in box plots. If 'by_column' is provided,
 these plots will be grouped by the values of that column
 }
 \examples{
-chronicle::report_columns(dt = iris,
-                                    by_column = 'Species',
-                                    horizontal_bars = TRUE,
-                                    keep_rmd = TRUE)
-          file.remove('iris_column_analysis.Rmd')
-          file.remove('iris_column_analysis.html')
+# chronicle::report_columns(dt = iris,
+#                           by_column = 'Species',
+#                           horizontal_bars = TRUE,
+#                           keep_rmd = TRUE)
+# file.remove('iris_column_analysis.Rmd')
+# file.remove('iris_column_analysis.html')
 }

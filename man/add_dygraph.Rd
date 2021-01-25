@@ -5,7 +5,7 @@
 \title{Add a dygraph to a chronicle report}
 \usage{
 add_dygraph(
-  report = new_report(),
+  report = "",
   dt,
   value,
   date,
@@ -61,8 +61,8 @@ Add a dygraph to a chronicle report
 }
 \examples{
 dat <- data.frame(x = c(rnorm(100, 2, 4),
-                       rnorm(100, 6, 1),
-                       rnorm(100, 8, 2)),
+                        rnorm(100, 6, 1),
+                        rnorm(100, 8, 2)),
                  group = c(rep('A', 100),
                            rep('B', 100),
                            rep('C', 100)),

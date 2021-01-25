@@ -176,12 +176,12 @@ make_barplot <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_barplot(report = new_report(),
+#' html_report <- add_barplot(report = '',
 #'                            dt = iris,
 #'                            bars = 'Species',
 #'                            value = 'Sepal.Length')
 #' cat(html_report)
-add_barplot <- function(report = new_report(),
+add_barplot <- function(report = '',
                         dt,
                         bars,
                         value = NULL,

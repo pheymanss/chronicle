@@ -7,15 +7,14 @@ Authors@R: person("Philippe", "Heymans Smith", email = "pheymanss@gmail.com",
 Description: A system for creating beautiful and interactive R Markdown reports
     by adding modules like plots and tables to an empty header.
 Depends: R (>= 3.5.0),
-    data.table,
+    rlang,
     magrittr,
-    rlang
+    data.table
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports: DT, 
     dygraphs, 
     ggplot2,
-    glue,
     knitr,
     plotly,
     prettydoc,
@@ -27,6 +26,12 @@ Imports: DT,
     stats,
     viridis,
     zoo
-Suggests: devtools
+Suggests: bookdown,
+    devtools,
+    flexdashboard,
+    pagedown, 
+    rolldown,
+    tufte,
+    xaringan
 LazyData: true
 RoxygenNote: 7.1.1

@@ -4,7 +4,7 @@
 \alias{add_text}
 \title{Add text to a chronicle Rmarkdown report}
 \usage{
-add_text(report, text, text_title = NULL, title_level = 2)
+add_text(report = "", text, text_title = NULL, title_level = 2)
 }
 \arguments{
 \item{report}{character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()}
@@ -22,8 +22,7 @@ The text of the Rmarkdown report plus an additional section with the text.
 Add text to a chronicle Rmarkdown report
 }
 \examples{
-html_report <- add_text(report = new_report(),
-                        text = 'This is the text that will be seen outside of any chunk',
+html_report <- add_text(text = 'This is the text that will be seen outside of any chunk',
                         text_title = 'Text title')
 cat(html_report)
 }

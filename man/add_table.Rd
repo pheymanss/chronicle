@@ -5,7 +5,7 @@
 \title{Add a table to a chronicle report}
 \usage{
 add_table(
-  report = new_report(),
+  report = "",
   table,
   table_title = NULL,
   title_level = 2,
@@ -33,8 +33,7 @@ An R Markdown file as a character string, now containing a chunk for the specifi
 Add a table to a chronicle report
 }
 \examples{
-html_report <- add_table(report = new_report(),
-                         table = iris,
+html_report <- add_table(table = iris,
                          table_title = 'Iris measures',
                          html_table_type = 'kable')
 cat(html_report)

@@ -76,9 +76,9 @@ make_boxplot <- function(dt,
     dt$groups <- 'A'
   }
   boxplot <- ggplot2::ggplot(dt,
-                                        ggplot2::aes(x = .data[[groups]],
-                                                     y = .data[[value]],
-                                                     fill = .data[[groups]])) +
+                             ggplot2::aes(x = .data[[groups]],
+                                          y = .data[[value]],
+                                          fill = .data[[groups]])) +
     ggplot2::scale_fill_manual(values = plot_palette) +
     ggplot2::scale_color_manual(values = plot_palette) +
     ggplot2::geom_boxplot() +
@@ -123,7 +123,7 @@ make_boxplot <- function(dt,
 
 #' Add a box plot to a chronicle report
 #'
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). and if NULL, that will be the default value.
 #' @param dt Table with the data for the plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
@@ -145,12 +145,12 @@ make_boxplot <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_boxplot(report = new_report(),
+#' html_report <- add_boxplot(report = '',
 #'                            dt = iris,
 #'                            value = 'Sepal.Length',
 #'                            groups = 'Species', jitter = TRUE)
 #' cat(html_report)
-add_boxplot <- function(report = new_report(),
+add_boxplot <- function(report = '',
                         dt,
                         value,
                         groups = NULL,

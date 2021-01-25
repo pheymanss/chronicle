@@ -129,8 +129,8 @@ make_dygraph <- function(dt,
 #'
 #' @examples
 #' dat <- data.frame(x = c(rnorm(100, 2, 4),
-#'                        rnorm(100, 6, 1),
-#'                        rnorm(100, 8, 2)),
+#'                         rnorm(100, 6, 1),
+#'                         rnorm(100, 8, 2)),
 #'                  group = c(rep('A', 100),
 #'                            rep('B', 100),
 #'                            rep('C', 100)),
@@ -143,7 +143,7 @@ make_dygraph <- function(dt,
 #'                           value = 'x',
 #'                           date = 'date')
 #'cat(html_report)
-add_dygraph <- function(report = new_report(),
+add_dygraph <- function(report = '',
                         dt,
                         value ,
                         date,

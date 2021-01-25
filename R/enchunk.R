@@ -1,7 +1,7 @@
 #' Transforms a function call into an Rmarkdown chunk
 #'
 #' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, this will be the default value.
-#' @param dt_expr Expression of the table to run function on.
+#' @param dt_expr Name of the table to run fun on.
 #' @param fun Function to call.
 #' @param params List of parameters to be passed to fun.
 #' @param chunk_title Title of the Rmarkdown chunk. If NULL, chronicle will try to parse a generic title based on the function and parameters passed using make_title()
@@ -15,12 +15,13 @@
 #' @return An rmarkdown chunk as a character string.
 #' @export
 #' @examples
-# cat(
-#   add_chunk(fun = make_barplot,
-#             dt = iris,
-#             params = list(value = 'Sepal.Width',
-#                           bars = 'Species')))
-add_chunk <- function(report = NULL,
+#' library(chronicle)
+#' html_chunk <- add_chunk(fun = make_barplot,
+#'                         dt = 'iris',
+#'                         params = list(value = 'Sepal.Width',
+#'                                       bars = 'Species'))
+#' cat(html_chunk)
+add_chunk <- function(report = '',
                       dt_expr = NULL,
                       fun,
                       params,
@@ -31,14 +32,9 @@ add_chunk <- function(report = NULL,
                       warning = FALSE,
                       fig_width = NULL,
                       fig_height = NULL){
-
-  # if no report is passed, create a new one
-  if(is.null(report)){
-    report <- chronicle::new_report()
-  }
-
+  # chack that dt_expr is the name of the table, not the table
   if(!is.character(dt_expr)){
-    stop('Could not parse plot data expression.')
+    stop('Could not parse plot data expression. dt_expr should be a character with the name of the table')
   }
 
   # plot title

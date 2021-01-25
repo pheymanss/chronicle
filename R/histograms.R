@@ -141,7 +141,7 @@ make_histogram <- function(dt,
 #'                              value = 'Sepal.Length',
 #'                              groups = 'Species')
 #' cat(html_report)
-add_histogram <- function(report = new_report(),
+add_histogram <- function(report = '',
                         dt,
                         value,
                         groups = NULL,

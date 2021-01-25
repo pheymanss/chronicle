@@ -4,7 +4,7 @@
 \alias{add_title}
 \title{Add a titled section to a chronicle Rmarkdown report}
 \usage{
-add_title(report, title, title_level = 1)
+add_title(report = "", title, title_level = 1)
 }
 \arguments{
 \item{report}{character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()}
@@ -20,7 +20,7 @@ The text of the Rmarkdown report plus an additional section by the given title.
 Add a titled section to a chronicle Rmarkdown report
 }
 \examples{
-html_report <- add_title(report = new_report(),
+html_report <- add_title(report = '',
                          title = 'Just the title here')
 cat(html_report)
 }

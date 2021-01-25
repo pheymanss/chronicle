@@ -5,7 +5,7 @@
 \title{Add a line plot to a chronicle report}
 \usage{
 add_lineplot(
-  report = new_report(),
+  report = "",
   dt,
   x,
   y,

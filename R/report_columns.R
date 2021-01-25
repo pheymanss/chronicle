@@ -42,14 +42,14 @@ plot_columns <- function(dt, by_column = NULL){
 #' these plots will be grouped by the values of that column
 #'
 #' @param dt Table to be plotted.
-#' @param by_column Name of the colum to use as groups for all the other plots
+#' @param by_column Name of the column to use as groups for all the other plots
 #' @param filename Name of the output file.
+#' @param output_format The format of the R Markdown file. Default is prettydoc. Currently supported: 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.
 #' @param author Author of the report.
 #' @param horizontal_bars Plot bars for categorical variables horizontally. Default is FALSE
 #' @param sort_bars_value Sort the bars by value. Default is FALSE.
 #' @param sort_bars_decreasingly Sort the bars decreasingly. Default is TRUE.
-#' @param prettydoc Whether or not to use prettydoc formatting on the html report. Default is TRUE.
-#' @param prettydoc_theme Name of the theme used on prettydoc. Default is cayman.
+#' @param prettydoc_theme Name of the theme used on prettydoc. Default is leonids.
 #' @param highlight Rmarkdown highlight theming. Default is github highlighting.
 #' @param number_sections Whether or not to number the sections and subsections fo the report.
 #' @param table_of_content Whether or not to include a table fo content at the beginning of the report.
@@ -60,23 +60,24 @@ plot_columns <- function(dt, by_column = NULL){
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
 #' @param render_html Whether or not to render the report as an interactive hmtl file.
 #'
-#' @return Creates an HTML file with a plot for each column on the given table: a boxplot for each numerical variable, and a barplot for each categorical variable.
+#' @return Creates an HTML file with a plot for each column on the given table: a box plot for each numerical variable, and a bar plot for each categorical variable.
 #' @export
 #'
-#' @examples chronicle::report_columns(dt = iris,
-#'                                     by_column = 'Species',
-#'                                     horizontal_bars = TRUE,
-#'                                     keep_rmd = TRUE)
-#'           file.remove('iris_column_analysis.Rmd')
-#'           file.remove('iris_column_analysis.html')
+#' @examples
+#' # chronicle::report_columns(dt = iris,
+#' #                           by_column = 'Species',
+#' #                           horizontal_bars = TRUE,
+#' #                           keep_rmd = TRUE)
+#' # file.remove('iris_column_analysis.Rmd')
+#' # file.remove('iris_column_analysis.html')
 report_columns <- function(dt,
                            by_column = NULL,
                            filename = NULL,
+                           output_format = 'prettydoc',
                            author = 'chronicle user',
                            horizontal_bars = FALSE,
                            sort_bars_value = FALSE,
                            sort_bars_decreasingly = TRUE,
-                           prettydoc = TRUE,
                            prettydoc_theme = 'leonids',
                            highlight = 'github',
                            number_sections = TRUE,
@@ -100,22 +101,11 @@ report_columns <- function(dt,
       paste0('_column_analysis')
   }
 
-  #create report header
-  column_report <- chronicle::new_report(title = title,
-                                         author = author,
-                                         prettydoc = prettydoc,
-                                         prettydoc_theme = prettydoc_theme,
-                                         highlight = highlight,
-                                         number_sections = number_sections,
-                                         table_of_content = table_of_content,
-                                         table_of_content_depth = table_of_content_depth)
-
   # add sections for all numeric values
   nums <- dt %>% purrr::keep(is.numeric) %>% colnames()
   nums %<>% purrr::set_names(nums)
   if(length(nums) > 0){
-    num_plots <- nums %>% purrr::map(~add_boxplot(report = '',
-                                                  dt = dt_name,
+    num_plots <- nums %>% purrr::map(~add_boxplot(dt = dt_name,
                                                   value = .x,
                                                   groups = by_column,
                                                   title_level = 1,
@@ -128,8 +118,7 @@ report_columns <- function(dt,
   cats <- dt %>% purrr::discard(is.numeric) %>% colnames()
   cats %<>% purrr::set_names(cats)
   if(length(cats) > 0){
-    cat_plots <- cats %>% purrr::map(~add_barplot(report = '',
-                                                  dt = dt_name,
+    cat_plots <- cats %>% purrr::map(~add_barplot(dt = dt_name,
                                                   bars = .x,
                                                   break_bars_by = by_column,
                                                   horizontal = horizontal_bars,
@@ -149,19 +138,27 @@ report_columns <- function(dt,
     plot_sections <-
       append(num_plots, cat_plots
       )[c(by_column,
-          colnames(dt)[-which(colnames(dt) == by_column)])] %>%
+          setdiff(colnames(dt), by_column))] %>%
       purrr::reduce(paste, sep = '\n')
   }
 
-  # join header and plots
-  column_report %<>% paste(plot_sections, sep = '\n')
-
   if(!render_html){
-    return(column_report)
+    return((plot_sections))
   }
+
   # render report
-  chronicle::render_report(report = column_report,
+  chronicle::render_report(report = plot_sections,
+                           title = title,
+                           author = author,
                            filename = filename,
+                           output_format = output_format,
+                           prettydoc_theme = prettydoc_theme,
+                           highlight = highlight,
+                           number_sections = number_sections,
+                           table_of_content = table_of_content,
+                           table_of_content_depth = table_of_content_depth,
+                           fig_width = fig_width,
+                           fig_height = fig_height,
                            directory = directory,
                            keep_rmd = keep_rmd,
                            render_html = render_html)

@@ -2,39 +2,79 @@
 % Please edit documentation in R/report_interface.R
 \name{render_report}
 \alias{render_report}
-\title{Render the report using current environment}
+\title{Render the report using all objects from the global environment}
 \usage{
 render_report(
-  report,
-  filename = "Chronicle report",
+  report = "",
+  title = "Report Output",
+  author = "Author Name",
+  filename = paste("report", gsub(x = Sys.Date(), pattern = "-", replacement = ""), sep
+    = "_"),
+  output_format = "prettydoc",
+  prettydoc_theme = "leonids",
+  highlight = "github",
+  number_sections = FALSE,
+  table_of_content = FALSE,
+  table_of_content_depth = 1,
+  fig_width = 11,
+  fig_height = 5,
   directory = getwd(),
   keep_rmd = FALSE,
-  render_html = TRUE,
-  render_pdf = FALSE
+  render_html = TRUE
 )
 }
 \arguments{
-\item{report}{The caracter string created by chronicle functions}
+\item{report}{The character string created by chronicle functions}
 
-\item{filename}{The name of the .html created}
+\item{title}{Title of the report.}
+
+\item{author}{Author of the report.}
+
+\item{filename}{The name of the .html file(s) created.}
+
+\item{output_format}{The format of the R Markdown file. Default is prettydoc. Currently supported: 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.}
+
+\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is leonids.}
+
+\item{highlight}{Rmarkdown highlight theming. Default is github highlighting.}
+
+\item{number_sections}{Whether or not to number the sections and subsections fo the report.}
+
+\item{table_of_content}{Whether or not to include a table fo content at the beginning of the report.}
+
+\item{table_of_content_depth}{The depth of sections and subsections to be displayed on the table of content.}
+
+\item{fig_width}{Set the global figure width or the rmarkdown file.}
+
+\item{fig_height}{Set the global figure height or the rmarkdown file.}
 
 \item{directory}{The directory in which to render the .html report}
 
 \item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
 
-\item{render_html}{Whether or not to render the report as an interactive hmtl file.}
-
-\item{render_pdf}{Whether or not to render the report as a PDF file. Keep in mind that while the file will be much more lightweight, you will lose all the interactivity the html provides.}
+\item{render_html}{Whether or not to render the R Markdown to get the html files. Default is TRUE.}
 }
 \value{
 Renders the report as an HTML file.
 }
 \description{
-Render the report using current environment
+Render the report using all objects from the global environment
 }
 \examples{
-library(chronicle)
-library(magrittr)
-new_report() \%>\% render_report(filename = 'test_report')
-file.remove('test_report.html')
+# report_demo <- add_title(title = 'This is how a chronicle report looks', title_level = 1) \%>\%
+# add_density(dt = iris, groups = 'Species', value = 'Sepal.Length', faceted = F) \%>\%
+#   add_boxplot(dt = iris, groups = 'Species', value = 'Sepal.Length') \%>\%
+#   add_barplot(dt = iris, bars = 'Species', value = 'Sepal.Length')
+#   add_table(table = iris,
+#             table_title = 'This is the iris dataset. Smells good!',
+#             html_table_type = 'kable') \%>\%
+#   add_table(table = mpg,
+#             table_title = 'And this is mpg',
+#             html_table_type = 'DT')
+#render_report(report = report_demo,
+#              title = 'Demo Output',
+#              author = 'This is the author',
+#              filename = 'demo_output',
+#              output_format = 'prettydoc',
+#              keep_rmd = TRUE)
 }

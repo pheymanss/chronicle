@@ -12,12 +12,11 @@
 #' @export
 #'
 #' @examples
-#' html_report <- add_table(report = new_report(),
-#'                          table = iris,
+#' html_report <- add_table(table = iris,
 #'                          table_title = 'Iris measures',
 #'                          html_table_type = 'kable')
 #' cat(html_report)
-add_table <- function(report = new_report(),
+add_table <- function(report = '',
                       table,
                       table_title = NULL,
                       title_level = 2,

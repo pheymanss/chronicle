@@ -5,7 +5,7 @@
 \title{Transforms a function call into an Rmarkdown chunk}
 \usage{
 add_chunk(
-  report = NULL,
+  report = "",
   dt_expr = NULL,
   fun,
   params,
@@ -21,7 +21,7 @@ add_chunk(
 \arguments{
 \item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, this will be the default value.}
 
-\item{dt_expr}{Expression of the table to run function on.}
+\item{dt_expr}{Name of the table to run fun on.}
 
 \item{fun}{Function to call.}
 
@@ -46,4 +46,12 @@ An rmarkdown chunk as a character string.
 }
 \description{
 Transforms a function call into an Rmarkdown chunk
+}
+\examples{
+library(chronicle)
+html_chunk <- add_chunk(fun = make_barplot,
+                        dt = 'iris',
+                        params = list(value = 'Sepal.Width',
+                                      bars = 'Species'))
+cat(html_chunk)
 }

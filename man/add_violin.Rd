@@ -5,7 +5,7 @@
 \title{Add a violin plot to a chronicle report}
 \usage{
 add_violin(
-  report = new_report(),
+  report = "",
   dt,
   value,
   groups = NULL,

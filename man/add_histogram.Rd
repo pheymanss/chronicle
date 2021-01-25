@@ -5,7 +5,7 @@
 \title{Add a histogram plot to a chronicle report}
 \usage{
 add_histogram(
-  report = new_report(),
+  report = "",
   dt,
   value,
   groups = NULL,

@@ -5,7 +5,7 @@
 \title{Add a box plot to a chronicle report}
 \usage{
 add_boxplot(
-  report = new_report(),
+  report = "",
   dt,
   value,
   groups = NULL,
@@ -25,7 +25,7 @@ add_boxplot(
 )
 }
 \arguments{
-\item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.}
+\item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). and if NULL, that will be the default value.}
 
 \item{dt}{Table with the data for the plot.}
 
@@ -66,7 +66,7 @@ An rmarkdown file as a character string, now containing a chunk for adding the s
 Add a box plot to a chronicle report
 }
 \examples{
-html_report <- add_boxplot(report = new_report(),
+html_report <- add_boxplot(report = '',
                            dt = iris,
                            value = 'Sepal.Length',
                            groups = 'Species', jitter = TRUE)

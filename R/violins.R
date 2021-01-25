@@ -152,7 +152,7 @@ make_violin <- function(dt,
 #'                              value = 'Sepal.Length',
 #'                              groups = 'Species', jitter = TRUE)
 #' cat(html_report)
-add_violin <- function(report = new_report(),
+add_violin <- function(report = '',
                         dt,
                         value,
                         groups = NULL,
