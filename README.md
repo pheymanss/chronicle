@@ -21,7 +21,7 @@ demo_report <- add_title(title = 'This is how a chronicle report looks', title_l
     
 render_report(report = demo_report,
               filename = 'chronicle_demo',
-              output_format = c('prettydoc', 'ioslides')
+              output_format = c('prettydoc', 'ioslides'),
               title = 'Demo Output',
               author = 'You created this',
               keep_rmd = TRUE)
