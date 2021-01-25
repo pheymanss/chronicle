@@ -1,6 +1,6 @@
 #' Add a table to a chronicle report
 #'
-#' @param report character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param table data.frame to print on the report.
 #' @param table_title title of the table. Default is no title.
 #' @param title_level Level of the section title of this plot (ie, number of # on Rmarkdown syntax.)
@@ -24,9 +24,6 @@ add_table <- function(report = '',
                       table_params = NULL){
   html_table_type <- match.arg(arg = html_table_type, choices = c('DT', 'kable'))
 
-  if(html_table_type == 'kable' & !grepl(pattern = 'prettydoc', x = report)){
-    warning(paste('kable tables without prettydoc is somewhat bad-looking. \nConsider setting add_table(html_table_type = "DT") or new_report(pretty_doc = "TRUE").'))
-  }
   report <- paste(report, # report object (Rmarkdown file text)
                   paste(paste(rep('#', title_level), collapse = ''), table_title),
                   paste('```{r, echo = FALSE, message = FALSE, warning = FALSE}', # r chunk header

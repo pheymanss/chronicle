@@ -118,7 +118,7 @@ make_density <- function(dt,
 
 #' Add a density plot to a chronicle report
 #'
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.

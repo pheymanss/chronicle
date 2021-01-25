@@ -1,6 +1,6 @@
 #' Transforms a function call into an Rmarkdown chunk
 #'
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, this will be the default value.
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param dt_expr Name of the table to run fun on.
 #' @param fun Function to call.
 #' @param params List of parameters to be passed to fun.

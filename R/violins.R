@@ -125,7 +125,7 @@ make_violin <- function(dt,
 
 #' Add a violin plot to a chronicle report
 #'
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param dt Table with the data for the plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.

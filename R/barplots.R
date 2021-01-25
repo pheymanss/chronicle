@@ -151,7 +151,7 @@ make_barplot <- function(dt,
 
 #' Add a bar plot to a chronicle report
 #'
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param dt Table with the data for the plot.
 #' @param bars Name of the columns containing the different groups.
 #' @param value Name of the columns to use as values on the y axis of the plot. If NULL (default), counts will be used.

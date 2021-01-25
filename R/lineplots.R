@@ -140,7 +140,7 @@ make_lineplot <- function(dt,
 
 #' Add a line plot to a chronicle report
 #'
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param dt data.frame containing the data to plot.
 #' @param x Value on the x axis.
 #' @param y Value on the y axis.

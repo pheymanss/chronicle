@@ -109,7 +109,7 @@ make_dygraph <- function(dt,
 #' Add a dygraph to a chronicle report
 #'
 #' @param dt Data to plot
-#' @param report Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.
+#' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
 #' @param value Name of the column of the data frame containing the numerical variables of the time series.
 #' @param date Name of the column containing the date variable. It must be already a date or time object.
 #' @param groups Name of the columns containing the different groups.
