@@ -1,6 +1,6 @@
 #' Render the report using all objects from the global environment
 #'
-#' @param report The character string created by chronicle functions
+#' @param report Character string containing all the R Markdown chunks previously added (through chronicle::add_* functions.) Default is '', an empty report.
 #' @param filename The name of the .html file(s) created.
 #' @param output_format The format of the R Markdown file. Default is prettydoc. Currently supported: 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.
 #' @param directory The directory in which to render the .html report
@@ -53,7 +53,7 @@ render_report <- function(report = '',
                           keep_rmd = FALSE,
                           render_html = TRUE){
 
-  output_format <- match.arg(output_format, c('prettydoc',
+  output_format <- intersect(output_format, c('prettydoc',
                                               # 'bookdown',
                                               # 'pagedown',
                                               'ioslides',
@@ -104,15 +104,21 @@ render_report <- function(report = '',
   reports <- paste(header, report, sep = '\n')
 
   # write the report as an Rmarkdown file
-  rmd_filenames <- paste0(directory, '/', filename, '_', output_format, '.Rmd')
+  rmd_filenames <- paste0(paste0(directory, '/', filename),
+                     if(length(output_format) > 1){paste0('_', output_format)},
+                     '.Rmd')
   purrr::walk2(.x = reports,
                .y = rmd_filenames,
                .f = readr::write_lines)
 
   # render the Rmarkdown file
   if(render_html){
+    html_filenames <- paste0(paste0(directory, '/', filename),
+                             if(length(output_format) > 1){paste0('_', output_format)},
+                             '.html')
+
     purrr::walk2(.x = rmd_filenames,
-                 .y = paste0(filename, '_', output_format, '.html'),
+                 .y = html_filenames,
                  .f = ~rmarkdown::render(input = .x,
                                          output_file = .y,
                                          output_dir = directory,
