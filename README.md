@@ -19,7 +19,7 @@ demo_report <- add_title(title = 'This is how a chronicle report looks', title_l
     add_boxplot(dt = iris, groups = 'Species', value = 'Sepal.Length') %>%
     add_barplot(dt = iris, bars = 'Species', value = 'Sepal.Length')
     
-render_report(report <- demo_report
+render_report(report = demo_report,
               filename = 'chronicle_demo',
               output_format = c('prettydoc', 'ioslides')
               title = 'Demo Output',
