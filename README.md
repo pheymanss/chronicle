@@ -13,7 +13,7 @@ A quick demo:
 install.packages('chronicle')
 library(chronicle)
 
-demo_report <- add_title('This is how a chronicle report looks', title_level = 1) %>%
+demo_report <- add_title(title = 'This is how a chronicle report looks', title_level = 1) %>%
     add_density(dt = iris, groups = 'Species', value = 'Sepal.Length', faceted = F) %>%
     add_table(table = iris, table_title = 'This is the iris dataset. Smells good!', html_table_type = 'DT') %>%
     add_boxplot(dt = iris, groups = 'Species', value = 'Sepal.Length') %>%
