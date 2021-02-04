@@ -2,20 +2,32 @@
 % Please edit documentation in R/report_interface.R
 \name{output_config}
 \alias{output_config}
-\title{Wrapper to update chronicle from github}
+\title{Build the yaml output specification for an R Markdown}
 \usage{
 output_config(
   output_format,
+  title = "Output title",
+  author = "Author Name",
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
   fig_width = 11,
   fig_height = 5,
-  prettydoc_theme = "leonids"
+  rmdformats_theme = "downcute",
+  prettydoc_theme = "leonids",
+  docx_reference_file = NULL,
+  pptx_reference_file = NULL,
+  html_theme = "simplex",
+  rticles_template = "arxiv_article",
+  custom_output = NULL
 )
 }
 \arguments{
 \item{output_format}{The format of the R Markdown file.}
+
+\item{title}{Title of the report.}
+
+\item{author}{Author of the report.}
 
 \item{number_sections}{Whether or not to number the sections and subsections of the report.}
 
@@ -27,16 +39,22 @@ output_config(
 
 \item{fig_height}{Set the global figure height or the rmarkdown file.}
 
-\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is leonids.}
+\item{rmdformats_theme}{The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".}
+
+\item{prettydoc_theme}{Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".}
+
+\item{docx_reference_file}{The path for a blank Microsoft Word document to use as template for the 'word_document' output.}
+
+\item{pptx_reference_file}{The path for a blank Microsoft PowerPoint document to use as template for the 'powerpoint_presentation' output.}
+
+\item{html_theme}{The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".}
+
+\item{custom_output}{}
 }
 \value{
 The lines needed in the yaml header of an R Markdown file to render as the specified output type.
 }
 \description{
-Quality of life improvement until I submit the package to CRAN. Runs devtools::install_github('pheymanss/chronicle')
-Build the yaml output specification for an R Markdown
-}
-\details{
 Currently supported: prettydoc, ioslides, tufte, flexdashboard, slidy_presentation,
 html_document, html_notebook.
 }

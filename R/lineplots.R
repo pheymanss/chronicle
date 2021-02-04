@@ -12,6 +12,7 @@
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package, used in case plot_palette is unspecified or insufficient for the number of colors required.
+#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a grouped ggplot line plot.
@@ -42,7 +43,13 @@ make_lineplot <- function(dt,
                           x_axis_label = NULL,
                           y_axis_label = NULL,
                           plot_palette = NULL,
-                          plot_palette_generator = 'plasma'){
+                          plot_palette_generator = 'plasma',
+                          static = FALSE){
+
+  dt_cols <- c(x, y, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
@@ -75,7 +82,7 @@ make_lineplot <- function(dt,
 
   #if not provided, use palette from viridis::plasma
   if(is.null(plot_palette)){
-    plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .80)
+    plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .8)
   }else if(plot_palette_length > length(plot_palette)){
     warning('Insufficient palette length provided for a line plot of ',
             x, ',', y, if(!is.null(groups)){paste(' by', groups)},
@@ -95,9 +102,11 @@ make_lineplot <- function(dt,
                               ggplot2::aes(x = .data[[x]],
                                            y = .data[[y]],
                                            color = .data[[groups]])) +
-    ggplot2::geom_line() +
-    ggplot2::geom_point() +
+    ggplot2::geom_line(alpha = .85) +
+    ggplot2::geom_point(alpha = .85) +
     ggtheme() +
+    ggplot2::theme(panel.background = ggplot2::element_rect(fill = "transparent", colour = NA),
+                   plot.background =  ggplot2::element_rect(fill = "transparent", colour = NA)) +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
                                                                big.mark = ',')) +
@@ -133,8 +142,10 @@ make_lineplot <- function(dt,
   if(as.logical(smooth_trend)){
     lineplot <- lineplot +ggplot2::geom_smooth()
   }
+  if(!static){
+    lineplot <- plotly::ggplotly(lineplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
+  }
 
-  lineplot <- plotly::ggplotly(lineplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
   return(lineplot)
 }
 
@@ -192,6 +203,11 @@ add_lineplot <- function(report = '',
                          warning = FALSE,
                          fig_width = NULL,
                          fig_height = NULL){
+
+  dt_cols <- c(x, y, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   params <- list(x = x,
                  y = y,

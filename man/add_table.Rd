@@ -14,7 +14,7 @@ add_table(
 )
 }
 \arguments{
-\item{report}{character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()}
+\item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
 
 \item{table}{data.frame to print on the report.}
 

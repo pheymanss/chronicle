@@ -6,41 +6,48 @@
 \usage{
 render_report(
   report = "",
-  title = "Report Output",
-  author = "Author Name",
+  output_format = "rmdformats",
   filename = paste("report", gsub(x = Sys.Date(), pattern = "-", replacement = ""), sep
     = "_"),
-  output_format = "prettydoc",
-  prettydoc_theme = "leonids",
-  highlight = "github",
+  title = "Output title",
+  author = "Author Name",
+  directory = getwd(),
+  keep_rmd = FALSE,
+  render_reports = TRUE,
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
   fig_width = 11,
   fig_height = 5,
-  directory = getwd(),
-  keep_rmd = FALSE,
-  render_html = TRUE
+  rmdformats_theme = "downcute",
+  prettydoc_theme = "leonids",
+  docx_reference_file = NULL,
+  pptx_reference_file = NULL,
+  rticles_template = "arxiv_article",
+  html_theme = "simplex",
+  custom_output = NULL
 )
 }
 \arguments{
-\item{report}{The character string created by chronicle functions}
+\item{report}{Character string containing all the R Markdown chunks previously added (through chronicle::add_* functions.) Default is '', an empty report.}
+
+\item{output_format}{The format of the R Markdown file. Default is prettydoc. Currently  <- : 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.}
+
+\item{filename}{The name of the .html file(s) created.}
 
 \item{title}{Title of the report.}
 
 \item{author}{Author of the report.}
 
-\item{filename}{The name of the .html file(s) created.}
+\item{directory}{The directory in which to render the .html report}
 
-\item{output_format}{The format of the R Markdown file. Default is prettydoc. Currently supported: 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.}
+\item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
 
-\item{prettydoc_theme}{Name of the theme used on prettydoc. Default is leonids.}
-
-\item{highlight}{Rmarkdown highlight theming. Default is github highlighting.}
+\item{render_reports}{Whether or not to render the reports. Default is true Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files}
 
 \item{number_sections}{Whether or not to number the sections and subsections fo the report.}
 
-\item{table_of_content}{Whether or not to include a table fo content at the beginning of the report.}
+\item{table_of_content}{Whether or not to include a table fo content at the beginning of the report. Some formats does not allow overriding this.}
 
 \item{table_of_content_depth}{The depth of sections and subsections to be displayed on the table of content.}
 
@@ -48,11 +55,17 @@ render_report(
 
 \item{fig_height}{Set the global figure height or the rmarkdown file.}
 
-\item{directory}{The directory in which to render the .html report}
+\item{rmdformats_theme}{The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".}
 
-\item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
+\item{prettydoc_theme}{Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".}
 
-\item{render_html}{Whether or not to render the R Markdown to get the html files. Default is TRUE.}
+\item{docx_reference_file}{The path for a blank Microsoft Word document to use as template for the 'word_document' output.}
+
+\item{pptx_reference_file}{The path for a blank Microsoft PowerPoint document to use as template for the 'powerpoint_presentation' output.}
+
+\item{rticles_template}{The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"}
+
+\item{html_theme}{The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".}
 }
 \value{
 Renders the report as an HTML file.

@@ -12,6 +12,7 @@
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package, used in case plot_palette is unspecified or insufficient for the number of colors required.
+#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a grouped ggplot scatter plot.
@@ -42,7 +43,14 @@ make_scatterplot <- function(dt,
                           x_axis_label = NULL,
                           y_axis_label = NULL,
                           plot_palette = NULL,
-                          plot_palette_generator = 'plasma'){
+                          plot_palette_generator = 'plasma',
+                          static = FALSE){
+
+
+  dt_cols <- c(x, y, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
@@ -94,8 +102,10 @@ make_scatterplot <- function(dt,
                               ggplot2::aes(x = .data[[x]],
                                            y = .data[[y]],
                                            color = .data[[groups]])) +
-    ggplot2::geom_point() +
+    ggplot2::geom_point(alpha = .85) +
     ggtheme() +
+    ggplot2::theme(panel.background = ggplot2::element_rect(fill = "transparent", colour = NA),
+                   plot.background =  ggplot2::element_rect(fill = "transparent", colour = NA)) +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
                                                                big.mark = ',')) +
@@ -132,7 +142,10 @@ make_scatterplot <- function(dt,
     scatterplot <- scatterplot +ggplot2::geom_smooth()
   }
 
-  scatterplot <- plotly::ggplotly(scatterplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
+  if(!static){
+    scatterplot <- plotly::ggplotly(scatterplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
+  }
+
   return(scatterplot)
 }
 
@@ -190,6 +203,11 @@ add_scatterplot <- function(report = '',
                             warning = FALSE,
                             fig_width = NULL,
                             fig_height = NULL){
+
+  dt_cols <- c(x, y, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   params <- list(x = x,
                  y = y,

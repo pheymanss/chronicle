@@ -11,7 +11,8 @@ make_dygraph(
   groups = NULL,
   y_axis_label = NULL,
   plot_palette = NULL,
-  plot_palette_generator = "plasma"
+  plot_palette_generator = "plasma",
+  static = FALSE
 )
 }
 \arguments{
@@ -28,9 +29,11 @@ make_dygraph(
 \item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.}
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
+
+\item{static}{If TRUE, the output will be static ggplot chart instead of a dygraph. Default is FALSE.}
 }
 \value{
-A dygraph of the numerical variable specified, optionally split by the values of 'groups.'
+A dygraph of the numerical variable specified, optionally split by the values of 'groups'. If static is set to TRUE, it will return a ggplot line plot
 }
 \description{
 Plot a time series from a data frame through dygraph's interactive html plot interface

@@ -13,7 +13,8 @@ make_violin(
   x_axis_label = NULL,
   y_axis_label = NULL,
   plot_palette = NULL,
-  plot_palette_generator = "plasma"
+  plot_palette_generator = "plasma",
+  static = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ make_violin(
 \item{plot_palette}{Character vector of hex codes specifying the colors to use on the plot.}
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required}
+
+\item{static}{If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
 }
 \value{
 A plotly-ized version of a ggplot violin plot.

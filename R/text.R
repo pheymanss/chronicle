@@ -57,7 +57,7 @@ add_title <- function(report = '', title, title_level = 1){
 #'                         code = 'f <- function(x, y){paste(x,y)}
 #' f("a", "b")')
 # 'cat(html_report)
-add_code <- function(report = '', code, code_title = NULL, title_level = 2, eval = FALSE){
+add_code <- function(report = '', code, code_title = NULL, title_level = 2, eval = TRUE){
   if(!is.null(code_title)){
     report <- add_title(report, code_title, title_level = title_level)
   }

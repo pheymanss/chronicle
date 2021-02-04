@@ -10,6 +10,7 @@
 #' @param x_axis_label Label for the x axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
+#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a grouped ggplot histogram plot.
@@ -20,15 +21,21 @@
 #'                groups = 'Species')
 #' @importFrom rlang .data
 make_histogram <- function(dt,
-                         value,
-                         groups = NULL,
-                         binwidth = NULL,
-                         bins = NULL,
-                         scales = 'fixed',
-                         ggtheme = 'minimal',
-                         x_axis_label = NULL,
-                         plot_palette = NULL,
-                         plot_palette_generator = 'plasma'){
+                           value,
+                           groups = NULL,
+                           binwidth = NULL,
+                           bins = NULL,
+                           scales = 'fixed',
+                           ggtheme = 'minimal',
+                           x_axis_label = NULL,
+                           plot_palette = NULL,
+                           plot_palette_generator = 'plasma',
+                           static = FALSE){
+
+  dt_cols <- c(value, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
@@ -82,10 +89,12 @@ make_histogram <- function(dt,
                                           fill = .data[[groups]],
                                           color = .data[[groups]])) +
     ggtheme() +
+    ggplot2::theme(panel.background = ggplot2::element_rect(fill = "transparent", colour = NA),
+                   plot.background =  ggplot2::element_rect(fill = "transparent", colour = NA)) +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
                                                                big.mark = ',')) +
-    ggplot2::geom_histogram(alpha = 0.7) +
+    ggplot2::geom_histogram(alpha = 0.85) +
     ggplot2::scale_fill_manual(values = plot_palette) +
     ggplot2::scale_color_manual(values = plot_palette)
 
@@ -107,7 +116,11 @@ make_histogram <- function(dt,
   histogram <- histogram + ggplot2::facet_wrap(stats::as.formula(paste(groups, '~ .')),
                                                scales = scales)
 
-  histogram <- plotly::ggplotly(histogram,  tooltip = c('x', 'y', if(groups != 'groups'){'fill'}))
+  if(!static){
+    histogram <- plotly::ggplotly(histogram,
+                                  tooltip = c('x', 'y', if(groups != 'groups'){'fill'}))
+  }
+
   return(histogram)
 }
 
@@ -159,6 +172,11 @@ add_histogram <- function(report = '',
                         warning = FALSE,
                         fig_width = NULL,
                         fig_height = NULL){
+
+  dt_cols <- c(value, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   params <- list(value = value,
                  groups = groups,

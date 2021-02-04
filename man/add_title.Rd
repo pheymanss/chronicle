@@ -7,7 +7,7 @@
 add_title(report = "", title, title_level = 1)
 }
 \arguments{
-\item{report}{character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()}
+\item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
 
 \item{title}{The title to be added as a section.}
 

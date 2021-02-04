@@ -4,10 +4,10 @@
 \alias{add_code}
 \title{#' Add formatted code chunks to a chronicle Rmarkdown report}
 \usage{
-add_code(report = "", code, code_title = NULL, title_level = 2, eval = FALSE)
+add_code(report = "", code, code_title = NULL, title_level = 2, eval = TRUE)
 }
 \arguments{
-\item{report}{character containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report()}
+\item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
 
 \item{code}{Character string to be formated as an R code chunk. This code will not be excecuted when the report is rendered.}
 
@@ -15,7 +15,7 @@ add_code(report = "", code, code_title = NULL, title_level = 2, eval = FALSE)
 
 \item{title_level}{Level of the section title (ie, number of # on Rmarkdown syntax.)}
 
-\item{eval}{Excecute the code sent to the chunk. Default is FALSE.}
+\item{eval}{Execute the code sent to the chunk. Default is FALSE.}
 }
 \value{
 The text of the Rmarkdown report plus an additional section with the code chunk.

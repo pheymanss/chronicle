@@ -8,7 +8,8 @@
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
-#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required
+#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
+#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a ggplot box plot.
@@ -24,7 +25,13 @@ make_boxplot <- function(dt,
                          x_axis_label = NULL,
                          y_axis_label = NULL,
                          plot_palette = NULL,
-                         plot_palette_generator = 'plasma'){
+                         plot_palette_generator = 'plasma',
+                         static = FALSE){
+
+  dt_cols <- c(value, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
@@ -57,7 +64,7 @@ make_boxplot <- function(dt,
 
   #if not provided, use palette from viridis::plasma
   if(is.null(plot_palette)){
-    plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .80)
+    plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .8)
   }else if(plot_palette_length > length(plot_palette)){
     warning('Insufficient palette length provided for a box plot of ',
             value, if(!is.null(groups)){paste(' by', groups)},
@@ -81,8 +88,10 @@ make_boxplot <- function(dt,
                                           fill = .data[[groups]])) +
     ggplot2::scale_fill_manual(values = plot_palette) +
     ggplot2::scale_color_manual(values = plot_palette) +
-    ggplot2::geom_boxplot() +
+    ggplot2::geom_boxplot(alpha = .85) +
     ggtheme() +
+    ggplot2::theme(panel.background = ggplot2::element_rect(fill = "transparent", colour = NA),
+                   plot.background =  ggplot2::element_rect(fill = "transparent", colour = NA)) +
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
                                                                big.mark = ',')) +
@@ -117,7 +126,10 @@ make_boxplot <- function(dt,
     boxplot <- boxplot + ggplot2::ylab(y_axis_label)
   }
 
-  boxplot <- plotly::ggplotly(boxplot, tooltip = c('y', if(groups != 'groups'){'x'}))
+  if(!static){
+    boxplot <- plotly::ggplotly(boxplot, tooltip = c('y', if(groups != 'groups'){'x'}))
+  }
+
   return(boxplot)
 }
 
@@ -167,6 +179,11 @@ add_boxplot <- function(report = '',
                         warning = FALSE,
                         fig_width = NULL,
                         fig_height = NULL){
+
+  dt_cols <- c(value, groups)
+  if(any((!dt_cols %in% colnames(dt)))){
+    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
 
   params <- list(value = value,
                  groups = groups,

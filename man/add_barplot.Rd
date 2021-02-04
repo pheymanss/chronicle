@@ -28,7 +28,7 @@ add_barplot(
 )
 }
 \arguments{
-\item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.}
+\item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
 
 \item{dt}{Table with the data for the plot.}
 

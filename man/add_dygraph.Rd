@@ -23,7 +23,7 @@ add_dygraph(
 )
 }
 \arguments{
-\item{report}{Character string containing the text of an Rmarkdown report header (and possibly more chunks). Easily create one with chronicle::new_report(), and if NULL, that will be the default value.}
+\item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
 
 \item{dt}{Data to plot}
 
@@ -70,7 +70,7 @@ dat <- data.frame(x = c(rnorm(100, 2, 4),
                                 as.Date("2020-04-09"),
                                 'days'),
                             3))
-html_report <- add_dygraph(report = new_report(),
+html_report <- add_dygraph(report = '',
                           dt = dat,
                           value = 'x',
                           date = 'date')
