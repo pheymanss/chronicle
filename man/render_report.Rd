@@ -43,7 +43,7 @@ render_report(
 
 \item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
 
-\item{render_reports}{Whether or not to render the reports. Default is true Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files}
+\item{render_reports}{Whether or not to render the reports. Default is TRUE. Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files}
 
 \item{number_sections}{Whether or not to number the sections and subsections fo the report.}
 
@@ -66,6 +66,8 @@ render_report(
 \item{rticles_template}{The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"}
 
 \item{html_theme}{The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".}
+
+\item{custom_output}{[Experimental] A custom element for a yaml structure to specify as the output format of the R Markdown file. This is to get output formats not currently supported.#'}
 }
 \value{
 Renders the report as an HTML file.

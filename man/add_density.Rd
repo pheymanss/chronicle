@@ -66,7 +66,7 @@ An rmarkdown file as a character string, now containing a chunk for adding the s
 Add a density plot to a chronicle report
 }
 \examples{
-html_report <- add_density(report = new_report(),
+html_report <- add_density(report = "",
                            dt = iris,
                            value = 'Sepal.Length',
                            groups = 'Species')

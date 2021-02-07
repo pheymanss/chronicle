@@ -8,13 +8,12 @@ report_columns(
   dt,
   by_column = NULL,
   filename = NULL,
-  output_format = "prettydoc",
+  output_format = "rmdformats",
   author = "chronicle user",
   horizontal_bars = FALSE,
   sort_bars_value = FALSE,
   sort_bars_decreasingly = TRUE,
   prettydoc_theme = "leonids",
-  highlight = "github",
   number_sections = TRUE,
   table_of_content = TRUE,
   table_of_content_depth = 1,
@@ -22,7 +21,7 @@ report_columns(
   fig_height = 5,
   directory = getwd(),
   keep_rmd = FALSE,
-  render_html = TRUE
+  render_reports = TRUE
 )
 }
 \arguments{
@@ -44,8 +43,6 @@ report_columns(
 
 \item{prettydoc_theme}{Name of the theme used on prettydoc. Default is leonids.}
 
-\item{highlight}{Rmarkdown highlight theming. Default is github highlighting.}
-
 \item{number_sections}{Whether or not to number the sections and subsections fo the report.}
 
 \item{table_of_content}{Whether or not to include a table fo content at the beginning of the report.}
@@ -60,7 +57,7 @@ report_columns(
 
 \item{keep_rmd}{Whether or not to keep the .Rmd file. Default is false.}
 
-\item{render_html}{Whether or not to render the report as an interactive hmtl file.}
+\item{render_reports}{Whether or not to render the reports. Default is TRUE. Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files}
 }
 \value{
 Creates an HTML file with a plot for each column on the given table: a box plot for each numerical variable, and a bar plot for each categorical variable.

@@ -66,7 +66,7 @@ An rmarkdown chunk as a character string, now containing a chunk for adding the 
 Add a violin plot to a chronicle report
 }
 \examples{
-html_report <- add_violin(report = new_report(),
+html_report <- add_violin(report = "",
                              dt = iris,
                              value = 'Sepal.Length',
                              groups = 'Species', jitter = TRUE)

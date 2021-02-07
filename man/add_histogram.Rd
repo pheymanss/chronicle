@@ -69,7 +69,7 @@ An rmarkdown chunk as a character string, now containing a chunk for adding the 
 Add a histogram plot to a chronicle report
 }
 \examples{
-html_report <- add_histogram(report = new_report(),
+html_report <- add_histogram(report = "",
                              dt = iris,
                              value = 'Sepal.Length',
                              groups = 'Species')

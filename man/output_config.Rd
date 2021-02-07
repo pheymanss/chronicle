@@ -11,7 +11,7 @@ output_config(
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
-  fig_width = 11,
+  fig_width = 9,
   fig_height = 5,
   rmdformats_theme = "downcute",
   prettydoc_theme = "leonids",
@@ -49,7 +49,9 @@ output_config(
 
 \item{html_theme}{The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".}
 
-\item{custom_output}{}
+\item{rticles_template}{The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"}
+
+\item{custom_output}{[Experimental] A custom element for a yaml structure to specify as the output format of the R Markdown file. This is to get output formats not currently supported.}
 }
 \value{
 The lines needed in the yaml header of an R Markdown file to render as the specified output type.

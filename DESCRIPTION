@@ -1,7 +1,7 @@
 Package: chronicle
 Type: Package
 Title: Grammar for Creating R Markdown Reports
-Version: 0.2.1
+Version: 0.2.5
 Authors@R: person("Philippe", "Heymans Smith", email = "pheymanss@gmail.com",
     role = c("aut", "cre"))
 Description: A system for creating beautiful and interactive R Markdown reports

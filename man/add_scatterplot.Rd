@@ -75,7 +75,7 @@ An R Markdown file as a character string, now containing a chunk for the specifi
 Add a scatter plot to a chronicle report
 }
 \examples{
-html_report <- add_scatterplot(report = new_report(),
+html_report <- add_scatterplot(report = "",
                             dt = ggplot2::mpg,
                             x = 'hwy',
                             y = 'cty',
