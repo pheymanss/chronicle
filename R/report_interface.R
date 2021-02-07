@@ -7,7 +7,7 @@
 #' @param author Author of the report.
 #' @param directory The directory in which to render the .html report
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
-#' @param render_reports Whether or not to render the reports. Default is true Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files
+#' @param render_reports Whether or not to render the reports. Default is TRUE. Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files
 #' @param number_sections Whether or not to number the sections and subsections fo the report.
 #' @param table_of_content Whether or not to include a table fo content at the beginning of the report. Some formats does not allow overriding this.
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
@@ -19,7 +19,8 @@
 #' @param pptx_reference_file The path for a blank Microsoft PowerPoint document to use as template for the 'powerpoint_presentation' output.
 #' @param html_theme The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".
 #' @param rticles_template The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"
-#'
+
+#' @param custom_output [Experimental] A custom element for a yaml structure to specify as the output format of the R Markdown file. This is to get output formats not currently supported.#'
 #' @return Renders the report as an HTML file.
 #'
 #' @export
@@ -82,13 +83,16 @@ render_report <- function(report = '',
                                       pptx_reference_file = pptx_reference_file,
                                       html_theme = html_theme,
                                       rticles_template = rticles_template,
-                                      custom_output = NULL)
+                                      custom_output = custom_output)
+
 
   reports <- paste(headers, report, sep = '\n')
 
   # write the report as an Rmarkdown file
   rmd_filenames <- paste0(glue::glue('{directory}/{filename}'),
-                          if(length(output_format) > 1){paste0('_', output_format)},
+                          if(length(c(output_format, custom_output)) > 1){
+                            paste0('_', c(output_format, custom_output))
+                          },
                           '.Rmd')
 
   purrr::walk2(.x = reports,
@@ -132,8 +136,8 @@ render_report <- function(report = '',
 #' @param docx_reference_file The path for a blank Microsoft Word document to use as template for the 'word_document' output.
 #' @param pptx_reference_file The path for a blank Microsoft PowerPoint document to use as template for the 'powerpoint_presentation' output.
 #' @param html_theme The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".
-#' @param rticles_template
-#' @param custom_output
+#' @param rticles_template The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"
+#' @param custom_output [Experimental] A custom element for a yaml structure to specify as the output format of the R Markdown file. This is to get output formats not currently supported.
 #'
 #' @return The lines needed in the yaml header of an R Markdown file to render as the specified output type.
 #' @export
@@ -147,7 +151,7 @@ output_config <- function(output_format,
                           number_sections = FALSE,
                           table_of_content = FALSE,
                           table_of_content_depth = 1,
-                          fig_width = 11,
+                          fig_width = 9,
                           fig_height = 5,
                           rmdformats_theme = 'downcute',
                           prettydoc_theme = 'leonids',
@@ -198,7 +202,12 @@ output_config <- function(output_format,
     # INTERACTIVE  FORMATS ---
     # rmdformats
     output_format == 'rmdformats',
-    paste0('output: rmdformats::', rmdformats_theme),
+    paste0('output:
+  rmdformats::', rmdformats_theme, ':') %>%
+    paste(
+      if(!is.null(fig_width)){c(glue::glue('    fig_width: {fig_width}'))},
+      if(!is.null(fig_height)){c(glue::glue('    fig_height: {fig_height}'))},
+      sep = '\n'),
     # prettydoc
     output_format == 'prettydoc',
     paste('output:
@@ -312,8 +321,7 @@ output_config <- function(output_format,
           '',
           '```',
           sep = '\n'),
-    sep = '\n') %>%
-    purrr::set_names(output_format)
+    sep = '\n')
 
   return(header)
 }
