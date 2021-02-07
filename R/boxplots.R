@@ -27,11 +27,12 @@ make_boxplot <- function(dt,
                          plot_palette = NULL,
                          plot_palette_generator = 'plasma',
                          static = FALSE){
-
   dt_cols <- c(value, groups)
-  if(any((!dt_cols %in% colnames(dt)))){
+  if(any(!(dt_cols %in% colnames(dt)))){
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
+
+
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
@@ -180,9 +181,12 @@ add_boxplot <- function(report = '',
                         fig_width = NULL,
                         fig_height = NULL){
 
-  dt_cols <- c(value, groups)
-  if(any((!dt_cols %in% colnames(dt)))){
-    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  # if a data.frame is provided, check if the specified columns are present
+  if(is.data.frame(dt)){
+    dt_cols <- c(value, groups)
+    if(any(!(dt_cols %in% colnames(dt)))){
+      stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+    }
   }
 
   params <- list(value = value,

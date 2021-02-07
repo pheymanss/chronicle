@@ -39,16 +39,24 @@ make_barplot <- function(dt,
                          plot_palette = NULL,
                          plot_palette_generator = 'plasma',
                          static = FALSE){
+
+  # check that the specified columns are present in the data
   dt_cols <- c(bars, value, break_bars_by)
   if(any((!dt_cols %in% colnames(dt)))){
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
+
 
   dt1 <- data.table::setDT(copy(dt))
   # coerce to character
   dt1[[bars]] <- as.character(dt1[[bars]])
   if(!is.null(break_bars_by)){
     dt1[[break_bars_by]] <- as.character(dt1[[break_bars_by]])
+
+    # avoid a redundant specification
+    if(bars == break_bars_by){
+      break_bars_by <- NULL
+    }
   }
 
   # summarise table for plot. If no value is specified, use counts
@@ -217,9 +225,12 @@ add_barplot <- function(report = '',
                         fig_width = NULL,
                         fig_height = NULL){
 
-  dt_cols <- c(bars, value, break_bars_by)
-  if(any((!dt_cols %in% colnames(dt)))){
-    stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  # if a data.frame is provided, check if the specified columns are present
+  if(is.data.frame(dt)){
+    dt_cols <- c(bars, value, break_bars_by)
+    if(any((!dt_cols %in% colnames(dt)))){
+      stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+    }
   }
 
   params <- list(bars = bars,
