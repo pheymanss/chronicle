@@ -149,7 +149,7 @@ make_histogram <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_histogram(report = new_report(),
+#' html_report <- add_histogram(report = "",
 #'                              dt = iris,
 #'                              value = 'Sepal.Length',
 #'                              groups = 'Species')

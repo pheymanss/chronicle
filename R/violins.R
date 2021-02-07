@@ -159,7 +159,7 @@ make_violin <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_violin(report = new_report(),
+#' html_report <- add_violin(report = "",
 #'                              dt = iris,
 #'                              value = 'Sepal.Length',
 #'                              groups = 'Species', jitter = TRUE)

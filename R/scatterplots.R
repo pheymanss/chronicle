@@ -176,7 +176,7 @@ make_scatterplot <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_scatterplot(report = new_report(),
+#' html_report <- add_scatterplot(report = "",
 #'                             dt = ggplot2::mpg,
 #'                             x = 'hwy',
 #'                             y = 'cty',

@@ -146,7 +146,7 @@ make_density <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_density(report = new_report(),
+#' html_report <- add_density(report = "",
 #'                            dt = iris,
 #'                            value = 'Sepal.Length',
 #'                            groups = 'Species')

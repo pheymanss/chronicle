@@ -50,7 +50,6 @@ plot_columns <- function(dt, by_column = NULL){
 #' @param sort_bars_value Sort the bars by value. Default is FALSE.
 #' @param sort_bars_decreasingly Sort the bars decreasingly. Default is TRUE.
 #' @param prettydoc_theme Name of the theme used on prettydoc. Default is leonids.
-#' @param highlight Rmarkdown highlight theming. Default is github highlighting.
 #' @param number_sections Whether or not to number the sections and subsections fo the report.
 #' @param table_of_content Whether or not to include a table fo content at the beginning of the report.
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
@@ -58,7 +57,7 @@ plot_columns <- function(dt, by_column = NULL){
 #' @param fig_height Set the global figure height or the rmarkdown file.
 #' @param directory The directory in which to render the .html report
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
-#' @param render_html Whether or not to render the report as an interactive hmtl file.
+#' @param render_reports Whether or not to render the reports. Default is TRUE. Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files
 #'
 #' @return Creates an HTML file with a plot for each column on the given table: a box plot for each numerical variable, and a bar plot for each categorical variable.
 #' @export
@@ -73,13 +72,12 @@ plot_columns <- function(dt, by_column = NULL){
 report_columns <- function(dt,
                            by_column = NULL,
                            filename = NULL,
-                           output_format = 'prettydoc',
+                           output_format = 'rmdformats',
                            author = 'chronicle user',
                            horizontal_bars = FALSE,
                            sort_bars_value = FALSE,
                            sort_bars_decreasingly = TRUE,
                            prettydoc_theme = 'leonids',
-                           highlight = 'github',
                            number_sections = TRUE,
                            table_of_content = TRUE,
                            table_of_content_depth = 1,
@@ -87,17 +85,19 @@ report_columns <- function(dt,
                            fig_height = 5,
                            directory = getwd(),
                            keep_rmd = FALSE,
-                           render_html = TRUE){
+                           render_reports = TRUE){
 
   # create report title
   dt_name <- deparse(substitute(dt))
-  title <- paste(dt_name, 'Variable Analysis', if(!is.null(by_column)){paste('by', by_column)})
+  title <- paste(dt_name,
+                 'Variable Analysis',
+                 if(!is.null(by_column)){paste('by', by_column)})
 
   # create filename
   if(is.null(filename)){
-    filename <- gsub('[^[:alnum:][:space:]]',
-                     '',
-                     dt_name) %>%
+    filename <- gsub(pattern = '[^[:alnum:][:space:]]',
+                     replacement = '',
+                     x = dt_name) %>%
       paste0('_column_analysis')
   }
 
@@ -105,11 +105,12 @@ report_columns <- function(dt,
   nums <- dt %>% purrr::keep(is.numeric) %>% colnames()
   nums %<>% purrr::set_names(nums)
   if(length(nums) > 0){
-    num_plots <- nums %>% purrr::map(~add_boxplot(dt = dt_name,
+    num_plots <- nums %>% purrr::map(~chronicle::add_boxplot(dt = dt_name,
                                                   value = .x,
                                                   groups = by_column,
                                                   title_level = 1,
-                                                  jitter = TRUE))
+                                                  jitter = TRUE,
+                                                  boxplot_title = .x))
   }else{
     num_plots <- NULL
   }
@@ -118,13 +119,14 @@ report_columns <- function(dt,
   cats <- dt %>% purrr::discard(is.numeric) %>% colnames()
   cats %<>% purrr::set_names(cats)
   if(length(cats) > 0){
-    cat_plots <- cats %>% purrr::map(~add_barplot(dt = dt_name,
+    cat_plots <- cats %>% purrr::map(~chronicle::add_barplot(dt = dt_name,
                                                   bars = .x,
                                                   break_bars_by = by_column,
                                                   horizontal = horizontal_bars,
                                                   sort_by_value = sort_bars_value,
                                                   sort_decreasing = sort_bars_decreasingly,
-                                                  title_level = 1))
+                                                  title_level = 1,
+                                                  barplot_title = .x))
   }else{
     cat_plots <- NULL
   }
@@ -142,7 +144,7 @@ report_columns <- function(dt,
       purrr::reduce(paste, sep = '\n')
   }
 
-  if(!render_html){
+  if(!render_reports){
     return((plot_sections))
   }
 
@@ -153,7 +155,6 @@ report_columns <- function(dt,
                            filename = filename,
                            output_format = output_format,
                            prettydoc_theme = prettydoc_theme,
-                           highlight = highlight,
                            number_sections = number_sections,
                            table_of_content = table_of_content,
                            table_of_content_depth = table_of_content_depth,
@@ -161,6 +162,6 @@ report_columns <- function(dt,
                            fig_height = fig_height,
                            directory = directory,
                            keep_rmd = keep_rmd,
-                           render_html = render_html)
+                           render_reports = render_reports)
 
 }

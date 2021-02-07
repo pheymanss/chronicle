@@ -176,7 +176,7 @@ make_lineplot <- function(dt,
 #' @export
 #'
 #' @examples
-#' html_report <- add_lineplot(report = new_report(),
+#' html_report <- add_lineplot(report = "",
 #'                             dt = ggplot2::mpg,
 #'                             x = 'hwy',
 #'                             y = 'cty',
