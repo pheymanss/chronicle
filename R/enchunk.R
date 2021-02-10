@@ -48,9 +48,9 @@ add_chunk <- function(report = '',
 
   # build chunk header with given parameters
   chunk_header <- paste0('```{r, ',
-                         paste(c(paste('echo = ', echo),
-                                 paste('message = ', message),
-                                 paste('warning = ', warning),
+                         paste(c(paste0('echo=', echo),
+                                 paste0('message=', message),
+                                 paste0('warning=', warning),
                                  if(!is.null(fig_width)){paste('fig.width =', fig_width)},
                                  if(!is.null(fig_width)){paste('fig.height =', fig_height)}),
                                collapse = ', '),
