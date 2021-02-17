@@ -27,7 +27,7 @@ render_report(report = demo_report,
               keep_rmd = TRUE)
 ```
 
-And you can see the ouput of the prettydoc format [here](https://pheymanss.github.io/).
+And you can see the ouput of the prettydoc format [here](https://pheymanss.github.io/chronicle-demos/).
 
 #### How to use chronicle?
 
