@@ -94,9 +94,11 @@ make_raincloud <- function(dt,
   plot_dt <- data.table::copy(dt)
   data.table::setDT(plot_dt)
 
+  #NULL assignment to please RMD check
+  dens_height <- density <- iqr <- lower_whisker <- median <-  p25 <- p75 <- quantile <- upper_whisker <- NULL
   plot_dt[, dens_height := max(density(get(value), na.rm = TRUE)$y), by = groups]
 
-  boxplot_stats <- plot_dt[, .(median = round(median(get(value), na.rm = TRUE), 2),
+  boxplot_stats <- plot_dt[, list(median = round(median(get(value), na.rm = TRUE), 2),
                                mean = round(mean(get(value), na.rm = TRUE), 2),
                                p25 = round(quantile(get(value), .25, na.rm = TRUE),2),
                                p75 = round(quantile(get(value), .75, na.rm = TRUE),2),
