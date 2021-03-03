@@ -32,8 +32,6 @@ make_boxplot <- function(dt,
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
 
-
-
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
                                 yes = 1,
@@ -63,7 +61,7 @@ make_boxplot <- function(dt,
                                    'viridis' = viridis::viridis,
                                    viridis::plasma)
 
-  #if not provided, use palette from viridis::plasma
+  #if not provided, use palette from plot_palette_generator
   if(is.null(plot_palette)){
     plot_palette <- plot_palette_generator(plot_palette_length, begin = 0, end = .8)
   }else if(plot_palette_length > length(plot_palette)){

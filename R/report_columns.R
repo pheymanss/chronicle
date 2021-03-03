@@ -41,14 +41,15 @@ plot_columns <- function(dt, by_column = NULL){
 #' columns are plotted in box plots. If 'by_column' is provided,
 #' these plots will be grouped by the values of that column
 #'
-#' @param dt Table to be plotted.
-#' @param by_column Name of the column to use as groups for all the other plots
-#' @param filename Name of the output file.
-#' @param output_format The format of the R Markdown file. Default is prettydoc. Currently supported: 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.
-#' @param author Author of the report.
+#' @param dt Table to be studied.
+#' @param by_column Name of the column to use as groups for all the other plots. Default is NULL.
+#' @param filename Name of the output file. If not supplied, a generic name will be created.
+#' @param output_format The format of the R Markdown output. Default is 'rmdformats'.
+#' @param author Author of the report. Default is NULL.
 #' @param horizontal_bars Plot bars for categorical variables horizontally. Default is FALSE
 #' @param sort_bars_value Sort the bars by value. Default is FALSE.
 #' @param sort_bars_decreasingly Sort the bars decreasingly. Default is TRUE.
+#' @param rmdformats_theme The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".
 #' @param prettydoc_theme Name of the theme used on prettydoc. Default is leonids.
 #' @param number_sections Whether or not to number the sections and subsections fo the report.
 #' @param table_of_content Whether or not to include a table fo content at the beginning of the report.
@@ -73,16 +74,17 @@ report_columns <- function(dt,
                            by_column = NULL,
                            filename = NULL,
                            output_format = 'rmdformats',
-                           author = 'chronicle user',
+                           author = NULL,
                            horizontal_bars = FALSE,
                            sort_bars_value = FALSE,
                            sort_bars_decreasingly = TRUE,
+                           rmdformats_theme = 'downcute',
                            prettydoc_theme = 'leonids',
                            number_sections = TRUE,
                            table_of_content = TRUE,
                            table_of_content_depth = 1,
-                           fig_width = 11,
-                           fig_height = 5,
+                           fig_width = 9,
+                           fig_height = 4,
                            directory = getwd(),
                            keep_rmd = FALSE,
                            render_reports = TRUE){
@@ -105,12 +107,11 @@ report_columns <- function(dt,
   nums <- dt %>% purrr::keep(is.numeric) %>% colnames()
   nums %<>% purrr::set_names(nums)
   if(length(nums) > 0){
-    num_plots <- nums %>% purrr::map(~chronicle::add_boxplot(dt = dt_name,
+    num_plots <- nums %>% purrr::map(~chronicle::add_raincloud(dt = dt_name,
                                                   value = .x,
                                                   groups = by_column,
-                                                  title_level = 1,
-                                                  jitter = TRUE,
-                                                  boxplot_title = .x))
+                                                  title_level = 2,
+                                                  raincloud_title = .x))
   }else{
     num_plots <- NULL
   }
@@ -125,7 +126,7 @@ report_columns <- function(dt,
                                                   horizontal = horizontal_bars,
                                                   sort_by_value = sort_bars_value,
                                                   sort_decreasing = sort_bars_decreasingly,
-                                                  title_level = 1,
+                                                  title_level = 2,
                                                   barplot_title = .x))
   }else{
     cat_plots <- NULL
@@ -148,12 +149,23 @@ report_columns <- function(dt,
     return((plot_sections))
   }
 
+  # add skimr::skim
+  plot_sections <- paste(add_code(code = paste0('skimr::skim(', dt_name, ')'),
+                                  code_title = 'Dataset overview',
+                                  echo = FALSE),
+                         add_title(title = 'Column Plots',
+                                   title_level = 1),
+                         plot_sections,
+                         sep = '\n')
+
+
   # render report
   chronicle::render_report(report = plot_sections,
                            title = title,
                            author = author,
                            filename = filename,
                            output_format = output_format,
+                           rmdformats_theme = rmdformats_theme,
                            prettydoc_theme = prettydoc_theme,
                            number_sections = number_sections,
                            table_of_content = table_of_content,

@@ -1,10 +1,11 @@
 #' Render the report using all objects from the global environment
 #'
 #' @param report Character string containing all the R Markdown chunks previously added (through chronicle::add_* functions.) Default is '', an empty report.
-#' @param output_format The format of the R Markdown file. Default is prettydoc. Currently  <- : 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.
-#' @param filename The name of the .html file(s) created.
-#' @param title Title of the report.
-#' @param author Author of the report.
+#' @param output_format The format of the R Markdown file. Default is prettydoc. Currently supported: 'bookdown', 'github_document', 'html_document', 'html_notebook', 'ioslides', 'pagedown', 'powerpoint_presentation', 'pdf', 'prettydoc', 'rmdformats', 'rolldown', 'rticles', 'slidy_presentation', 'tufte_handout', 'tufte_html', 'word_document'. Also 'felxdashboard' and 'xaringan' technically compile, but the layout is stiff in flexdashborad and altogether incorrect in xaringan.
+#' @param filename The name of the .html file(s) created. If NULL (default), no author will be added.
+#' @param title Title of the report. If NULL (default), no title will be added.
+#' @param author Author of the report. If NULL (default), no author will be added.
+#' @param include_date Whether or not to include the date as part of the header. Default is TRUE.
 #' @param directory The directory in which to render the .html report
 #' @param keep_rmd Whether or not to keep the .Rmd file. Default is false.
 #' @param render_reports Whether or not to render the reports. Default is TRUE. Set render_reports = FALSE and keep_rmd = TRUE to only build the R Markdown files
@@ -49,15 +50,16 @@ render_report <- function(report = '',
                                                 pattern = '-',
                                                 replacement = ''),
                                            sep = '_'),
-                          title = 'Output title',
-                          author = 'Author Name',
+                          title = NULL,
+                          author = NULL,
+                          include_date = TRUE,
                           directory = getwd(),
                           keep_rmd = FALSE,
                           render_reports = TRUE,
                           number_sections = FALSE,
                           table_of_content = FALSE,
                           table_of_content_depth = 1,
-                          fig_width = 10,
+                          fig_width = 9,
                           fig_height = 5,
                           rmdformats_theme = 'downcute',
                           prettydoc_theme = 'leonids',
@@ -72,6 +74,7 @@ render_report <- function(report = '',
   headers <- chronicle::output_config(output_format = output_format,
                                       title = title,
                                       author = author,
+                                      include_date = include_date,
                                       number_sections = number_sections,
                                       table_of_content = table_of_content,
                                       table_of_content_depth = table_of_content_depth,
@@ -129,8 +132,9 @@ render_report <- function(report = '',
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
-#' @param title Title of the report.
-#' @param author Author of the report.
+#' @param title Title of the report. If NULL (default), no title will be added.
+#' @param author Author of the report. If NULL (default), no author will be added.
+#' @param include_date Whether or not to include the date as part of the header. Default is TRUE.
 #' @param rmdformats_theme The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".
 #' @param prettydoc_theme Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".
 #' @param docx_reference_file The path for a blank Microsoft Word document to use as template for the 'word_document' output.
@@ -146,12 +150,13 @@ render_report <- function(report = '',
 #' cat(output_config('prettydoc'))
 #' cat(output_config('ioslides'))
 output_config <- function(output_format,
-                          title = 'Output title',
-                          author = 'Author Name',
+                          title = NULL,
+                          author = NULL,
+                          include_date = TRUE,
                           number_sections = FALSE,
                           table_of_content = FALSE,
                           table_of_content_depth = 1,
-                          fig_width = 9,
+                          fig_width = 8,
                           fig_height = 5,
                           rmdformats_theme = 'downcute',
                           prettydoc_theme = 'leonids',
@@ -203,11 +208,7 @@ output_config <- function(output_format,
     # rmdformats
     output_format == 'rmdformats',
     paste0('output:
-  rmdformats::', rmdformats_theme, ':') %>%
-    paste(
-      if(!is.null(fig_width)){c(glue::glue('    fig_width: {fig_width}'))},
-      if(!is.null(fig_height)){c(glue::glue('    fig_height: {fig_height}'))},
-      sep = '\n'),
+  rmdformats::', rmdformats_theme),
     # prettydoc
     output_format == 'prettydoc',
     paste('output:
@@ -216,8 +217,6 @@ output_config <- function(output_format,
     paste(
       ifelse(number_sections, '    number_sections: true', '    number_sections: false'),
       ifelse(table_of_content, '    toc: true', '    toc: false'),
-      if(!is.null(fig_width)){c(glue::glue('    fig_width: {fig_width}'))},
-      if(!is.null(fig_height)){c(glue::glue('    fig_height: {fig_height}'))},
       sep = '\n'),
   # bookdown,
     output_format == 'bookdown',
@@ -261,8 +260,6 @@ output_config <- function(output_format,
       ifelse(number_sections, '  number_sections: true', '  number_sections: false'),
       ifelse(table_of_content, '  toc: true', '  toc: false'),
       if(table_of_content){'  toc_float: true'},
-      if(!is.null(fig_width)){c(glue::glue('  fig_width: {fig_width}'))},
-      if(!is.null(fig_height)){c(glue::glue('  fig_height: {fig_height}'))},
       sep = '\n'),
   # html_notebook
   output_format == 'html_notebook',
@@ -297,15 +294,15 @@ output_config <- function(output_format,
   # # rticles
   output_format == 'rticles',
   'output:
-  rticles::jss_article:
-    pandoc_args: [-V, documentclass=?]')
+  rticles::jss_article')
 
+  # build header
   header <- paste(
     # title, date, author
     paste('---',
-          paste('title: ', title),
-          'date: "`r Sys.Date()`"',
-          paste('author: ', author),
+          if(!is.null(title)){paste('title: ', title)},
+          if(include_date){'date: "`r Sys.Date()`"'},
+          if(!is.null(author)){paste('author: ', author)},
           sep = '\n'),
     # output file configs
     c(output_conf, custom_output),
@@ -315,6 +312,8 @@ output_config <- function(output_format,
           '```{r, echo = FALSE, message = FALSE, warning = FALSE}',
           'library(chronicle)',
           paste('set_static <-', set_static),
+          paste('figure_width <-', fig_width),
+          paste('figure_height <-', fig_height),
           '# If you want this report to be reproducible, add on this chunk all',
           '# the libraries, data loading and preprocessing done before executing',
           '# the chronicle report.',

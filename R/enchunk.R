@@ -51,14 +51,14 @@ add_chunk <- function(report = '',
                          paste(c(paste0('echo=', echo),
                                  paste0('message=', message),
                                  paste0('warning=', warning),
-                                 if(!is.null(fig_width)){paste('fig.width =', fig_width)},
-                                 if(!is.null(fig_width)){paste('fig.height =', fig_height)}),
+                                 if(!is.null(fig_width)){paste('fig.width=', fig_width)}else{'fig.width=figure_width'},
+                                 if(!is.null(fig_width)){paste('fig.height=', fig_height)}else{'fig.height=figure_height'}),
                                collapse = ', '),
                          '}')
 
   # parse function call
   fun_name <- deparse(substitute(fun))
-  vals_assignment <- paste(names(params), paste0("'", params, "'"), sep = ' = ', collapse = ', ') %>%
+  vals_assignment <- paste(names(params), paste0("'", params, "'"), sep = ' = ', collapse = ',\n  ') %>%
     paste0(', static = set_static')
 
   fun_call <- glue::glue('{fun_name}(dt = {dt_expr}, ') %>%

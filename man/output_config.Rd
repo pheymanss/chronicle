@@ -6,12 +6,13 @@
 \usage{
 output_config(
   output_format,
-  title = "Output title",
-  author = "Author Name",
+  title = NULL,
+  author = NULL,
+  include_date = TRUE,
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
-  fig_width = 9,
+  fig_width = 8,
   fig_height = 5,
   rmdformats_theme = "downcute",
   prettydoc_theme = "leonids",
@@ -25,9 +26,11 @@ output_config(
 \arguments{
 \item{output_format}{The format of the R Markdown file.}
 
-\item{title}{Title of the report.}
+\item{title}{Title of the report. If NULL (default), no title will be added.}
 
-\item{author}{Author of the report.}
+\item{author}{Author of the report. If NULL (default), no author will be added.}
+
+\item{include_date}{Whether or not to include the date as part of the header. Default is TRUE.}
 
 \item{number_sections}{Whether or not to number the sections and subsections of the report.}
 

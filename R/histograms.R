@@ -24,7 +24,7 @@ make_histogram <- function(dt,
                            value,
                            groups = NULL,
                            binwidth = NULL,
-                           bins = NULL,
+                           bins = 30,
                            scales = 'fixed',
                            ggtheme = 'minimal',
                            x_axis_label = NULL,
@@ -94,7 +94,7 @@ make_histogram <- function(dt,
     ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01,
                                                                decimal.mark = '.',
                                                                big.mark = ',')) +
-    ggplot2::geom_histogram(alpha = 0.85) +
+    ggplot2::geom_histogram(alpha = 0.85, bins = bins) +
     ggplot2::scale_fill_manual(values = plot_palette) +
     ggplot2::scale_color_manual(values = plot_palette)
 

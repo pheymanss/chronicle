@@ -9,7 +9,7 @@ make_histogram(
   value,
   groups = NULL,
   binwidth = NULL,
-  bins = NULL,
+  bins = 30,
   scales = "fixed",
   ggtheme = "minimal",
   x_axis_label = NULL,

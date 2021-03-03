@@ -6,7 +6,8 @@
 #' @param groups Name of the column containing the different groups.
 #' @param faceted If TRUE (default), each group will be plotted separately.
 #' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
-#' @param smooth_trend If TRUE, adds a ggplot2::geom_smooth() line to the plot.
+#' @param show_trend If TRUE, adds a ggplot2::geom_smooth() line to the plot.
+#' @param trend_method The method ggplot2::geom_smooth will use. Default is 'loess', which is a local polynomial regression fit
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -38,7 +39,8 @@ make_lineplot <- function(dt,
                           groups = NULL,
                           faceted = FALSE,
                           scales = 'fixed',
-                          smooth_trend = FALSE,
+                          show_trend = FALSE,
+                          trend_method = 'loess',
                           ggtheme = 'minimal',
                           x_axis_label = NULL,
                           y_axis_label = NULL,
@@ -93,7 +95,8 @@ make_lineplot <- function(dt,
   }
 
   # create the plot structure depending of the group
-  if(is.null(groups)){
+  null_groups <- is.null(groups)
+  if(null_groups){
     # make a dummy group variable
     groups <- 'groups'
     dt$groups <- 'A'
@@ -112,7 +115,7 @@ make_lineplot <- function(dt,
                                                                big.mark = ',')) +
     ggplot2::scale_color_manual(values = plot_palette)
 
-  if(is.null(groups)){
+  if(null_groups){
     lineplot <- lineplot + ggplot2::theme(legend.position = 'none')
   }
 
@@ -139,8 +142,8 @@ make_lineplot <- function(dt,
   }
 
   # smooth trend line
-  if(as.logical(smooth_trend)){
-    lineplot <- lineplot +ggplot2::geom_smooth()
+  if(as.logical(show_trend)){
+    lineplot <- lineplot + ggplot2::geom_smooth(formula = y~x, method = trend_method)
   }
   if(!static){
     lineplot <- plotly::ggplotly(lineplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
@@ -158,7 +161,8 @@ make_lineplot <- function(dt,
 #' @param groups Name of the column containing the different groups.
 #' @param faceted If TRUE (default), each group will be plotted separately.
 #' @param scales From ggplot2::facet_wrap: Should scales be 'fixed', 'free', or free in one dimension ('free_x', 'free_y'). Default is 'fixed'.
-#' @param smooth_trend If TRUE, adds a ggplot2::geom_smooth() line to the plot. Default is FALSE.
+#' @param show_trend If TRUE, adds a ggplot2::geom_smooth() line to the plot.
+#' @param trend_method The method ggplot2::geom_smooth will use. Default is 'loess', which is a local polynomial regression fit
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
@@ -190,7 +194,8 @@ add_lineplot <- function(report = '',
                          groups = NULL,
                          faceted = NULL,
                          scales = NULL,
-                         smooth_trend = NULL,
+                         show_trend = NULL,
+                         trend_method = NULL,
                          ggtheme = NULL,
                          x_axis_label = NULL,
                          y_axis_label = NULL,
@@ -214,7 +219,8 @@ add_lineplot <- function(report = '',
                  groups = groups,
                  faceted = faceted,
                  scales = scales,
-                 smooth_trend = smooth_trend,
+                 show_trend = show_trend,
+                 trend_method = trend_method,
                  ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,

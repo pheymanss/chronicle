@@ -9,15 +9,16 @@ render_report(
   output_format = "rmdformats",
   filename = paste("report", gsub(x = Sys.Date(), pattern = "-", replacement = ""), sep
     = "_"),
-  title = "Output title",
-  author = "Author Name",
+  title = NULL,
+  author = NULL,
+  include_date = TRUE,
   directory = getwd(),
   keep_rmd = FALSE,
   render_reports = TRUE,
   number_sections = FALSE,
   table_of_content = FALSE,
   table_of_content_depth = 1,
-  fig_width = 11,
+  fig_width = 9,
   fig_height = 5,
   rmdformats_theme = "downcute",
   prettydoc_theme = "leonids",
@@ -31,13 +32,15 @@ render_report(
 \arguments{
 \item{report}{Character string containing all the R Markdown chunks previously added (through chronicle::add_* functions.) Default is '', an empty report.}
 
-\item{output_format}{The format of the R Markdown file. Default is prettydoc. Currently  <- : 'prettydoc', 'ioslides', 'tufte', 'flexdashboard', 'slidy_presentation', 'html_document' and 'html_notebook'.}
+\item{output_format}{The format of the R Markdown file. Default is prettydoc. Currently supported: 'bookdown', 'github_document', 'html_document', 'html_notebook', 'ioslides', 'pagedown', 'powerpoint_presentation', 'pdf', 'prettydoc', 'rmdformats', 'rolldown', 'rticles', 'slidy_presentation', 'tufte_handout', 'tufte_html', 'word_document'. Also 'felxdashboard' and 'xaringan' technically compile, but the layout is stiff in flexdashborad and altogether incorrect in xaringan.}
 
-\item{filename}{The name of the .html file(s) created.}
+\item{filename}{The name of the .html file(s) created. If NULL (default), no author will be added.}
 
-\item{title}{Title of the report.}
+\item{title}{Title of the report. If NULL (default), no title will be added.}
 
-\item{author}{Author of the report.}
+\item{author}{Author of the report. If NULL (default), no author will be added.}
+
+\item{include_date}{Whether or not to include the date as part of the header. Default is TRUE.}
 
 \item{directory}{The directory in which to render the .html report}
 
