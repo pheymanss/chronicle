@@ -23,7 +23,7 @@ library(chronicle)
 
 demo_report <-
   add_text(text_title = "This is the output of a chronicle call",
-           text = "Each element has been added through and add_* function.",
+           text = "Each element has been added through an add_* function.",
            title_level = 1) %>%
   add_table(table = head(iris),
             table_title = "A glimpse at the iris dataset",
@@ -49,50 +49,48 @@ render_report(report = demo_report,
               keep_rmd = TRUE)
 ```
 
-You can see the output of this call
-[here](https://pheymanss.github.io/chronicle-demos/quick_demo), and a
-full showcase of the elements supported by chronicle
-[here](https://pheymanss.github.io/chronicle-demos/showcase).
+You can see [the output of this call](https://pheymanss.github.io/chronicle-demos/quick_demo),
+and a [full showcase of all the elements supported by chronicle](https://pheymanss.github.io/chronicle-demos/showcase).
 
 What happens behind these calls is that chronicle writes an R Markdown
-for you! you can see the report we’ve built by calling it through
+for you! you can see the report we've built by calling it through
 `cat()`
 
 ``` r
 cat(demo_report)
 ```
 
-    
-    
-    # This is the output of a chronicle call
-    
-    Each element has been added through and add_* function.
-    
-    # A glimpse at the iris dataset
-    
-    ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-    knitr::kable(head(iris))
-    ```
-    
-    ## Distribution of sepal length by species
-    ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=figure_width, fig.height=figure_height}
-    make_raincloud(dt = iris, value = 'Sepal.Length',
-      groups = 'Species',
-      adjust = '0.5',
-      include_boxplot = 'TRUE',
-      include_mean = 'FALSE',
-      include_median = 'TRUE',
-      force_all_jitter_obs = 'FALSE',
-      ggtheme = 'minimal',
-      plot_palette_generator = 'plasma', static = set_static)
-    ```
-    
-    ## Comparison of petal width and length
-    ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=figure_width, fig.height=figure_height}
-    make_scatterplot(dt = iris, x = 'Petal.Width',
-      y = 'Petal.Length',
-      groups = 'Species', static = set_static)
-    ```
+     
+     
+     # This is the output of a chronicle call
+     
+     Each element has been added through an add_* function.
+     
+     # A glimpse at the iris dataset
+     
+     ```{r, echo = FALSE, message = FALSE, warning = FALSE}
+     knitr::kable(head(iris))
+     ```
+     
+     ## Distribution of sepal length by species
+     ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=figure_width, fig.height=figure_height}
+     make_raincloud(dt = iris, value = 'Sepal.Length',
+       groups = 'Species',
+       adjust = '0.5',
+       include_boxplot = 'TRUE',
+       include_mean = 'FALSE',
+       include_median = 'TRUE',
+       force_all_jitter_obs = 'FALSE',
+       ggtheme = 'minimal',
+       plot_palette_generator = 'plasma', static = set_static)
+     ```
+     
+     ## Comparison of petal width and length
+     ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=figure_width, fig.height=figure_height}
+     make_scatterplot(dt = iris, x = 'Petal.Width',
+       y = 'Petal.Length',
+       groups = 'Species', static = set_static)
+     ```
 
 ### The `make_*` family of functions
 
@@ -114,11 +112,15 @@ make_barplot(dt = ggplot2::mpg,
              static = TRUE)
 ```
 
+![chronicle bar plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme1.png)
+
 ``` r
 make_raincloud(dt = iris,
              value = 'Sepal.Length',
              groups = 'Species')
 ```
+
+![chronicle rain cloud plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme2.png)
 
 ### Rendering chronicle reports
 
@@ -128,7 +130,7 @@ for rendering the report, which gives chronicle the capability to render
 the reports with full visibility to all objects in the global
 environment. This gives chronicle two of its main strengths:
 
-1.  You don’t need to include nor run all your data processing code
+1.  You don't need to include nor run all your data processing code
     again for a new report output. This means you can build several
     report recipes for different audiences out of the same data
     processing, with each one having their own report recipe.
@@ -167,5 +169,65 @@ report_columns(dt = palmerpenguins::penguins,
                by_column = 'species')
 ```
 
-you can see the example of this output
-[here](https://pheymanss.github.io/chronicle-demos/report_columns)
+And you can see [the output of this
+call](https://pheymanss.github.io/chronicle-demos/report_columns)
+
+### Supported formats
+
+As of version 0.2.5, chronicle can output both static and dynamic
+outputs. Dynamic outputs refer to R Markdown formats that support html
+widgets, hence the elements added will be dynamic plots (plotly,
+dygraph, DT). For static outputs, these will roll back to ggplot and
+static table prints.
+
+##### Dynamic outputs (html)
+
+-   bookdown
+-   github\_document (you are reading one right now!)
+-   [html\_document](https://pheymanss.github.io/chronicle-demos/outputs/output_html_document)
+-   [html\_notebook](https://pheymanss.github.io/chronicle-demos/outputs/output_html_notebook.nb.html)
+-   [ioslides](https://pheymanss.github.io/chronicle-demos/outputs/output_ioslides)
+-   [prettydoc](https://pheymanss.github.io/chronicle-demos/outputs/output_prettydoc)
+-   [rmdformats](https://pheymanss.github.io/chronicle-demos/outputs/output_rmdformats)
+    (this is currently the default)
+-   [slidy\_presentation](https://pheymanss.github.io/chronicle-demos/outputs/output_slidy_presentation)
+-   [tufte\_html](https://pheymanss.github.io/chronicle-demos/outputs/output_tufte_html)
+
+##### Static outputs
+
+-   [pagedown](https://pheymanss.github.io/chronicle-demos/outputs/output_pagedown)
+-   pdf
+-   powerpoint\_presentation
+-   [rolldown](https://pheymanss.github.io/chronicle-demos/outputs/output_rolldown)
+-   tufte\_handout
+-   word\_document
+
+Additionally,
+[{flexdashboard}](https://rmarkdown.rstudio.com/flexdashboard/) and
+[{xaringan}](https://slides.yihui.org/xaringan/#1) technically compile,
+but the layout is stiff in flexdashboard and altogether incorrect in
+xaringan. Also, [{rticles}](https://github.com/rstudio/rticles) support
+can technically be added, but that would involve a plethora of
+additional parameters for the header, and frankly, writing a journal
+article is not the intended use of the package
+
+### Supported report elements
+
+I highly encourage you to review the enitre
+[showcase](https://pheymanss.github.io/chronicle-demos/showcase), words
+are not as adequate to describe each element. But for a quick glance, as
+of version 0.2.5 chronicle supports:
+
+-   Bar plots
+-   Box plots
+-   Code (optionally evaluated)
+-   Density plots
+-   Dygraphs
+-   Histograms
+-   Line plots
+-   Rain cloud plots
+-   Scatter plots
+-   Tables
+-   Texts
+-   Titles
+-   Violin plots
