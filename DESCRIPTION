@@ -37,4 +37,5 @@ Suggests: bookdown,
     tufte,
     xaringan
 LazyData: true
+VignetteBuilder: knitr
 RoxygenNote: 7.1.1
