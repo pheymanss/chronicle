@@ -4,8 +4,7 @@ Title: Grammar for Creating R Markdown Reports
 Version: 0.2.5
 Authors@R: person("Philippe", "Heymans Smith", email = "pheymanss@gmail.com",
     role = c("aut", "cre"))
-Description: A system for creating beautiful and interactive R Markdown reports
-    by adding modules like plots and tables to an empty header.
+Description: A system for creating  R Markdown reports with a sequential syntax inspired by ggplot2
 Depends: R (>= 3.5.0),
     rlang,
     magrittr,
