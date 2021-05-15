@@ -9,13 +9,13 @@ plot_columns(dt, by_column = NULL)
 \arguments{
 \item{dt}{Table to be plotted.}
 
-\item{by_column}{Name of the colum to use as groups for all the other plots}
+\item{by_column}{Name of the column to use as groups for all the other plots}
 }
 \value{
 A list of plotly::ggplotly objects, one for each column of the table.
 }
 \description{
-Make boxplots for each numerical variable on a table, and barplots for each
+Make raincloud plots for each numerical variable on a table, and barplots for each
 categorical variable.
 }
 \examples{

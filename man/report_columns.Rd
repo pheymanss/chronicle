@@ -9,9 +9,10 @@ report_columns(
   by_column = NULL,
   filename = NULL,
   output_format = "rmdformats",
+  title = NULL,
   author = NULL,
-  horizontal_bars = FALSE,
-  sort_bars_value = FALSE,
+  horizontal_bars = TRUE,
+  sort_bars_value = TRUE,
   sort_bars_decreasingly = TRUE,
   rmdformats_theme = "downcute",
   prettydoc_theme = "leonids",
@@ -33,6 +34,8 @@ report_columns(
 \item{filename}{Name of the output file. If not supplied, a generic name will be created.}
 
 \item{output_format}{The format of the R Markdown output. Default is 'rmdformats'.}
+
+\item{title}{Title of the report. If NULL (default), no title will be added.}
 
 \item{author}{Author of the report. Default is NULL.}
 

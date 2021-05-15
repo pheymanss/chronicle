@@ -1,10 +1,10 @@
 #' Plot all columns of a table
 #'
-#' Make boxplots for each numerical variable on a table, and barplots for each
+#' Make raincloud plots for each numerical variable on a table, and barplots for each
 #' categorical variable.
 #'
 #' @param dt Table to be plotted.
-#' @param by_column Name of the colum to use as groups for all the other plots
+#' @param by_column Name of the column to use as groups for all the other plots
 #'
 #' @return A list of plotly::ggplotly objects, one for each column of the table.
 #' @export
@@ -26,9 +26,11 @@ plot_columns <- function(dt, by_column = NULL){
   cats <- dt %>% purrr::discard(is.numeric) %>% colnames()
   cats %<>% purrr::set_names(cats)
   if(length(cats) > 0){
-    cat_plots <- cats %>% purrr::map(~make_barplot(dt = dt,
+    cat_plots <- cats %>% purrr::map(~chronicle::make_barplot(dt = dt,
                                                    bars = .x,
-                                                   break_bars_by = by_column))
+                                                   break_bars_by = by_column,
+                                                   horizontal = TRUE,
+                                                   sort_by_value = TRUE))
   }
   return(append(num_plots, cat_plots)[colnames(dt)])
 }
@@ -45,6 +47,7 @@ plot_columns <- function(dt, by_column = NULL){
 #' @param by_column Name of the column to use as groups for all the other plots. Default is NULL.
 #' @param filename Name of the output file. If not supplied, a generic name will be created.
 #' @param output_format The format of the R Markdown output. Default is 'rmdformats'.
+#' @param title Title of the report. If NULL (default), no title will be added.
 #' @param author Author of the report. Default is NULL.
 #' @param horizontal_bars Plot bars for categorical variables horizontally. Default is FALSE
 #' @param sort_bars_value Sort the bars by value. Default is FALSE.
@@ -74,9 +77,10 @@ report_columns <- function(dt,
                            by_column = NULL,
                            filename = NULL,
                            output_format = 'rmdformats',
+                           title = NULL,
                            author = NULL,
-                           horizontal_bars = FALSE,
-                           sort_bars_value = FALSE,
+                           horizontal_bars = TRUE,
+                           sort_bars_value = TRUE,
                            sort_bars_decreasingly = TRUE,
                            rmdformats_theme = 'downcute',
                            prettydoc_theme = 'leonids',
@@ -91,9 +95,11 @@ report_columns <- function(dt,
 
   # create report title
   dt_name <- deparse(substitute(dt))
+  if(is.null(title)){
   title <- paste(dt_name,
                  'Variable Analysis',
                  if(!is.null(by_column)){paste('by', by_column)})
+  }
 
   # create filename
   if(is.null(filename)){
@@ -153,7 +159,7 @@ report_columns <- function(dt,
   plot_sections <- paste(add_code(code = paste0('skimr::skim(', dt_name, ')'),
                                   code_title = 'Dataset overview',
                                   echo = FALSE),
-                         add_title(title = 'Column Plots',
+                         add_title(title = 'Variable Plots',
                                    title_level = 1),
                          plot_sections,
                          sep = '\n')
