@@ -9,6 +9,7 @@ add_boxplot(
   dt,
   value,
   groups = NULL,
+  split_groups_by = NULL,
   jitter = TRUE,
   ggtheme = NULL,
   x_axis_label = NULL,
@@ -32,6 +33,8 @@ add_boxplot(
 \item{value}{Name of the column to use as values on the y axis of the plot.}
 
 \item{groups}{Name of the column containing the different groups.}
+
+\item{split_groups_by}{Column to split each group.}
 
 \item{jitter}{Whether to add the actual values of each observation over the box plots. Only done when dt has 1000 rows or less.}
 

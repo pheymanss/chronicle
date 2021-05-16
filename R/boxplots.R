@@ -3,6 +3,7 @@
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
+#' @param split_groups_by Column to split each group.
 #' @param jitter Whether to add the actual values of each observation over the box plots. Only done when dt has 1000 rows or less.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
@@ -20,6 +21,7 @@
 make_boxplot <- function(dt,
                          value,
                          groups = NULL,
+                         split_groups_by = NULL,
                          jitter = FALSE,
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
@@ -27,15 +29,21 @@ make_boxplot <- function(dt,
                          plot_palette = NULL,
                          plot_palette_generator = 'plasma',
                          static = FALSE){
-  dt_cols <- c(value, groups)
+  dt_cols <- c(value, groups, split_groups_by)
   if(any(!(dt_cols %in% colnames(dt)))){
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
+
+  # force groups and split_groups_by to characters
+  if(!is.null(groups)){
+    set_classes(dt, character = c(groups, split_groups_by))
   }
 
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
                                 yes = 1,
                                 no = data.table::uniqueN(dt[[groups]]))
+
 
 
   # map the gg theme to its corresponding ggplot2::theme_ function
@@ -81,10 +89,16 @@ make_boxplot <- function(dt,
     groups <- 'groups'
     dt$groups <- 'A'
   }
+
+  # define if the x axis will be 'groups' or 'split_groups_by'
+  x <- ifelse(is.null(split_groups_by), groups, split_groups_by)
+  fill <- ifelse(is.null(split_groups_by), groups, split_groups_by)
+
+  # build the plot
   boxplot <- ggplot2::ggplot(dt,
-                             ggplot2::aes(x = .data[[groups]],
+                             ggplot2::aes(x = .data[[x]],
                                           y = .data[[value]],
-                                          fill = .data[[groups]])) +
+                                          fill = .data[[fill]])) +
     ggplot2::scale_fill_manual(values = plot_palette) +
     ggplot2::scale_color_manual(values = plot_palette) +
     ggplot2::geom_boxplot(alpha = .85) +
@@ -95,6 +109,13 @@ make_boxplot <- function(dt,
                                                                decimal.mark = '.',
                                                                big.mark = ',')) +
     ggplot2::theme(legend.position = 'none')
+
+  if(!is.null(split_groups_by)){
+    boxplot <- boxplot +
+      ggplot2::facet_wrap(as.formula(paste0('~', groups))) +
+      ggplot2::theme(strip.background = ggplot2::element_rect(fill="grey", color = NA),
+                     panel.border = ggplot2::element_rect(fill = NA, color = "grey"))
+  }
 
   if(hide_groups){
     boxplot <- boxplot +
@@ -138,6 +159,7 @@ make_boxplot <- function(dt,
 #' @param dt Table with the data for the plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
+#' @param split_groups_by Column to split each group.
 #' @param jitter Whether to add the actual values of each observation over the box plots. Only done when dt has 1000 rows or less.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
@@ -165,6 +187,7 @@ add_boxplot <- function(report = '',
                         dt,
                         value,
                         groups = NULL,
+                        split_groups_by = NULL,
                         jitter = TRUE,
                         ggtheme = NULL,
                         x_axis_label = NULL,
@@ -189,6 +212,7 @@ add_boxplot <- function(report = '',
 
   params <- list(value = value,
                  groups = groups,
+                 split_groups_by = split_groups_by,
                  ggtheme = ggtheme,
                  jitter = jitter,
                  x_axis_label = x_axis_label,
