@@ -11,6 +11,8 @@ report_columns(
   output_format = "rmdformats",
   title = NULL,
   author = NULL,
+  plot_palette = NULL,
+  plot_palette_generator = "plasma",
   horizontal_bars = TRUE,
   sort_bars_value = TRUE,
   sort_bars_decreasingly = TRUE,
@@ -38,6 +40,10 @@ report_columns(
 \item{title}{Title of the report. If NULL (default), no title will be added.}
 
 \item{author}{Author of the report. Default is NULL.}
+
+\item{plot_palette}{Character vector of hex codes to use on plots.}
+
+\item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.}
 
 \item{horizontal_bars}{Plot bars for categorical variables horizontally. Default is FALSE}
 
