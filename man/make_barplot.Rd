@@ -9,8 +9,9 @@ make_barplot(
   bars,
   value = NULL,
   break_bars_by = NULL,
+  up_to_n_bars = 20,
   horizontal = FALSE,
-  sort_by_value = FALSE,
+  sort_by_value = horizontal,
   sort_decreasing = TRUE,
   ggtheme = "minimal",
   x_axis_label = NULL,
@@ -29,9 +30,11 @@ make_barplot(
 
 \item{break_bars_by}{Name of the categorical variable used to break each bar}
 
-\item{horizontal}{Plot the bars horizontally. Default is FALSE}
+\item{up_to_n_bars}{Plot up to this number of bars. If there are more distinct values in 'bars', the function will summarise them into an 'Others' category. Default is 20.}
 
-\item{sort_by_value}{Sort the bars by value. Default is FALSE}
+\item{horizontal}{Plot the bars horizontally. Default is FALSE.}
+
+\item{sort_by_value}{Sort the bars by value. Default is FALSE unless horizontal is TRUE.}
 
 \item{sort_decreasing}{Sort the values decreasingly. Default is TRUE, but sort_by_value must also be TRUE.}
 
@@ -45,7 +48,7 @@ make_barplot(
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required}
 
-\item{static}{If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
+\item{static}{If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
 }
 \value{
 A plotly-ized version of a ggplot bar plot.

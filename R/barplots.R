@@ -4,15 +4,16 @@
 #' @param bars Name of the column containing the different groups.
 #' @param value Name of the columns to use as value on the y axis of the plot. If NULL (default), counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
-#' @param horizontal Plot the bars horizontally. Default is FALSE
-#' @param sort_by_value Sort the bars by value. Default is FALSE
+#' @param up_to_n_bars Plot up to this number of bars. If there are more distinct values in 'bars', the function will summarise them into an 'Others' category. Default is 20.
+#' @param horizontal Plot the bars horizontally. Default is FALSE.
+#' @param sort_by_value Sort the bars by value. Default is FALSE unless horizontal is TRUE.
 #' @param sort_decreasing Sort the values decreasingly. Default is TRUE, but sort_by_value must also be TRUE.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required
-#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
+#' @param static If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a ggplot bar plot.
@@ -30,8 +31,9 @@ make_barplot <- function(dt,
                          bars,
                          value = NULL,
                          break_bars_by = NULL,
+                         up_to_n_bars = 20,
                          horizontal = FALSE,
-                         sort_by_value = FALSE,
+                         sort_by_value = horizontal,
                          sort_decreasing = TRUE,
                          ggtheme = 'minimal',
                          x_axis_label = NULL,
@@ -46,27 +48,40 @@ make_barplot <- function(dt,
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
 
+  # coerce groups to character
+  if(!is.null(bars)){
+    dt <- chronicle::set_classes(dt, character = unique(c(bars, break_bars_by)))
+  }
 
-  dt1 <- data.table::setDT(copy(dt))
-  # coerce to character
-  dt1[[bars]] <- as.character(dt1[[bars]])
+
+  # avoid a redundant specification
   if(!is.null(break_bars_by)){
-    dt1[[break_bars_by]] <- as.character(dt1[[break_bars_by]])
-
-    # avoid a redundant specification
     if(bars == break_bars_by){
       break_bars_by <- NULL
     }
   }
 
-  # summarise table for plot. If no value is specified, use counts
+  # make a copy of the data to avoid modifying user data.tables by reference
+  dt1 <- data.table::setDT(data.table::copy(dt))
+  data.table::setkeyv(x = dt1, cols = c(bars, break_bars_by))
+
+  # summarise table for plot. If no value is specified, use value counts
   if(is.null(value)){
     value = 'Count'
-    plot_dt <- dt1[, list(Count = .N), by = c(bars, break_bars_by)]
+    plot_dt <- dt1[, list(value = .N), by = c(bars, break_bars_by)]
   }else{
     plot_dt <- dt1[, list(value = sum(get(value))), by = c(bars, break_bars_by)]
-    data.table::setnames(plot_dt, 'value', value)
   }
+
+  # if there are more than  values to plot, make an 'other' category
+  if(data.table::uniqueN(plot_dt[[bars]]) > up_to_n_bars){
+    top_n <- data.table::setorderv(x = data.table::copy(plot_dt), cols = bars, order = -1)[[bars]][1:up_to_n_bars]
+    plot_dt[!(get(bars) %in% top_n), (bars) := 'Others']
+    plot_dt <- plot_dt[, list(value = sum(value)), by = c(bars, break_bars_by)]
+  }
+
+  # correct value name after finishing the computations
+  data.table::setnames(x = plot_dt, old = 'value', new = value)
 
   if(as.logical(sort_by_value)){
     # if horizontal, flip the value of sort_decreasing (will apply ggplot2::coord_flip)
@@ -160,7 +175,9 @@ make_barplot <- function(dt,
     barplot <- barplot + ggplot2::coord_flip()
   }
 
-  if(!static){
+  # bar plots are computed on do not need to stay static for file size concerns
+  # they are created on summarised data
+  if(!as.logical(static)){
     barplot <- plotly::ggplotly(barplot,
                                tooltip = c('x', 'y', if(!is.null(break_bars_by)){'fill'})) # %>%
       # plotly::layout(paper_bgcolor  = "rgba(0, 0, 0, 0)",
@@ -171,7 +188,6 @@ make_barplot <- function(dt,
 }
 
 
-
 #' Add a bar plot to a chronicle report
 #'
 #' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
@@ -179,8 +195,9 @@ make_barplot <- function(dt,
 #' @param bars Name of the columns containing the different groups.
 #' @param value Name of the columns to use as values on the y axis of the plot. If NULL (default), counts will be used.
 #' @param break_bars_by Name of the categorical variable used to break each bar
-#' @param horizontal Plot the bars horizontally. Default is FALSE
-#' @param sort_by_value Sort the bars by value. Default is FALSE
+#' @param up_to_n_bars Plot up to this number of bars. If there are more distinct values in 'bars', the function will summarise them into an 'Others' category. Default is 20
+#' @param horizontal Plot the bars horizontally. Default is FALSE.
+#' @param sort_by_value Sort the bars by value. Default is FALSE.
 #' @param sort_decreasing Sort the values decreasingly. Default is TRUE, but sort_by_value must also be TRUE.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
@@ -209,6 +226,7 @@ add_barplot <- function(report = '',
                         bars,
                         value = NULL,
                         break_bars_by = NULL,
+                        up_to_n_bars = 20,
                         horizontal = FALSE,
                         sort_by_value = FALSE,
                         sort_decreasing = TRUE,
@@ -233,7 +251,10 @@ add_barplot <- function(report = '',
     }
   }
 
-  params <- list(bars = bars,
+  params <- list(dt = ifelse(test = is.character(dt),
+                             yes = dt,
+                             no = deparse(substitute(dt))),
+                 bars = bars,
                  value = value,
                  break_bars_by = break_bars_by,
                  horizontal = horizontal,
@@ -242,15 +263,13 @@ add_barplot <- function(report = '',
                  ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,
-                 plot_palette = plot_palette,
-                 plot_palette_generator = plot_palette_generator) %>%
+                 plot_palette = ifelse(is.null(plot_palette), 'params$plot_palette', plot_palette),
+                 plot_palette_generator = ifelse(is.null(plot_palette_generator), 'params$plot_palette_generator', plot_palette_generator),
+                 static = 'params$set_static') %>%
     purrr::discard(is.null)
 
   report <- chronicle::add_chunk(report = report,
-                                 dt_expr = ifelse(test = is.character(dt),
-                                                  yes = dt,
-                                                  no = deparse(substitute(dt))),
-                                 fun = make_barplot,
+                                 fun = chronicle::make_barplot,
                                  params = params,
                                  chunk_title = barplot_title,
                                  title_level = title_level,
@@ -261,3 +280,4 @@ add_barplot <- function(report = '',
                                  fig_height = fig_height)
   return(report)
 }
+
