@@ -7,7 +7,7 @@
 #' @param y_axis_label Label for the y axis. x axis is the date (or time) so it is not needed
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot. Default is RColorBrewer's Paired and Spectral colors concatenated.
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.
-#' @param static If TRUE, the output will be static ggplot chart instead of a dygraph. Default is FALSE.
+#' @param static If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of a dygraph. Default is FALSE.
 #'
 #' @return A dygraph of the numerical variable specified, optionally split by the values of 'groups'. If static is set to TRUE, it will return a ggplot line plot
 #' @export
@@ -44,7 +44,14 @@ make_dygraph <- function(dt,
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
 
-  if(!static){
+  # coerce groups to character
+  if(!is.null(groups)){
+    dt <- chronicle::set_classes(dt, character = c(groups))
+  }
+
+  # only build dygraphs if the dataset is under 10,000 rows
+  #if not, build a line plot
+  if(!as.logical(static) & nrow(dt) <= 10000){
   # check how many colors are needed for plotting
   plot_palette_length <- ifelse(test = is.null(groups),
                                 yes = 1,
@@ -182,19 +189,20 @@ add_dygraph <- function(report = '',
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
 
-  params <- list(value = value,
+  params <- list(dt = ifelse(test = is.character(dt),
+                             yes = dt,
+                             no = deparse(substitute(dt))),
+                 value = value,
                  date = date,
                  groups = groups,
                  y_axis_label = y_axis_label,
-                 plot_palette = plot_palette,
-                 plot_palette_generator = plot_palette_generator) %>%
+                 plot_palette = ifelse(is.null(plot_palette), 'params$plot_palette', plot_palette),
+                 plot_palette_generator = ifelse(is.null(plot_palette_generator), 'params$plot_palette_generator', plot_palette_generator),
+                 static = 'params$set_static') %>%
     purrr::discard(is.null)
 
   report <- chronicle::add_chunk(report = report,
-                                 dt_expr = ifelse(test = is.character(dt),
-                                                  yes = dt,
-                                                  no = deparse(substitute(dt))),
-                                 fun = make_dygraph,
+                                 fun = chronicle::make_dygraph,
                                  params = params,
                                  chunk_title = dygraph_title,
                                  title_level = title_level,
@@ -202,7 +210,8 @@ add_dygraph <- function(report = '',
                                  message = message,
                                  warning = warning,
                                  fig_width = fig_width,
-                                 fig_height = fig_height)
+                                 fig_height = fig_height,
+                                 guess_title = TRUE)
   return(report)
 }
 
