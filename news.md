@@ -1,14 +1,14 @@
 # chronicle 0.3
 
 ## Features
-- Plot colors can be set for all the report on render_report(), whether by explicitly listing the colors as strings on plot_palette or by selecting a plot_palette generator from the viridis packages.
-- Bar plots: Shows up to N bars and bins all ohter groups into an 'Other' category. This is controlled by the new parameter 'up_to_n_bars', which defaults to 20. 
-- add_boxplot and make_boxplot have a new parameter 'split_groups_by' to split each group into several box plots by another column
-- report_columns defaults to horizontal bar plots for categorical variables
-- report_columns adds a grouped skim call when by_column is not NULL
-- new function add_image() brings image support!
+- The colors of the plot can be set for all the report on `render_report()`, whether by explicitly listing the colors as strings on `plot_palette` or by selecting a `plot_palette_generator` from the viridis packages ('viridis', 'plasma', 'magma', 'cividis', etc). 
+- Bar plots now display up to N bars, and bins all ohter groups into an 'Other' category. This is controlled by the new parameter `up_to_n_bars`, which defaults to 20. 
+- Box plots have a new parameter `split_groups_by` to have a second level of disagregation for each group.
+- `report_columns` defaults to horizontal bar plots for categorical variables
+- `report_columns` adds a grouped `skimr::skim` call when called with a non NULL `by_column`.
+- new function `add_image()` brings image support!
 
-Fixes:
+## Fixes:
 - Automatically switch to static plots for larger (+10,000 rows) data to avoid unusably large file sizes.
-- Formatted output of all functions that write code. Swithced most from paste() to glue() to also get clean prints in console.
-- Cleaned code in ecnhunk, now the parameters are dynamically enquoted depending on their types (no more 'FALSE' and 'TRUE' on make_* calls visible in the .rmd
+- Formatted output of all functions that write code. Also swithced most from `paste()` to `glue()` to get clean prints in console.
+- Cleaned code in `add_chunk`, now the parameters are dynamically enquoted depending on their types (no more 'FALSE' and '12' on the calls visible in the .Rmd).
