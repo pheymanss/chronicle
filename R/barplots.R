@@ -277,7 +277,8 @@ add_barplot <- function(report = '',
                                  message = message,
                                  warning = warning,
                                  fig_width = fig_width,
-                                 fig_height = fig_height)
+                                 fig_height = fig_height,
+                                 guess_title = TRUE)
   return(report)
 }
 
