@@ -10,7 +10,9 @@ add_table(
   table_title = NULL,
   title_level = 2,
   html_table_type = c("DT", "kable"),
-  table_params = NULL
+  table_params = NULL,
+  fig_width = NULL,
+  fig_height = NULL
 )
 }
 \arguments{
@@ -24,7 +26,11 @@ add_table(
 
 \item{html_table_type}{Either print a knitr::kable table or a DT htmlwidget.}
 
-\item{table_params}{Single character string with any additional parameters to be passed to either knitr::kable() or DT::datatable(), depending on html_table_type}
+\item{table_params}{A named list of additional parameters to be passed to either knitr::kable() or DT::datatable(), depending on html_table_type}
+
+\item{fig_width}{Width of the figures printed from this code.}
+
+\item{fig_height}{Height of the figures printed from this code.}
 }
 \value{
 An R Markdown file as a character string, now containing a chunk for the specified table.

@@ -30,7 +30,7 @@ make_dygraph(
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 
-\item{static}{If TRUE, the output will be static ggplot chart instead of a dygraph. Default is FALSE.}
+\item{static}{If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of a dygraph. Default is FALSE.}
 }
 \value{
 A dygraph of the numerical variable specified, optionally split by the values of 'groups'. If static is set to TRUE, it will return a ggplot line plot

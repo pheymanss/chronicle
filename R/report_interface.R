@@ -14,6 +14,8 @@
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
+#' @param plot_palette Character vector of hex codes to use on plots.
+#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.
 #' @param rmdformats_theme The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".
 #' @param prettydoc_theme Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".
 #' @param docx_reference_file The path for a blank Microsoft Word document to use as template for the 'word_document' output.
@@ -37,7 +39,7 @@
 #' #   add_table(table = mpg,
 #' #             table_title = 'And this is mpg',
 #' #             html_table_type = 'DT')
-#' #render_report(report = report_demo,
+#' # render_report(report = report_demo,
 #' #              title = 'Demo Output',
 #' #              author = 'This is the author',
 #' #              filename = 'demo_output',
@@ -61,6 +63,8 @@ render_report <- function(report = '',
                           table_of_content_depth = 1,
                           fig_width = 9,
                           fig_height = 5,
+                          plot_palette = NULL,
+                          plot_palette_generator = 'plasma',
                           rmdformats_theme = 'downcute',
                           prettydoc_theme = 'leonids',
                           docx_reference_file = NULL,
@@ -80,6 +84,8 @@ render_report <- function(report = '',
                                       table_of_content_depth = table_of_content_depth,
                                       fig_width = fig_width,
                                       fig_height = fig_height,
+                                      plot_palette = plot_palette,
+                                      plot_palette_generator = plot_palette_generator,
                                       rmdformats_theme = rmdformats_theme,
                                       prettydoc_theme = prettydoc_theme,
                                       docx_reference_file = docx_reference_file,
@@ -132,6 +138,8 @@ render_report <- function(report = '',
 #' @param table_of_content_depth The depth of sections and subsections to be displayed on the table of content.
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
+#' @param plot_palette Character vector of hex codes to use on plots.
+#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required. Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.
 #' @param title Title of the report. If NULL (default), no title will be added.
 #' @param author Author of the report. If NULL (default), no author will be added.
 #' @param include_date Whether or not to include the date as part of the header. Default is TRUE.
@@ -141,7 +149,7 @@ render_report <- function(report = '',
 #' @param pptx_reference_file The path for a blank Microsoft PowerPoint document to use as template for the 'powerpoint_presentation' output.
 #' @param html_theme The theme to be used for [hmtl_document](https://www.datadreaming.org/post/r-markdown-theme-gallery/) outputs. Default is "simplex".
 #' @param rticles_template The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"
-#' @param custom_output [Experimental] A custom element for a yaml structure to specify as the output format of the R Markdown file. This is to get output formats not currently supported.
+#' @param custom_output [Experimental] This is to get output formats not currently supported. It should be a YAML element with the corresponding output
 #'
 #' @return The lines needed in the yaml header of an R Markdown file to render as the specified output type.
 #' @export
@@ -158,6 +166,8 @@ output_config <- function(output_format,
                           table_of_content_depth = 1,
                           fig_width = 8,
                           fig_height = 5,
+                          plot_palette = NULL,
+                          plot_palette_generator = 'plasma',
                           rmdformats_theme = 'downcute',
                           prettydoc_theme = 'leonids',
                           docx_reference_file = NULL,
@@ -296,31 +306,37 @@ output_config <- function(output_format,
   'output:
   rticles::jss_article')
 
+  title_spec <- paste0(if(!is.null(title)){paste('title:', title, '\n')},
+                       if(!is.null(author)){paste('author: ', author, '\n')},
+                       if(include_date){'date: "`r Sys.Date()`" \n'})
+
+  output_spec <- c(output_conf, custom_output)
+
+  param_spec <- glue::glue(
+"params:
+  set_static: {set_static}
+  figure_width: {fig_width}
+  figure_height: {fig_height}
+  plot_palette: !r c({chronicle::add_quotes(x = plot_palette, collapse = ', ')})
+  plot_palette_generator: '{plot_palette_generator}'", .trim=FALSE)
+
+  initial_chunk <-
+'```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(chronicle)
+# If you want this report to be reproducible, add all the libraries, data
+# loading and preprocessing code into this chunk before knitting.
+```'
+
   # build header
-  header <- paste(
-    # title, date, author
-    paste('---',
-          if(!is.null(title)){paste('title: ', title)},
-          if(include_date){'date: "`r Sys.Date()`"'},
-          if(!is.null(author)){paste('author: ', author)},
-          sep = '\n'),
-    # output file configs
-    c(output_conf, custom_output),
-    # close yaml and add first chunk
-    paste('---',
-          '\n',
-          '```{r, echo = FALSE, message = FALSE, warning = FALSE}',
-          'library(chronicle)',
-          paste('set_static <-', set_static),
-          paste('figure_width <-', fig_width),
-          paste('figure_height <-', fig_height),
-          '# If you want this report to be reproducible, add on this chunk all',
-          '# the libraries, data loading and preprocessing done before executing',
-          '# the chronicle report.',
-          '',
-          '```',
-          sep = '\n'),
-    sep = '\n')
+  header <- glue::glue(
+"---
+{title_spec}
+{output_spec}
+{param_spec}
+---
+
+{initial_chunk}
+")
 
   return(header)
 }

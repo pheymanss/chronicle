@@ -6,7 +6,6 @@
 \usage{
 add_chunk(
   report = "",
-  dt_expr = NULL,
   fun,
   params,
   chunk_title = NULL,
@@ -15,13 +14,12 @@ add_chunk(
   message = FALSE,
   warning = FALSE,
   fig_width = NULL,
-  fig_height = NULL
+  fig_height = NULL,
+  guess_title = FALSE
 )
 }
 \arguments{
 \item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
-
-\item{dt_expr}{Name of the table to run fun on.}
 
 \item{fun}{Function to call.}
 
@@ -40,6 +38,8 @@ add_chunk(
 \item{fig_width}{Width of the plot (in inches).}
 
 \item{fig_height}{Height of the plot (in inches).}
+
+\item{guess_title}{If TRUE, tries to generate a generic title for chronicle::make_* family of functions (eg 'Sepal.Length vs Sepal.Width by Species' for make_scatter)}
 }
 \value{
 An rmarkdown chunk as a character string.
@@ -49,9 +49,9 @@ Transforms a function call into an Rmarkdown chunk
 }
 \examples{
 library(chronicle)
-html_chunk <- add_chunk(fun = make_barplot,
-                        dt = 'iris',
-                        params = list(value = 'Sepal.Width',
+html_chunk <- add_chunk(fun = chronicle::make_barplot,
+                        params = list(dt = 'iris',
+                                      value = 'Sepal.Width',
                                       bars = 'Species'))
 cat(html_chunk)
 }

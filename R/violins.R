@@ -3,13 +3,13 @@
 #' @param dt data.frame containing the data to plot.
 #' @param value Name of the column to use as values on the y axis of the plot.
 #' @param groups Name of the column containing the different groups.
-#' @param jitter Whether to add the actual values of each observation over the violin plots. Only done when dt has 1000 rows or less.
+#' @param jitter Whether to add the actual values of each observation over the violin plots. Only done when dt has 10,000 rows or less.
 #' @param ggtheme ggplot2 theme function to apply. Default is ggplot2::theme_minimal.
 #' @param x_axis_label Label for the x axis.
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required
-#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
+#' @param static If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a ggplot violin plot.
@@ -31,6 +31,11 @@ make_violin <- function(dt,
   dt_cols <- c(value, groups)
   if(any((!dt_cols %in% colnames(dt)))){
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
+
+  # coerce groups to character
+  if(!is.null(groups)){
+    dt <- chronicle::set_classes(dt, character = c(groups))
   }
 
   # check how many colors are needed for plotting
@@ -104,8 +109,8 @@ make_violin <- function(dt,
                      axis.ticks.x = ggplot2::element_blank())
   }
 
-  # only add jitter if under 1000 observations
-  jitter <- as.logical(jitter) & (nrow(dt) <= 1000)
+  # only add jitter if under 10,000 observations
+  jitter <- as.logical(jitter) & (nrow(dt) <= 10000)
   if(jitter){
     violin <- violin +
       ggplot2::geom_jitter(width = .2) + ggplot2::theme(legend.position = 'none')
@@ -126,7 +131,8 @@ make_violin <- function(dt,
     violin <- violin + ggplot2::ylab(y_axis_label)
   }
 
-  if(!static){
+  # only convert to plotly if the dataset is under 10,000 rows
+  if(!as.logical(static) & nrow(dt) <= 10000){
     violin <- plotly::ggplotly(violin,  tooltip = c('y', if(groups != 'groups'){'x'}))
   }
 
@@ -187,21 +193,22 @@ add_violin <- function(report = '',
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
 
-  params <- list(value = value,
+  params <- list(dt = ifelse(test = is.character(dt),
+                             yes = dt,
+                             no = deparse(substitute(dt))),
+                 value = value,
                  groups = groups,
                  ggtheme = ggtheme,
                  jitter = jitter,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,
-                 plot_palette = plot_palette,
-                 plot_palette_generator = plot_palette_generator) %>%
+                 plot_palette = ifelse(is.null(plot_palette), 'params$plot_palette', plot_palette),
+                 plot_palette_generator = ifelse(is.null(plot_palette_generator), 'params$plot_palette_generator', plot_palette_generator),
+                 static = 'params$set_static') %>%
     purrr::discard(is.null)
 
   report <- chronicle::add_chunk(report = report,
-                                 dt_expr = ifelse(test = is.character(dt),
-                                                  yes = dt,
-                                                  no = deparse(substitute(dt))),
-                                 fun = make_violin,
+                                 fun = chronicle::make_violin,
                                  params = params,
                                  chunk_title = violin_title,
                                  title_level = title_level,
@@ -209,7 +216,8 @@ add_violin <- function(report = '',
                                  message = message,
                                  warning = warning,
                                  fig_width = fig_width,
-                                 fig_height = fig_height)
+                                 fig_height = fig_height,
+                                 guess_title = TRUE)
   return(report)
 }
 

@@ -13,7 +13,7 @@
 #' @param y_axis_label Label for the y axis.
 #' @param plot_palette Character vector of hex codes specifying the colors to use on the plot.
 #' @param plot_palette_generator Palette from the viridis package, used in case plot_palette is unspecified or insufficient for the number of colors required.
-#' @param static If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
+#' @param static If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.
 #'
 #' @export
 #' @return A plotly-ized version of a grouped ggplot line plot.
@@ -51,6 +51,11 @@ make_lineplot <- function(dt,
   dt_cols <- c(x, y, groups)
   if(any((!dt_cols %in% colnames(dt)))){
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
+  }
+
+  # coerce groups to character
+  if(!is.null(groups)){
+    dt <- chronicle::set_classes(dt, character = c(groups))
   }
 
   # check how many colors are needed for plotting
@@ -145,7 +150,9 @@ make_lineplot <- function(dt,
   if(as.logical(show_trend)){
     lineplot <- lineplot + ggplot2::geom_smooth(formula = y~x, method = trend_method)
   }
-  if(!static){
+
+  # only convert to plotly if the dataset is under 10,000 rows
+  if(!as.logical(static) & nrow(dt) <= 10000){
     lineplot <- plotly::ggplotly(lineplot,  tooltip = c('x', 'y', if(groups != 'groups'){'color'}))
   }
 
@@ -214,7 +221,10 @@ add_lineplot <- function(report = '',
     stop(paste(setdiff(dt_cols, colnames(dt)), collapse = ', '), ' not found on dt.')
   }
 
-  params <- list(x = x,
+  params <- list(dt = ifelse(test = is.character(dt),
+                             yes = dt,
+                             no = deparse(substitute(dt))),
+                 x = x,
                  y = y,
                  groups = groups,
                  faceted = faceted,
@@ -224,15 +234,13 @@ add_lineplot <- function(report = '',
                  ggtheme = ggtheme,
                  x_axis_label = x_axis_label,
                  y_axis_label = y_axis_label,
-                 plot_palette = plot_palette,
-                 plot_palette_generator = plot_palette_generator) %>%
+                 plot_palette = ifelse(is.null(plot_palette), 'params$plot_palette', plot_palette),
+                 plot_palette_generator = ifelse(is.null(plot_palette_generator), 'params$plot_palette_generator', plot_palette_generator),
+                 static = 'params$set_static') %>%
     purrr::discard(is.null)
 
   report <- chronicle::add_chunk(report = report,
-                                 dt_expr = ifelse(test = is.character(dt),
-                                                  yes = dt,
-                                                  no = deparse(substitute(dt))),
-                                 fun = make_lineplot,
+                                 fun = chronicle::make_lineplot,
                                  params = params,
                                  chunk_title = lineplot_title,
                                  title_level = title_level,
@@ -240,7 +248,8 @@ add_lineplot <- function(report = '',
                                  message = message,
                                  warning = warning,
                                  fig_width = fig_width,
-                                 fig_height = fig_height)
+                                 fig_height = fig_height,
+                                 guess_title = TRUE)
   return(report)
 }
 

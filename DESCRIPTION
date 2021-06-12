@@ -1,17 +1,16 @@
 Package: chronicle
 Type: Package
 Title: Grammar for Creating R Markdown Reports
-Version: 0.2.5
+Version: 0.3
 Authors@R: person("Philippe", "Heymans Smith", email = "pheymanss@gmail.com",
     role = c("aut", "cre"))
-Description: A system for creating  R Markdown reports with a sequential syntax inspired by ggplot2
-Depends: R (>= 3.5.0),
-    rlang,
-    magrittr,
-    data.table
+Description: A system for creating R Markdown reports with a sequential syntax inspired by ggplot2.
+Depends: R (>= 3.5.0), magrittr
 License: GPL (>= 3)
 Encoding: UTF-8
-Imports: DT, 
+Imports: data.table,
+    DT, 
+    dplyr,
     dygraphs, 
     ggplot2,
     glue,
@@ -20,6 +19,7 @@ Imports: DT,
     prettydoc,
     purrr,
     readr,
+    rlang,
     rmarkdown,
     rmdformats,
     scales,

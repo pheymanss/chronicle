@@ -25,9 +25,9 @@ make_boxplot(
 
 \item{groups}{Name of the column containing the different groups.}
 
-\item{split_groups_by}{Column to split each group.}
+\item{split_groups_by}{Second column to split each group by (eg, create inidivudal boxplots within the 'groups'.)}
 
-\item{jitter}{Whether to add the actual values of each observation over the box plots. Only done when dt has 1000 rows or less.}
+\item{jitter}{Whether to add the actual values of each observation over the box plots. Only done when dt has 10,000 rows or less.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
@@ -39,7 +39,7 @@ make_boxplot(
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required.}
 
-\item{static}{If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
+\item{static}{If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
 }
 \value{
 A plotly-ized version of a ggplot box plot.

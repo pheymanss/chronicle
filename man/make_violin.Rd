@@ -24,7 +24,7 @@ make_violin(
 
 \item{groups}{Name of the column containing the different groups.}
 
-\item{jitter}{Whether to add the actual values of each observation over the violin plots. Only done when dt has 1000 rows or less.}
+\item{jitter}{Whether to add the actual values of each observation over the violin plots. Only done when dt has 10,000 rows or less.}
 
 \item{ggtheme}{ggplot2 theme function to apply. Default is ggplot2::theme_minimal.}
 
@@ -36,7 +36,7 @@ make_violin(
 
 \item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required}
 
-\item{static}{If TRUE, the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
+\item{static}{If TRUE (or if the dataset is over 10,000 rows), the output will be static ggplot chart instead of an interactive ggplotly chart. Default is FALSE.}
 }
 \value{
 A plotly-ized version of a ggplot violin plot.

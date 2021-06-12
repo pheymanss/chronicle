@@ -9,11 +9,11 @@ add_text(report = "", text, text_title = NULL, title_level = 2)
 \arguments{
 \item{report}{Character string containing all the R Markdown chunks previously added. Default is '', an empty report.}
 
-\item{text}{The text that will be added to the report}
+\item{text}{The text that will be added to the report.}
 
 \item{text_title}{The title of the text section. Default is NULL.}
 
-\item{title_level}{Level of the section title of this text (ie, number of # on Rmarkdown syntax.)}
+\item{title_level}{Level of the section title of this text (ie, number of # on Rmarkdown syntax.) Default is 1.}
 }
 \value{
 The text of the Rmarkdown report plus an additional section with the text.
