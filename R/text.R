@@ -1,9 +1,9 @@
 #' Add text to a chronicle Rmarkdown report
 #'
 #' @param report Character string containing all the R Markdown chunks previously added. Default is '', an empty report.
-#' @param text The text that will be added to the report
+#' @param text The text that will be added to the report.
 #' @param text_title The title of the text section. Default is NULL.
-#' @param title_level Level of the section title of this text (ie, number of # on Rmarkdown syntax.)
+#' @param title_level Level of the section title of this text (ie, number of # on Rmarkdown syntax.) Default is 1.
 #'
 #' @return The text of the Rmarkdown report plus an additional section with the text.
 #' @export
@@ -14,9 +14,16 @@
 #' cat(html_report)
 add_text <- function(report = '', text, text_title = NULL, title_level = 2){
   if(!is.null(text_title)){
-    report <- chronicle::add_title(report, text_title, title_level = title_level)
+    report <- chronicle::add_title(report = report,
+                                   title =  text_title,
+                                   title_level = title_level)
   }
-  report <- paste(report, text, sep = '\n\n')
+  report <- glue::glue('{report}
+
+{text}
+')
+
+  return(report)
 }
 
 #' Add a titled section to a chronicle Rmarkdown report
@@ -33,7 +40,12 @@ add_text <- function(report = '', text, text_title = NULL, title_level = 2){
 #'                          title = 'Just the title here')
 #' cat(html_report)
 add_title <- function(report = '', title, title_level = 1){
-  report <- report %>% paste(paste(paste(rep('#', title_level), collapse = ''), title), sep = '\n\n')
+  report <- glue::glue('{report}
+
+{chronicle::rmd_title_level(title_level)} {title}
+
+')
+
   return(report)
 }
 
@@ -66,14 +78,22 @@ add_title <- function(report = '', title, title_level = 1){
 #' cat(html_report)
 add_code <- function(report = '', code, code_title = NULL, title_level = 2, eval = TRUE, echo = TRUE, fig_width = NULL, fig_height = NULL){
   if(!is.null(code_title)){
-    report <- chronicle::add_title(report, code_title, title_level = title_level)
+    report <- chronicle::add_title(report = report,
+                                  title = code_title,
+                                  title_level = title_level)
   }
-  report <- report %>% paste(paste0('```{r, eval=', eval,
-                                    ', echo=', echo,
-                                    if(!is.null(fig_width)){paste0(', fig.width=',fig_width)}else{', fig.width=figure_width'},
-                                    if(!is.null(fig_height)){paste0(', fig.height=',fig_height)}else{', fig.height=figure_height'},
-                                    '}'),
-                                   code,
-                                   '```',
-                             sep = '\n')
+  open_chunk <- paste0('```{r, eval=', eval,
+                       ', echo=', echo,
+                       if(!is.null(fig_width)){paste(', fig.width=', fig_width)}else{', fig.width=params$figure_width'},
+                       if(!is.null(fig_width)){paste(', fig.height=', fig_height)}else{', fig.height=params$figure_height'},
+                       '}')
+
+
+  report <- glue::glue('{report}
+
+                        {open_chunk}
+                        {code}
+                        ```')
+  return(report)
 }
+

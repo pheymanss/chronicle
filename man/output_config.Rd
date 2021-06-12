@@ -14,6 +14,8 @@ output_config(
   table_of_content_depth = 1,
   fig_width = 8,
   fig_height = 5,
+  plot_palette = NULL,
+  plot_palette_generator = "plasma",
   rmdformats_theme = "downcute",
   prettydoc_theme = "leonids",
   docx_reference_file = NULL,
@@ -42,6 +44,10 @@ output_config(
 
 \item{fig_height}{Set the global figure height or the rmarkdown file.}
 
+\item{plot_palette}{Character vector of hex codes to use on plots.}
+
+\item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified or insufficient for the number of colors required. Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.}
+
 \item{rmdformats_theme}{The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".}
 
 \item{prettydoc_theme}{Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".}
@@ -54,7 +60,7 @@ output_config(
 
 \item{rticles_template}{The theme to be used fo [rticles](https://github.com/rstudio/rticles). Default is "arxiv_article"}
 
-\item{custom_output}{[Experimental] A custom element for a yaml structure to specify as the output format of the R Markdown file. This is to get output formats not currently supported.}
+\item{custom_output}{[Experimental] This is to get output formats not currently supported. It should be a YAML element with the corresponding output}
 }
 \value{
 The lines needed in the yaml header of an R Markdown file to render as the specified output type.

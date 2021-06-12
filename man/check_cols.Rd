@@ -2,21 +2,21 @@
 % Please edit documentation in R/data_prep.R
 \name{check_cols}
 \alias{check_cols}
-\title{Warns if any of the provided column names is missing from the data}
+\title{Warns if any of the passed column names is missing from the data provided.}
 \usage{
 check_cols(dt, cols)
 }
 \arguments{
-\item{dt}{A data.frame}
+\item{dt}{A data.frame.}
 
-\item{cols}{A vector of column names}
+\item{cols}{A vector of column names.}
 }
 \value{
-The vector of all columns present in
+The vector of all columns present in dt.
 }
 \description{
-Warns if any of the provided column names is missing from the data
+Warns if any of the passed column names is missing from the data provided.
 }
 \examples{
-check_cols(mpg, c('cyl','carb','not'))
+chronicle::check_cols(mtcars, c('cyl', 'made_up_column'))
 }

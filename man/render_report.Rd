@@ -20,6 +20,8 @@ render_report(
   table_of_content_depth = 1,
   fig_width = 9,
   fig_height = 5,
+  plot_palette = NULL,
+  plot_palette_generator = "plasma",
   rmdformats_theme = "downcute",
   prettydoc_theme = "leonids",
   docx_reference_file = NULL,
@@ -58,6 +60,10 @@ render_report(
 
 \item{fig_height}{Set the global figure height or the rmarkdown file.}
 
+\item{plot_palette}{Character vector of hex codes to use on plots.}
+
+\item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.}
+
 \item{rmdformats_theme}{The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".}
 
 \item{prettydoc_theme}{Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".}
@@ -89,7 +95,7 @@ Render the report using all objects from the global environment
 #   add_table(table = mpg,
 #             table_title = 'And this is mpg',
 #             html_table_type = 'DT')
-#render_report(report = report_demo,
+# render_report(report = report_demo,
 #              title = 'Demo Output',
 #              author = 'This is the author',
 #              filename = 'demo_output',

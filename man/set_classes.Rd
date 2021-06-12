@@ -14,17 +14,17 @@ set_classes(
 )
 }
 \arguments{
-\item{dt}{Table whose column types will be changed by reference}
+\item{dt}{Table whose column types will be changed}
 
-\item{character}{A character vector specifiying which columns that will be coerced to character.}
+\item{character}{The columns that will be coerced to character.}
 
-\item{integer}{A character vector specifiying which columns that will be coerced to integer.}
+\item{integer}{The columns that will be coerced to integer.}
 
-\item{double}{A character vector specifiying which columns that will be coerced to double.}
+\item{double}{The columns that will be coerced to double.}
 
-\item{logical}{A character vector specifiying which columns that will be coerced to logical.}
+\item{logical}{The columns that will be coerced to logical.}
 
-\item{factor}{A character vector specifiying which columns that will be coerced to factor.}
+\item{factor}{The columns that will be coerced to factor.}
 }
 \value{
 Changes by reference the types of the specified columns
@@ -33,6 +33,9 @@ Changes by reference the types of the specified columns
 Change column classes with a named vector
 }
 \examples{
-iris_changed <- set_classes(dt = idt, character = 'Species', integer = c('Sepal.Length', 'Sepal.Width'))
-purrr::map(iris_changed, class)
+library(chronicle)
+iris_changed <- chronicle::set_classes(dt = iris,
+                                       character = 'Species',
+                                       integer = c('Sepal.Length', 'Sepal.Width'))
+purrr::map_chr(iris_changed, class)
 }

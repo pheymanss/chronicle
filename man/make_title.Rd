@@ -18,7 +18,7 @@ A generic title for the plot
 Detects which make_* function is passed and builds a generic name based on its parameters.
 }
 \examples{
-make_title(fun = make_barplot,
+make_title(fun = chronicle::make_barplot,
                      params = list(value = 'Amount',
                                    bars = 'Country',
                                    break_bars_by = 'Region'))

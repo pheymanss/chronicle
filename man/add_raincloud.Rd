@@ -17,7 +17,7 @@ add_raincloud(
   ggtheme = "minimal",
   x_axis_label = NULL,
   plot_palette = NULL,
-  plot_palette_generator = "plasma",
+  plot_palette_generator = NULL,
   static = NULL,
   raincloud_title = NULL,
   title_level = 2,

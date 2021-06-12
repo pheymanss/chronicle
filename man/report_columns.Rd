@@ -79,6 +79,4 @@ these plots will be grouped by the values of that column
 #                           by_column = 'Species',
 #                           horizontal_bars = TRUE,
 #                           keep_rmd = TRUE)
-# file.remove('iris_column_analysis.Rmd')
-# file.remove('iris_column_analysis.html')
 }
