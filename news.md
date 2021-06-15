@@ -1,3 +1,10 @@
+# chroncile 0.3.0.1
+
+## Bug fixes:
+
+- Automatic title generation works for all `add_*` plot functions
+- Collapses the `text` parameter when a vector of text was passed to `add_text`.
+
 # chronicle 0.3
 
 ## Features
