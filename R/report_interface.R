@@ -290,14 +290,16 @@ output_config <- function(output_format,
   output_format == 'word_document',
   ifelse(test = is.null(docx_reference_file),
          yes = 'output: word_document',
-         no = 'output: word_document:
-    reference_doc: docx_reference_file'),
+         no = glue::glue('output:
+  word_document:
+    reference_doc: "{docx_reference_file}"', .trim = FALSE)),
   # powerpoint
   output_format == 'powerpoint_presentation',
   ifelse(test = is.null(docx_reference_file),
          yes = 'output: powerpoint_presentation',
-         no = 'output: powerpoint_presentation:
-    reference_doc: pptx_reference_file'),
+         no = glue::glue('output:
+  powerpoint_presentation:
+    reference_doc: "{pptx_reference_file}"', .trim = FALSE)),
   # tufte_handout
   output_format == 'tufte_handout',
   'output: tufte::tufte_handout',
