@@ -19,8 +19,7 @@ add_text <- function(report = '', text, text_title = NULL, title_level = 2){
                                    title_level = title_level)
   }
   report <- glue::glue('{report}
-
-{text}
+{paste(text, collapse = "\n\n")}
 ')
 
   return(report)
@@ -41,7 +40,6 @@ add_text <- function(report = '', text, text_title = NULL, title_level = 2){
 #' cat(html_report)
 add_title <- function(report = '', title, title_level = 1){
   report <- glue::glue('{report}
-
 {chronicle::rmd_title_level(title_level)} {title}
 
 ')
