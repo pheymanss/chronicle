@@ -22,4 +22,8 @@ make_title(fun = chronicle::make_barplot,
                      params = list(value = 'Amount',
                                    bars = 'Country',
                                    break_bars_by = 'Region'))
+
+make_title(fun = chronicle::make_raincloud,
+           params = list(value = 'value',
+                         groups = 'species'))
 }

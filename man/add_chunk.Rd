@@ -15,7 +15,7 @@ add_chunk(
   warning = FALSE,
   fig_width = NULL,
   fig_height = NULL,
-  guess_title = FALSE
+  guess_title = TRUE
 )
 }
 \arguments{

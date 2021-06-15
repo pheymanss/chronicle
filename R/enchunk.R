@@ -31,7 +31,7 @@ add_chunk <- function(report = '',
                       warning = FALSE,
                       fig_width = NULL,
                       fig_height = NULL,
-                      guess_title = FALSE){
+                      guess_title = TRUE){
   # plot title
   chunk_title <-  paste(
     # title level
@@ -156,38 +156,40 @@ rmd_title_level <- function(level){
 #'
 #' @return A generic title for the plot
 #' @export
-#' @examples make_title(fun = chronicle::make_barplot,
+#' @examples
+#' make_title(fun = chronicle::make_barplot,
 #'                      params = list(value = 'Amount',
 #'                                    bars = 'Country',
 #'                                    break_bars_by = 'Region'))
+#'
+#' make_title(fun = chronicle::make_raincloud,
+#'            params = list(value = 'value',
+#'                          groups = 'species'))
 make_title <- function(fun, params){
   plot_title <- NULL
   # switch function does not support closures, so it has to be done with indentical + if elses
   # barplot
   if(identical(fun, chronicle::make_barplot)){
-    plot_title <- paste0(ifelse(test = is.null(params$value),
-                                yes = 'Count',
-                                no = params$value),
+    plot_title <- paste0(ifelse(is.null(params$value), 'Count', params$value),
                          ' by ',
                          params$bars,
-                         if(!is.null(params$break_bars_by)){paste(' and', params$break_bars_by)})
+                         if(!is.null(params$break_bars_by)){paste(' and', params$break_bars_by)}
+                         )
     # boxplot
   }else if(identical(fun, chronicle::make_boxplot)){
-    plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
-    # violin
-  }else if(identical(fun, chronicle::make_violin)){
+    groupings <- if(!is.null(params$groups)){paste(", by", knitr::combine_words(c(params$groups, params$split_groups_by)))}
+    plot_title <- glue::glue('Distribution of {params$value}{groupings}')
+    # density, histogram, raincloud, violin
+  }else if(identical(fun, chronicle::make_density) |
+           identical(fun, chronicle::make_histogram) |
+           identical(fun, chronicle::make_raincloud) |
+           identical(fun, chronicle::make_violin)){
     plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
     # dygraph
   }else if(identical(fun, chronicle::make_dygraph)){
     plot_title <- paste0('Evolution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
     # density
-  }else if(identical(fun, chronicle::make_density)){
-    plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
-    # histogram
-  }else if(identical(fun, chronicle::make_histogram)){
-    plot_title <- paste0('Distribution of ', params$value, if(!is.null(params$groups)){paste(' by', params$groups)})
-    # line plot
-  }else if(identical(fun, chronicle::make_lineplot)){
+  }else if(identical(fun, chronicle::make_lineplot) | identical(fun, chronicle::make_scatterplot)){
     plot_title <- paste0(params$x, ' vs ', params$y, if(!is.null(params$groups)){paste(' by', params$groups)})
   }else{
     plot_title <-  ''
