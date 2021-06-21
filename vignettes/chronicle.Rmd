@@ -76,7 +76,7 @@ You can see
 What happens behind these calls is that chronicle writes an R Markdown for you!
 you can see the report we've built by calling it through `cat()`
 ```{r, eval=TRUE, echo=TRUE, fig.width=figure_width, fig.height=figure_height}
-cat(demo_report)
+demo_report
 ```
 
 ### The `make_*` family of functions
@@ -189,7 +189,7 @@ static table prints.
 -   tufte_handout
 -   word_document
 
-Additionally, [\{flexdashboard\}](https://rmarkdown.rstudio.com/flexdashboard/)
+Additionally, [\{flexdashboard\}](https://pkgs.rstudio.com/flexdashboard/)
 and [\{xaringan\}](https://slides.yihui.org/xaringan/#1) technically compile,
 but the layout is stiff in flexdashboard and altogether incorrect in xaringan. Also,
 [\{rticles\}](https://github.com/rstudio/rticles) support can technically be
