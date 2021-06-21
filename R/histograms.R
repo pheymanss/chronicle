@@ -84,8 +84,10 @@ make_histogram <- function(dt,
   }
 
   # create the plot structure depending of the group
+  hide_groups <- FALSE
   if(is.null(groups)){
     # make a dummy group variable
+    hide_groups <- TRUE
     groups <- 'groups'
     dt$groups <- 'A'
   }
@@ -103,7 +105,7 @@ make_histogram <- function(dt,
     ggplot2::scale_fill_manual(values = plot_palette) +
     ggplot2::scale_color_manual(values = plot_palette)
 
-  if(is.null(groups)){
+  if(hide_groups){
     # remove all references to the dummy group variable from the plot
     histogram <- histogram +
       ggplot2::theme(legend.position = 'none',
