@@ -109,7 +109,8 @@ make_histogram <- function(dt,
       ggplot2::theme(legend.position = 'none',
                      axis.title.x = ggplot2::element_blank(),
                      axis.text.x = ggplot2::element_blank(),
-                     axis.ticks.x = ggplot2::element_blank())
+                     axis.ticks.x = ggplot2::element_blank(),
+                     strip.text.x = ggplot2::element_blank())
   }
 
   # axes

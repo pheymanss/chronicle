@@ -87,6 +87,7 @@ make_violin <- function(dt,
     groups <- 'groups'
     dt$groups <- 'A'
   }
+
   violin <- ggplot2::ggplot(dt,
                              ggplot2::aes(x = .data[[groups]],
                                           y = .data[[value]],

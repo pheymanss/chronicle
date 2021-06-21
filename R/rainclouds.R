@@ -89,8 +89,11 @@ make_raincloud <- function(dt,
                       plot_palette_generator(plot_palette_length - length(plot_palette), begin = 0, end = .8))
   }
 
+  # create the plot structure depending of the group
+  hide_groups <- FALSE
   if(is.null(groups)){
     # make a dummy group variable
+    hide_groups <- TRUE
     groups <- 'groups'
     dt$groups <- 'A'
   }
@@ -164,6 +167,17 @@ make_raincloud <- function(dt,
     ggplot2::coord_cartesian(clip = "off", expand = TRUE)
 
 
+  if(!hide_groups){
+    raincloud <- raincloud +
+      ggplot2::facet_grid(rows = groups, scales = 'free_y')
+  }else{
+    raincloud <- raincloud +
+      ggplot2::theme(axis.title.y = ggplot2::element_blank(),
+                   axis.text.y = ggplot2::element_blank(),
+                   axis.ticks.y = ggplot2::element_blank(),
+                   strip.text.y = ggplot2::element_blank())
+  }
+
   # Boxplot -----------------------------------------------------------------
   if(as.logical(include_boxplot)){
     include_median <- TRUE
@@ -223,13 +237,6 @@ make_raincloud <- function(dt,
                             color = 'white',
                             alpha = .5,
                             size = 1)  +
-      # ggplot2::geom_point(data = boxplot_stats,
-      #                     ggplot2::aes(x = median,
-      #                                  y = 0,
-      #                                  fill = .data[[groups]]),
-      #                     color = 'white',
-      #                     size = 4,
-      #                     shape = 21) +
       ggplot2::geom_text(data = boxplot_stats,
                          ggplot2::aes(x = median,
                                       label = median,
@@ -252,6 +259,14 @@ make_raincloud <- function(dt,
                             linetype = 2,
                             size = 1)
   }
+
+  if(hide_groups){
+    raincloud <- raincloud +
+      ggplot2::theme(axis.title.y = ggplot2::element_blank(),
+                     axis.text.y = ggplot2::element_blank(),
+                     axis.ticks.y = ggplot2::element_blank())
+  }
+
 
   # axes
   if(!is.null(x_axis_label)){
