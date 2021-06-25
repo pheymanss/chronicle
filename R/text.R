@@ -40,6 +40,7 @@ add_text <- function(report = '', text, text_title = NULL, title_level = 2){
 #' cat(html_report)
 add_title <- function(report = '', title, title_level = 1){
   report <- glue::glue('{report}
+
 {chronicle::rmd_title_level(title_level)} {title}
 
 ')
@@ -58,6 +59,8 @@ add_title <- function(report = '', title, title_level = 1){
 #' @param title_level Level of the section title of this text (ie, number of # on Rmarkdown syntax.)
 #' @param eval Run the code instead of just display it. Default is TRUE.
 #' @param echo Whether to display the source code in the output document. Default is FALSE.
+#' @param message Whether to preserve messages on rendering. Default is FALSE.
+#' @param warning Whether to preserve warnings on rendering. Default is FALSE.
 #' @param fig_width Width of the figures printed from this code.
 #' @param fig_height Height of the figures printed from this code.
 #'
@@ -74,13 +77,24 @@ add_title <- function(report = '', title, title_level = 1){
 #'                         fig_width = 12,
 #'                         fig_height = 8)
 #' cat(html_report)
-add_code <- function(report = '', code, code_title = NULL, title_level = 2, eval = TRUE, echo = TRUE, fig_width = NULL, fig_height = NULL){
+add_code <- function(report = '',
+                     code,
+                     code_title = NULL,
+                     title_level = 2,
+                     eval = TRUE,
+                     echo = TRUE,
+                     message = FALSE,
+                     warning = FALSE,
+                     fig_width = NULL,
+                     fig_height = NULL){
   if(!is.null(code_title)){
     report <- chronicle::add_title(report = report,
                                   title = code_title,
                                   title_level = title_level)
   }
   open_chunk <- paste0('```{r, eval=', eval,
+                       ', warning=', warning,
+                       ', message=', message,
                        ', echo=', echo,
                        if(!is.null(fig_width)){paste(', fig.width=', fig_width)}else{', fig.width=params$figure_width'},
                        if(!is.null(fig_width)){paste(', fig.height=', fig_height)}else{', fig.height=params$figure_height'},

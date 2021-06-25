@@ -11,6 +11,8 @@ add_code(
   title_level = 2,
   eval = TRUE,
   echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
   fig_width = NULL,
   fig_height = NULL
 )
@@ -27,6 +29,10 @@ add_code(
 \item{eval}{Run the code instead of just display it. Default is TRUE.}
 
 \item{echo}{Whether to display the source code in the output document. Default is FALSE.}
+
+\item{message}{Whether to preserve messages on rendering. Default is FALSE.}
+
+\item{warning}{Whether to preserve warnings on rendering. Default is FALSE.}
 
 \item{fig_width}{Width of the figures printed from this code.}
 
