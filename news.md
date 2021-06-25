@@ -1,10 +1,3 @@
-# chroncile 0.3.0.1
-
-## Bug fixes:
-
-- Automatic title generation works for all `add_*` plot functions
-- Collapses the `text` parameter when a vector of text was passed to `add_text`.
-
 # chronicle 0.3
 
 ## Features
@@ -19,3 +12,6 @@
 - Automatically switch to static plots for larger (+10,000 rows) data to avoid unusably large file sizes.
 - Formatted output of all functions that write code. Also swithced most from `paste()` to `glue()` to get clean prints in console.
 - Cleaned code in `add_chunk`, now the parameters are dynamically enquoted depending on their types (no more 'FALSE' and '12' on the calls visible in the .Rmd).
+- Automatic title generation works for all `add_*` plot functions
+- Collapses the `text` parameter when a vector of text was passed to `add_text`.
+- dummy groups were shown in 
