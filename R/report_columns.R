@@ -108,7 +108,9 @@ report_columns <- function(dt,
     filename <- gsub(pattern = '[^[:alnum:][:space:]]',
                      replacement = '',
                      x = dt_name) %>%
-      paste0('_column_analysis')
+      paste0('_column_analysis',
+             if(!is.null(by_column)){paste0('_by_', by_column)},
+             collapse='')
   }
 
   # add sections for all numeric values
@@ -157,8 +159,11 @@ report_columns <- function(dt,
     return((plot_sections))
   }
 
-  # add skimr::skim
+  plot_sections <-
+
+  # add head(20) and skimr::skim calls
   plot_sections <- paste(
+    # head(20)
     # add the base skim
     add_code(code = paste0('skimr::skim(', dt_name, ')'),
              code_title = 'Dataset overview',
@@ -170,6 +175,10 @@ report_columns <- function(dt,
                                                 code_title = glue::glue('Dataset overview by {by_column}'),
                                                 echo = FALSE,
                                                 title_level = 1)},
+    add_code(code = paste0('knitr::kable(head(', dt_name, ', 10))'),
+             code_title = 'First 10 rows',
+             echo = FALSE,
+             title_level = 3),
     add_title(title = 'Variable Plots',
               title_level = 1),
     plot_sections,

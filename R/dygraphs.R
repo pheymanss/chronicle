@@ -64,6 +64,9 @@ make_dygraph <- function(dt,
                                    'magma' = viridis::magma,
                                    'plasma' = viridis::plasma,
                                    'viridis' = viridis::viridis,
+                                   'mako' = viridis::mako,
+                                   'rocket' = viridis::rocket,
+                                   'turbo' = viridis::turbo,
                                    viridis::magma)
 
   #if not provided, use palette from viridis::plasma

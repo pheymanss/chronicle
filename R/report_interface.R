@@ -15,7 +15,7 @@
 #' @param fig_width Set the global figure width or the rmarkdown file.
 #' @param fig_height Set the global figure height or the rmarkdown file.
 #' @param plot_palette Character vector of hex codes to use on plots.
-#' @param plot_palette_generator Palette from the viridis package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.
+#' @param plot_palette_generator Palette from the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html#the-color-scales) package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis', 'mako', 'rocket', and 'turbo'.
 #' @param rmdformats_theme The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".
 #' @param prettydoc_theme Name of the theme used on [prettydoc](https://prettydoc.statr.me/themes.html). Default is "leonids", and ossible values are "cayman", "tactile", "architect", "leonids", "hpstr".
 #' @param docx_reference_file The path for a blank Microsoft Word document to use as template for the 'word_document' output.
