@@ -19,7 +19,7 @@ library(chronicle)
 ```
 
 
-## An R package for easy R Markdown reporting
+# An R package for easy R Markdown reporting
 
 
 ```{r, eval=FALSE, warning=FALSE, message=FALSE, echo=TRUE, fig.width=params$figure_width, fig.height=params$figure_height}
@@ -31,7 +31,7 @@ reports.
 
 
 
-### A quick demo
+## A quick demo
 
 The way you build the reports is by specifying the structure
 of your report through the `add_*` family of functions, layering one below the
@@ -80,7 +80,7 @@ it.
 demo_report
 ```
 
-### The `make_*` family of functions
+## The `make_*` family of functions
 
 Every plot added with an `add_*` function will be built through its
 correpsonding `make_*` function. These functions take care of the heavy lifting,
@@ -107,7 +107,7 @@ make_raincloud(dt = iris,
 ```
 ![chronicle rain cloud plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme2.png)
 
-### Rendering chronicle reports
+## Rendering chronicle reports
 
 
 Once the structure of the report has been defined, the rendering process is done
@@ -170,7 +170,7 @@ make_density(dt = iris,
 ```
 ![chronicle violin plot with turbo palette](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme4.png)
 
-### The `report_columns()` function
+## The `report_columns()` function
 
 chronicle also includes a function called `report_columns()`,
 that will create an entire chronicle report for a single dataset. It includes a
@@ -186,7 +186,7 @@ report_columns(dt = palmerpenguins::penguins,
 And you can see
 [the output of this call](https://pheymanss.github.io/chronicle-demos/report_columns)
 
-### Supported formats
+## Supported formats
 
 As of version 0.2.5, chronicle can output both static and dynamic
 outputs. Dynamic outputs refer to R Markdown formats that support html
@@ -228,7 +228,7 @@ Also, [\{rticles\}](https://github.com/rstudio/rticles) support can technically
 be added, but that would involve a plethora of additional parameters for the header,
 and frankly, writing a journal article is not the intended use of the package
 
-### Supported report elements
+## Supported report elements
 
 I highly encourage
   you to review the enitre

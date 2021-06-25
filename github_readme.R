@@ -4,7 +4,7 @@ library(chronicle)
 
 # intro -------------------------------------------------------------------
 add_title(title = 'An R package for easy R Markdown reporting',
-          title_level = 2) %>%
+          title_level = 1) %>%
 
   add_code(code = "install.packages('chronicle')", eval = FALSE) %>%
 
@@ -15,7 +15,7 @@ reports.
 ') %>%
 
   # quick demo --------------------------------------------------------------
-add_title(title = 'A quick demo', title_level = 3) %>%
+add_title(title = 'A quick demo', title_level = 2) %>%
   add_text(text = 'The way you build the reports is by specifying the structure
 of your report through the `add_*` family of functions, layering one below the
 previous one.') %>%
@@ -56,7 +56,7 @@ an R Markdown for you! You can see the content of the report by directly printin
 it.") %>%
   add_code(code = 'demo_report', eval = TRUE) %>%
   # make_ -------------------------------------------------------------------
-add_text(text_title = "The `make_*` family of functions", title_level = 3,
+add_text(text_title = "The `make_*` family of functions", title_level = 2,
 text = "Every plot added with an `add_*` function will be built through its
 correpsonding `make_*` function. These functions take care of the heavy lifting,
 avoiding the cumbersome (albeit powerful) sintax of ggplot, plotly and other
@@ -79,7 +79,7 @@ add_code(code = "make_barplot(dt = ggplot2::mpg,
            eval = FALSE, echo = TRUE) %>%
   add_text(text = '![chronicle rain cloud plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme2.png)') %>%
 # rendering ---------------------------------------------------------------
-add_text(text_title = 'Rendering chronicle reports', title_level = 3, text = "
+add_text(text_title = 'Rendering chronicle reports', title_level = 2, text = "
 Once the structure of the report has been defined, the rendering process is done
 by `render_report()`. This uses `rmarkdown::render()` as a backend for rendering the
 report, which gives chronicle the capability to render the reports with full
@@ -143,12 +143,12 @@ comprehensive summary of the data through the `skimr::skim()` function, along wi
 one plot for each column present in the data: bar plots for categorical variables
 and rain cloud plots for numerical variables. This gives you an immediate view of
 a dataset with a single line of code!',
-text_title = 'The `report_columns()` function', title_level = 3) %>%
+text_title = 'The `report_columns()` function', title_level = 2) %>%
   add_code(code = "report_columns(dt = palmerpenguins::penguins,
                by_column = 'species')", echo = TRUE, eval = FALSE) %>%
   add_text(text = 'And you can see
 [the output of this call](https://pheymanss.github.io/chronicle-demos/report_columns)') %>%
-  add_text(text_title = 'Supported formats', title_level = 3,
+  add_text(text_title = 'Supported formats', title_level = 2,
            text = 'As of version 0.2.5, chronicle can output both static and dynamic
 outputs. Dynamic outputs refer to R Markdown formats that support html
 widgets, hence the elements added will be dynamic plots (plotly,
@@ -182,7 +182,7 @@ so you might still use it if you don\'t mind manually correcting the separators.
 Also, [\\{rticles\\}](https://github.com/rstudio/rticles) support can technically
 be added, but that would involve a plethora of additional parameters for the header,
 and frankly, writing a journal article is not the intended use of the package') %>%
-  add_text(text_title = 'Supported report elements', title_level = 3, text = 'I highly encourage
+  add_text(text_title = 'Supported report elements', title_level = 2, text = 'I highly encourage
   you to review the enitre
 [showcase](https://pheymanss.github.io/chronicle-demos/showcase), words are not
 as adequate to describe each element. But for a quick glance, as of version 0.2.5

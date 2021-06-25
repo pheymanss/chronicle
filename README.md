@@ -2,7 +2,7 @@
 ================
 2021-06-24
 
-## An R package for easy R Markdown reporting
+# An R package for easy R Markdown reporting
 
 ``` r
 install.packages('chronicle')
@@ -12,7 +12,7 @@ This R package aims to be an opinionated assistant, to whom you can
 delegate the task of creating visually appealing and consistent R
 Markdown reports.
 
-### A quick demo
+## A quick demo
 
 The way you build the reports is by specifying the structure of your
 report through the `add_*` family of functions, layering one below the
@@ -94,7 +94,7 @@ demo_report
                                  static = params$set_static)
      ```
 
-### The `make_*` family of functions
+## The `make_*` family of functions
 
 Every plot added with an `add_*` function will be built through its
 correpsonding `make_*` function. These functions take care of the heavy
@@ -126,7 +126,7 @@ make_raincloud(dt = iris,
 ![chronicle rain cloud
 plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme2.png)
 
-### Rendering chronicle reports
+## Rendering chronicle reports
 
 Once the structure of the report has been defined, the rendering process
 is done by `render_report()`. This uses `rmarkdown::render()` as a
@@ -194,7 +194,7 @@ make_density(dt = iris,
 ![chronicle violin plot with turbo
 palette](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme4.png)
 
-### The `report_columns()` function
+## The `report_columns()` function
 
 chronicle also includes a function called `report_columns()`, that will
 create an entire chronicle report for a single dataset. It includes a
@@ -211,7 +211,7 @@ report_columns(dt = palmerpenguins::penguins,
 And you can see [the output of this
 call](https://pheymanss.github.io/chronicle-demos/report_columns)
 
-### Supported formats
+## Supported formats
 
 As of version 0.2.5, chronicle can output both static and dynamic
 outputs. Dynamic outputs refer to R Markdown formats that support html
@@ -253,7 +253,7 @@ be added, but that would involve a plethora of additional parameters for
 the header, and frankly, writing a journal article is not the intended
 use of the package
 
-### Supported report elements
+## Supported report elements
 
 I highly encourage you to review the enitre
 [showcase](https://pheymanss.github.io/chronicle-demos/showcase), words
