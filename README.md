@@ -1,6 +1,6 @@
 {chronicle}
 ================
-2021-03-03
+2021-06-24
 
 ## An R package for easy R Markdown reporting
 
@@ -8,88 +8,90 @@
 install.packages('chronicle')
 ```
 
-This R package allows the user to create beautiful R Markdown reports in
-a wide gamut of outputs, without the need to be exposed to the code
-necessary to create each of its elements. chronicle is built on a
-layered paradigm, which will be familiar to any ggplot user.
+This R package aims to be an opinionated assistant, to whom you can
+delegate the task of creating visually appealing and consistent R
+Markdown reports.
 
 ### A quick demo
 
-You can build R Markdown reports through the `add_*` family of
-functions, layering one below the previous one.
+The way you build the reports is by specifying the structure of your
+report through the `add_*` family of functions, layering one below the
+previous one.
 
 ``` r
 library(chronicle)
 
 demo_report <-
   add_text(text_title = "This is the output of a chronicle call",
-           text = "Each element has been added through an add_* function.",
+           text = "Each element has been added through an `add_*` function.",
            title_level = 1) %>%
   add_table(table = head(iris),
-            table_title = "A glimpse at the iris dataset",
+            table_title = "A glimpse of the iris dataset",
             html_table_type = "kable",
             title_level = 1) %>%
   add_raincloud(dt = iris,
                 value = "Sepal.Length",
-                groups = "Species",
-                raincloud_title = "Distribution of sepal length by species",
-                title_level = 2) %>%
+                groups = "Species") %>%
   add_scatterplot(dt = iris,
                   x = "Petal.Width",
                   y = "Petal.Length",
-                  groups = "Species",
-                  scatterplot_title = "Comparison of petal width and length",
-                  title_level = 2)
+                  groups = "Species")
 
 render_report(report = demo_report,
-              output_format = "rmdformats",
-              filename = "quick_demo",
               title = "A quick chronicle demo",
-              author = "You did this!",
+              filename = "quick_demo",
               keep_rmd = TRUE)
 ```
 
-You can see [the output of this call](https://pheymanss.github.io/chronicle-demos/quick_demo),
-and a [full showcase of all the elements supported by chronicle](https://pheymanss.github.io/chronicle-demos/showcase).
+You can see [the output of this
+call](https://pheymanss.github.io/chronicle-demos/quick_demo), and [a
+full showcase](https://pheymanss.github.io/chronicle-demos/showcase) of
+all the elements supported by chronicle.
 
-What happens behind these calls is that chronicle writes an R Markdown
-for you! you can see the report we've built by calling it through
-`cat()`
+What happens behind these calls is that chronicle literally wirtes the
+content of an R Markdown for you! You can see the content of the report
+by directly printing it.
 
 ``` r
-cat(demo_report)
+demo_report
 ```
 
      
      
      # This is the output of a chronicle call
      
-     Each element has been added through an add_* function.
+     Each element has been added through an `add_*` function.
      
-     # A glimpse at the iris dataset
-     
-     ```{r, echo = FALSE, message = FALSE, warning = FALSE}
+     # A glimpse of the iris dataset
+     ```{r, echo=FALSE, message=FALSE, warning=FALSE}
      knitr::kable(head(iris))
      ```
      
-     ## Distribution of sepal length by species
-     ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=figure_width, fig.height=figure_height}
-     make_raincloud(dt = iris, value = 'Sepal.Length',
-       groups = 'Species',
-       adjust = '0.5',
-       include_boxplot = 'TRUE',
-       include_mean = 'FALSE',
-       include_median = 'TRUE',
-       force_all_jitter_obs = 'FALSE',
-       ggtheme = 'minimal',
-       plot_palette_generator = 'plasma', static = set_static)
+     ## Distribution of Sepal.Length by Species
+     ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=params$figure_width, fig.height=params$figure_height}
+     chronicle::make_raincloud(dt = iris,
+                               value = 'Sepal.Length',
+                               groups = 'Species',
+                               adjust = 0.5,
+                               include_boxplot = TRUE,
+                               include_mean = FALSE,
+                               include_median = TRUE,
+                               force_all_jitter_obs = FALSE,
+                               ggtheme = 'minimal',
+                               plot_palette = params$plot_palette,
+                               plot_palette_generator = params$plot_palette_generator,
+                               static = params$set_static)
      ```
      
-     ## Comparison of petal width and length
-     ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=figure_width, fig.height=figure_height}
-     make_scatterplot(dt = iris, x = 'Petal.Width',
-       y = 'Petal.Length',
-       groups = 'Species', static = set_static)
+     ## Petal.Width vs Petal.Length by Species
+     ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=params$figure_width, fig.height=params$figure_height}
+     chronicle::make_scatterplot(dt = iris,
+                                 x = 'Petal.Width',
+                                 y = 'Petal.Length',
+                                 groups = 'Species',
+                                 plot_palette = params$plot_palette,
+                                 plot_palette_generator = params$plot_palette_generator,
+                                 static = params$set_static)
      ```
 
 ### The `make_*` family of functions
@@ -106,13 +108,14 @@ an html widget would fit.
 make_barplot(dt = ggplot2::mpg,
              value = 'cty',
              bars = 'manufacturer',
-             break_bars_by = 'drv',
+             break_bars_by = 'cyl',
              horizontal = TRUE,
              sort_by_value = TRUE,
              static = TRUE)
 ```
 
-![chronicle bar plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme1.png)
+![chronicle bar
+plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme1.png)
 
 ``` r
 make_raincloud(dt = iris,
@@ -120,20 +123,21 @@ make_raincloud(dt = iris,
              groups = 'Species')
 ```
 
-![chronicle rain cloud plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme2.png)
+![chronicle rain cloud
+plot](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme2.png)
 
 ### Rendering chronicle reports
 
 Once the structure of the report has been defined, the rendering process
-is done by render\_report(). This uses rmarkdonw::render() as a backend
-for rendering the report, which gives chronicle the capability to render
-the reports with full visibility to all objects in the global
-environment. This gives chronicle two of its main strengths:
+is done by `render_report()`. This uses `rmarkdown::render()` as a
+backend for rendering the report, which gives chronicle the capability
+to render the reports with full visibility to all objects in the global
+environment. This gives chronicle two of big strengths:
 
 1.  You don't need to include nor run all your data processing code
     again for a new report output. This means you can build several
     report recipes for different audiences out of the same data
-    processing, with each one having their own report recipe.
+    processing, rendering all of them from the same global environment.
 
 2.  It can render *several* output formats in a single call. For
     instance, it is possible to render the same content as
@@ -152,14 +156,49 @@ render_report(report = demo_report,
               filename = "quick_demo",
               title = "A quick chronicle demo",
               author = "You did this!",
+              include_date = FALSE,
+              fig_width = 8,
+              fig_height = 6,
+              plot_palette = c("#FC8D59", "#FFFFBF", "#99D594"),
+              plot_palette_generator = "plasma",
+              rmdformats_theme = "readthedown",
               keep_rmd = TRUE)
 ```
 
+The `render_report` function allows the user to specify several global
+parameters of the report, like `fig_width`, `fig_height`,
+`plot_palette`, and `plot_palette_generator`. This last one specifies
+which palette from the
+[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html#the-color-scales)
+package will be used to complete insufficiently long palettes (or when
+the user did not specify a palette at all.)
+
+``` r
+make_violin(dt = iris,
+             value = 'Sepal.Length',
+             groups = 'Species',
+             plot_palette_generator = 'mako')
+```
+
+![chronicle violin plot with mako
+palette](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme3.png)
+
+``` r
+make_density(dt = iris,
+             value = 'Sepal.Length',
+             groups = 'Species',
+             faceted = FALSE,
+             plot_palette_generator = 'turbo')
+```
+
+![chronicle violin plot with turbo
+palette](https://raw.githubusercontent.com/pheymanss/chronicle/master/readme4.png)
+
 ### The `report_columns()` function
 
-chronicle also includes a function called report\_columns(), that will
+chronicle also includes a function called `report_columns()`, that will
 create an entire chronicle report for a single dataset. It includes a
-comprehensive summary of the data through the skimr::skim() function,
+comprehensive summary of the data through the `skimr::skim()` function,
 along with one plot for each column present in the data: bar plots for
 categorical variables and rain cloud plots for numerical variables. This
 gives you an immediate view of a dataset with a single line of code!
@@ -178,7 +217,8 @@ As of version 0.2.5, chronicle can output both static and dynamic
 outputs. Dynamic outputs refer to R Markdown formats that support html
 widgets, hence the elements added will be dynamic plots (plotly,
 dygraph, DT). For static outputs, these will roll back to ggplot and
-static table prints.
+static table prints. To avoid large file sizes, it will also roll back
+to static plots if the table has over 10,000 rows.
 
 ##### Dynamic outputs (html)
 
@@ -206,10 +246,12 @@ Additionally,
 [{flexdashboard}](https://rmarkdown.rstudio.com/flexdashboard/) and
 [{xaringan}](https://slides.yihui.org/xaringan/#1) technically compile,
 but the layout is stiff in flexdashboard and altogether incorrect in
-xaringan. Also, [{rticles}](https://github.com/rstudio/rticles) support
-can technically be added, but that would involve a plethora of
-additional parameters for the header, and frankly, writing a journal
-article is not the intended use of the package
+xaringan, so you might still use it if you don't mind manually
+correcting the separators. Also,
+[{rticles}](https://github.com/rstudio/rticles) support can technically
+be added, but that would involve a plethora of additional parameters for
+the header, and frankly, writing a journal article is not the intended
+use of the package
 
 ### Supported report elements
 
