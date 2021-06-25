@@ -62,7 +62,7 @@ render_report(
 
 \item{plot_palette}{Character vector of hex codes to use on plots.}
 
-\item{plot_palette_generator}{Palette from the viridis package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis'.}
+\item{plot_palette_generator}{Palette from the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html#the-color-scales) package used in case plot_palette is unspecified (or insufficient for the number of colors required.) Default value is 'plasma', and possible values are 'viridis', 'inferno', 'magma', 'plasma', 'cividis', 'mako', 'rocket', and 'turbo'.}
 
 \item{rmdformats_theme}{The theme to be used for [rmdformats](https://github.com/juba/rmdformats) outputs. Default is "downcute", and possible values are "downcute", "robobook", "material", "readthedown", "html_clean", "html_docco".}
 
