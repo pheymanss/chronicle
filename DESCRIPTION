@@ -8,6 +8,8 @@ Description: A system for creating R Markdown reports with a sequential syntax.
 Depends: R (>= 3.5.0), magrittr
 License: GPL (>= 3)
 Encoding: UTF-8
+URL: https://github.com/pheymanss/chronicle
+BugReports: https://github.com/pheymanss/chronicle/issues
 Imports: data.table,
     DT, 
     dplyr,
